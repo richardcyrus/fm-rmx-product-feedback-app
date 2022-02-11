@@ -9,8 +9,8 @@ import {
 import type { MetaFunction } from "remix";
 import type { LinksFunction } from "remix";
 
-import resetStylesUrl from "~/styles/reset.css";
-import globalStylesUrl from "~/styles/global.css";
+import resetStylesUrl from "./styles/reset.css";
+import globalStylesUrl from "./styles/global.css";
 
 export const meta: MetaFunction = () => {
   return {

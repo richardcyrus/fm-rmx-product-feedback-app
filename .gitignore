@@ -220,3 +220,5 @@ cypress/downloads/
 
 public/build
 api/_build
+app/styles
+
