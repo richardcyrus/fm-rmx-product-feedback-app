@@ -79,6 +79,10 @@ Users should be able to:
 - [UI Events KeyboardEvent key Values](https://www.w3.org/TR/uievents-key/#named-key-attribute-values)
 - [React + TypeScript: Handling Keyboard Events](https://www.kindacode.com/article/react-typescript-handling-keyboard-events/)
 - [Forwarding React Refs with TypeScript](https://www.carlrippon.com/react-forwardref-typescript/)
+- [Hiding Content for Accessibility](https://snook.ca/archives/html_and_css/hiding-content-for-accessibility)
+- [How-to: Hide content](https://www.a11yproject.com/posts/how-to-hide-content/)
+- [Visually Hidden](https://reach.tech/visually-hidden)
+
 
 ## Author
 

@@ -147,6 +147,21 @@ a.button {
   text-decoration: none;
 }
 
+.sr-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+
+  // https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
 .page {
   max-width: 23.4375em;
   margin: 0 auto;
