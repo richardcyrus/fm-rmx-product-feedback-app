@@ -1,0 +1,12 @@
+.cache
+.idea
+.next
+.nova
+.output
+.vscode
+api/_build
+dist
+node_modules/
+package-lock.json
+public/build
+yarn.lock
