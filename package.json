@@ -7,7 +7,7 @@
     "build": "npm run build:css && remix build",
     "build:css": "sass styles/:app/styles --style=compressed",
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
-    "dev:css": "sass styles/:app/styles --color --watch",
+    "dev:css": "sass styles/:app/styles --color --no-source-map --watch",
     "postinstall": "remix setup node"
   },
   "repository": {
