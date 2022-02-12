@@ -1,0 +1,106 @@
+$text-color: #f2f4fe;
+$primary-background: #ad1fea;
+$primary-background-hover: #c75af6;
+$secondary-background: #3a4374;
+$secondary-background-hover: #656ea3;
+$danger-background: #d73737;
+$danger-background-hover: #e98888;
+$edit-background: #4661e6;
+$edit-background-hover: #7c91f9;
+
+
+.button {
+  align-items: center;
+  align-self: start;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  min-height: 2.5rem;
+  padding-inline: 1rem;
+  text-align: center;
+  transition: 220ms all ease-in-out;
+
+  @media screen and (min-width: 48em) {
+    font-size: 0.875rem;
+    min-height: 2.75em;
+    min-width: 9.875em;
+  }
+
+  &:disabled {
+    opacity: 0.2;
+  }
+
+  &:focus {
+    outline-color: transparent;
+    outline-style: solid;
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &-primary {
+    background-color: $primary-background;
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      background-color: $primary-background-hover;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px scale-color($color: $primary-background, $lightness: -40%);
+    }
+  }
+
+  &-secondary {
+    background-color: $secondary-background;
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      background-color: $secondary-background-hover;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px scale-color($color: $secondary-background, $lightness: -40%);
+    }
+  }
+
+  &-danger {
+    background-color: $danger-background;
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      background-color: $danger-background-hover;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px scale-color($color: $danger-background, $lightness: -40%);
+    }
+  }
+
+  &-edit {
+    background-color: $edit-background;
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      background-color: $edit-background-hover;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px scale-color($color: $edit-background, $lightness: -40%);
+    }
+  }
+
+}
+
+.plus-icon {
+  display: inline-block;
+  margin-inline-end: 0.5em;
+}

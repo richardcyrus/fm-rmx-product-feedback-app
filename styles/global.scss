@@ -178,3 +178,21 @@ a.button {
     max-width: 69.375em;
   }
 }
+
+.bullet {
+  border-radius: 50%;
+  height: 0.5rem;
+  margin-block: auto;
+  margin-inline-end: 1rem;
+  width: 0.5rem;
+
+  &__planned {
+    background: #f49f85;
+  }
+  &__in-progress {
+    background: #ad1fea;
+  }
+  &__live {
+    background: #62bcfa;
+  }
+}

@@ -82,7 +82,7 @@ Users should be able to:
 - [Hiding Content for Accessibility](https://snook.ca/archives/html_and_css/hiding-content-for-accessibility)
 - [How-to: Hide content](https://www.a11yproject.com/posts/how-to-hide-content/)
 - [Visually Hidden](https://reach.tech/visually-hidden)
-
+- [Remix: Sharing Your Index Layout with Sub-Routes](https://dev.to/pckilgore/remix-sharing-your-index-layout-with-sub-routes-2856)
 
 ## Author
 
