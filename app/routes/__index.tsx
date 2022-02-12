@@ -1,13 +1,35 @@
+import { useState } from "react";
 import { useLoaderData, Outlet, Link } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 
+import { db } from "~/utils/db.server";
+import { toTitleCase } from "~/utils/stringUtils";
 import suggestionsStylesUrl from "~/styles/suggestions.css";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: suggestionsStylesUrl }];
 };
 
+type LoaderData = {
+  categories: Array<{ key: string; label: string }>;
+  roadmapSummary: Array<{ status: string; count: number }>;
+};
+
 export let loader: LoaderFunction = async () => {
+  let rawSummary = await db.productRequest.groupBy({
+    by: ["status"],
+    _count: {
+      status: true,
+    },
+  });
+
+  let roadmapSummary = rawSummary.map((entry) => {
+    return {
+      status: entry.status,
+      count: entry._count.status,
+    };
+  });
+
   let categories = [
     { key: "all", label: "All" },
     { key: "ui", label: "UI" },
@@ -17,17 +39,12 @@ export let loader: LoaderFunction = async () => {
     { key: "feature", label: "Feature" },
   ];
 
-  let roadmapSummary = [
-    { status: "Planned", count: 2 },
-    { status: "In-Progress", count: 3 },
-    { status: "Live", count: 1 },
-  ];
-
   return { categories, roadmapSummary };
 };
 
 export default function FeedbackLayout() {
-  let data = useLoaderData();
+  let data = useLoaderData<LoaderData>();
+  let [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -39,12 +56,17 @@ export default function FeedbackLayout() {
               <p className="body2 site__subtitle">Feedback Board</p>
             </Link>
           </div>
-          <div className="mobile-menu">
+          <div
+            className="mobile-menu"
+            data-status={!isOpen ? "closed" : "open"}
+          >
             <button
               className="mobile-sidebar__trigger"
               type="button"
               aria-label="Toggle sidebar"
               aria-controls="sidebar"
+              aria-expanded={isOpen}
+              onClick={() => setIsOpen(!isOpen)}
             >
               <span className="mobile-sidebar__trigger-icon" />
             </button>
@@ -74,22 +96,26 @@ export default function FeedbackLayout() {
                 </Link>
               </div>
               <div className="roadmap-summary__list">
-                {data.roadmapSummary.map((summary) => (
-                  <div
-                    className="roadmap-summary__list-item"
-                    key={summary.status}
-                  >
+                {data.roadmapSummary.map((summary) =>
+                  summary.status !== "suggestion" ? (
                     <div
-                      className={`bullet bullet__${summary.status.toLocaleLowerCase()}`}
-                    />
-                    <p className="roadmap-summary__category">
-                      <span className="body1">{summary.status}</span>
-                      <span className="roadmap-summary__category-count">
-                        {summary.count}
-                      </span>
-                    </p>
-                  </div>
-                ))}
+                      className="roadmap-summary__list-item"
+                      key={summary.status}
+                    >
+                      <div
+                        className={`bullet bullet__${summary.status.toLocaleLowerCase()}`}
+                      />
+                      <p className="roadmap-summary__category">
+                        <span className="body1">
+                          {toTitleCase(summary.status)}
+                        </span>
+                        <span className="roadmap-summary__category-count">
+                          {summary.count}
+                        </span>
+                      </p>
+                    </div>
+                  ) : null
+                )}
               </div>
             </section>
           </aside>
