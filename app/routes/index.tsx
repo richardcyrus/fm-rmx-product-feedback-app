@@ -1,3 +1,4 @@
+import type { LoaderFunction } from "remix";
 import { redirect } from "remix";
 
 /**
@@ -6,4 +7,4 @@ import { redirect } from "remix";
  * Index routes do not render outlets, and an index route is required
  * to trigger the display of the layout content.
  */
-export const loader = async () => redirect("/feedback/all");
+export const loader: LoaderFunction = async () => redirect("/feedback/all");
