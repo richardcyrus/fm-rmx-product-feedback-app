@@ -103,7 +103,7 @@ export default function FilteredCategory() {
 
   return (
     <>
-      <Form id="sortForm" method="post" action="__feedback">
+      <Form id="sortForm" method="post" action=".">
         <SuggestionListHeader
           count={suggestionsData.length}
           sortCriteria={sort}
