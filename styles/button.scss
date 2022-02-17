@@ -104,3 +104,40 @@ $edit-background-hover: #7c91f9;
   display: inline-block;
   margin-inline-end: 0.5em;
 }
+
+.vote-button {
+  background: $text-color;
+  border-radius: 0.625em;
+  color: $secondary-background;
+  font-size: 0.8125em;
+  font-weight: var(--font-weight-bold);
+  justify-content: space-between;
+  letter-spacing: -0.01125rem;
+  min-height: 2rem;
+  min-width: 4.3125rem;
+  padding-inline: 1em 0.8125em;
+  text-align: center;
+
+  & .upvote-icon {
+    color: $edit-background;
+    margin-inline-end: 0.625em;
+  }
+
+  &:hover {
+    background: #cfd7ff;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px scale-color($color: $secondary-background, $lightness: -40%);
+  }
+
+  &:active,
+  &.active {
+    background: $edit-background;
+    color: #ffffff;
+
+    & .upvote-icon {
+      color: #ffffff;
+    }
+  }
+}

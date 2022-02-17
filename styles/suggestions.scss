@@ -310,3 +310,122 @@
     width: 45ch;
   }
 }
+
+.suggestion {
+  &-card {
+    align-items: center;
+    background: #ffffff;
+    border-radius: 0.625em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-block-start: 1rem;
+    margin-inline: auto;
+    padding: 1.5rem;
+    width: 327px;
+
+    @media screen and (min-width: 48em) {
+      column-gap: 2.5em;
+      display: grid;
+      grid-template-areas: 'vote suggestion comment';
+      grid-template-columns: 2.8125em 1fr 2.8125em;
+      grid-template-rows: auto;
+      padding-block: 1.75em;
+      padding-inline: 2em;
+      width: 689px;
+    }
+
+    @media screen and (min-width: 75em) {
+      width: 825px;
+    }
+  }
+
+  &-summary {
+    flex: 1 0 100%;
+
+    @media screen and (min-width: 48em) {
+      grid-area: suggestion;
+    }
+  }
+
+  &-description {
+    margin-block-start: 0.5rem;
+  }
+
+  &-category {
+    align-items: center;
+    background: #f2f4ff;
+    border-radius: 0.625em;
+    color: #4661e6;
+    display: inline-flex;
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-semi-bold);
+    margin-block-start: 0.5rem;
+    margin-inline-end: 0.5rem;
+    min-height: 1.875rem;
+    min-width: 3rem;
+    padding-inline: 1rem;
+
+    @media screen and (min-width: 48em) {
+      margin-block-start: 0.75em;
+    }
+  }
+}
+
+.vote-button {
+  @media screen and (min-width: 48em) {
+    flex-direction: column;
+    min-height: 3.3125em;
+    min-width: 2.5em;
+    padding-block: 0.5em;
+    padding-inline: 0;
+
+    & .upvote-icon {
+      margin-block-end: 0.5em;
+      margin-inline-end: 0;
+    }
+  }
+}
+
+.vote-container,
+.comment-info {
+  @media screen and (min-width: 48em) {
+    margin-block-start: 0;
+  }
+}
+
+.vote-container {
+  @media screen and (min-width: 48em) {
+    align-self: start;
+    grid-area: vote;
+  }
+}
+
+.comment-info {
+  @media screen and (min-width: 48em) {
+    grid-area: comment;
+  }
+}
+
+.vote-container,
+.comment-info {
+  flex-basis: 50%;
+  margin-block-start: 1rem;
+}
+
+.comment-info {
+  align-items: center;
+  align-self: center;
+  display: inline-flex;
+  justify-content: flex-end;
+  margin-inline-start: auto;
+}
+
+.comment-count {
+  color: #3a4374;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01125rem;
+  margin-inline-start: 0.5em;
+  text-align: center;
+}

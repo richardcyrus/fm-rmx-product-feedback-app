@@ -1,10 +1,9 @@
-import { Outlet } from "remix";
+import { redirect } from "remix";
 
-export default function Index() {
-  return (
-    <div>
-      <h1>pathless route index</h1>
-      <Outlet />
-    </div>
-  );
-}
+/**
+ * Redirect to the "/all" categories route as the default.
+ *
+ * Index routes do not render outlets, and an index route is required
+ * to trigger the display of the layout content.
+ */
+export const loader = async () => redirect("/all");

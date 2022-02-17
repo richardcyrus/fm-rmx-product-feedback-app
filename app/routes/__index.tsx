@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData, Outlet, Link } from "remix";
+import { useLoaderData, Outlet, Link, NavLink } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 
 import { db } from "~/utils/db.server";
@@ -15,22 +15,22 @@ type LoaderData = {
   roadmapSummary: Array<{ status: string; count: number }>;
 };
 
-export let loader: LoaderFunction = async () => {
-  let rawSummary = await db.productRequest.groupBy({
+export const loader: LoaderFunction = async () => {
+  const rawSummary = await db.productRequest.groupBy({
     by: ["status"],
     _count: {
       status: true,
     },
   });
 
-  let roadmapSummary = rawSummary.map((entry) => {
+  const roadmapSummary = rawSummary.map((entry) => {
     return {
       status: entry.status,
       count: entry._count.status,
     };
   });
 
-  let categories = [
+  const categories = [
     { key: "all", label: "All" },
     { key: "ui", label: "UI" },
     { key: "ux", label: "UX" },
@@ -43,8 +43,8 @@ export let loader: LoaderFunction = async () => {
 };
 
 export default function FeedbackLayout() {
-  let data = useLoaderData<LoaderData>();
-  let [isOpen, setIsOpen] = useState(false);
+  const data = useLoaderData<LoaderData>();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -77,15 +77,16 @@ export default function FeedbackLayout() {
             <section className="category-filter">
               <h2 className="sr-only">Category Filters</h2>
               {data.categories.map((category) => (
-                <Link
+                <NavLink
                   to={category.key}
-                  className="button pill"
-                  type="button"
+                  className={({ isActive }) =>
+                    isActive ? "button pill active" : "button pill"
+                  }
                   key={category.key}
                   data-category={category.key}
                 >
                   {category.label}
-                </Link>
+                </NavLink>
               ))}
             </section>
             <section className="roadmap-summary">
