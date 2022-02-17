@@ -72,7 +72,10 @@ export default function FeedbackLayout() {
             </button>
           </div>
         </header>
-        <div className="mobile-sidebar__panel">
+        <div
+          className={`${!isOpen ? "hidden" : "mobile-sidebar__panel"}`}
+          data-element="mobile-sidebar__panel"
+        >
           <aside id="sidebar" className="sidebar">
             <section className="category-filter">
               <h2 className="sr-only">Category Filters</h2>
