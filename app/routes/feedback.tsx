@@ -82,6 +82,8 @@ export default function FeedbackLayout() {
               {data.categories.map((category) => (
                 <NavLink
                   to={category.key}
+                  onClick={() => setIsOpen(false)}
+                  onBlur={() => setIsOpen(false)}
                   className={({ isActive }) =>
                     isActive ? "button pill active" : "button pill"
                   }
