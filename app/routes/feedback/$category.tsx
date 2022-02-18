@@ -1,4 +1,5 @@
-import { Form, useLoaderData, useSubmit } from "remix";
+import * as React from "react";
+import { Form, useLoaderData, useNavigate, useSubmit } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 
 import { db } from "~/utils/db.server";
@@ -96,9 +97,24 @@ export let loader: LoaderFunction = async ({ params, request }) => {
 export default function FilteredCategory() {
   const { sort, suggestionsData } = useLoaderData<LoaderData>();
   const submit = useSubmit();
+  const navigate = useNavigate();
 
   const onSortOptionsChange = (value: string) => {
     submit({ sort: value }, { method: "get" });
+  };
+
+  const onSuggestionCardClick = (id: number) => {
+    navigate(`/feedback/view/${id}`);
+  };
+
+  const onSuggestionCardKeypress = (
+    id: number,
+    event: React.KeyboardEvent<HTMLDivElement>
+  ) => {
+    // Handle <Enter> or <Space>
+    if (event.key === "Enter" || event.key === " ") {
+      navigate(`/feedback/view/${id}`);
+    }
   };
 
   return (
@@ -116,7 +132,9 @@ export default function FilteredCategory() {
             className="suggestion-card-wrapper"
             key={suggestion.id}
             role="button"
-            tabIndex={-1}
+            tabIndex={0}
+            onClick={() => onSuggestionCardClick(suggestion.id)}
+            onKeyDown={(e) => onSuggestionCardKeypress(suggestion.id, e)}
           >
             <SuggestionCard suggestion={suggestion} />
           </div>

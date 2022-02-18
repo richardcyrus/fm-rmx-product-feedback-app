@@ -370,6 +370,18 @@
       margin-block-start: 0.75em;
     }
   }
+
+  &-card-wrapper {
+    border-radius: 0.625em;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px scale-color($color: #4661e6, $lightness: -40%);
+    }
+  }
 }
 
 .vote-button {
