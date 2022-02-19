@@ -1,8 +1,8 @@
-import * as React from "react";
+import { useState } from "react";
 
 import CommentReplyForm from "~/components/CommentReplyForm";
 
-export interface IComments {
+export interface CommentReplyProps {
   id: number;
   content: string;
   isReply?: boolean;
@@ -16,11 +16,11 @@ export interface IComments {
     username: string;
     image: string;
   };
-  replies?: IComments[];
+  replies?: CommentReplyProps[];
 }
 
-export default function CommentReply({ comment }: { comment: IComments }) {
-  const [isReplyFormOpen, setReplyFormOpen] = React.useState(false);
+export default function CommentReply(props: CommentReplyProps) {
+  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
 
   const onReplyButtonClick = () => {
     setReplyFormOpen((currentState) => !currentState);
@@ -31,14 +31,11 @@ export default function CommentReply({ comment }: { comment: IComments }) {
       <div className="feedback-detail-comment-reply">
         <div className="feedback-detail-comment-heading">
           <div className="commenter-image">
-            <img
-              src={comment.user.image}
-              alt={`Avatar of ${comment.user.name}`}
-            />
+            <img src={props.user.image} alt={`Avatar of ${props.user.name}`} />
           </div>
           <div className="commenter-names">
-            <h2 className="h4 commenter-name">{comment.user.name}</h2>
-            <p className="commenter-username">@{comment.user.username}</p>
+            <h2 className="h4 commenter-name">{props.user.name}</h2>
+            <p className="commenter-username">@{props.user.username}</p>
           </div>
           <button
             type="button"
@@ -49,9 +46,9 @@ export default function CommentReply({ comment }: { comment: IComments }) {
           </button>
         </div>
         <p className="comment-text">
-          <span className="replying-to">@{comment.replyingTo}</span>
+          <span className="replying-to">@{props.replyingTo}</span>
           &nbsp;&nbsp;
-          {comment.content}
+          {props.content}
         </p>
         {isReplyFormOpen ? <CommentReplyForm /> : null}
       </div>

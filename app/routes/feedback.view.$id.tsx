@@ -1,11 +1,12 @@
 import type { LinksFunction, LoaderFunction } from "remix";
 import { Form, useLoaderData } from "remix";
-import { IComments } from "~/components/CommentReply";
-import FeedbackComment from "~/components/FeedbackComment";
 
+import { CommentReplyProps } from "~/components/CommentReply";
+import FeedbackComment from "~/components/FeedbackComment";
 import FeedbackDetailHeader from "~/components/FeedbackDetailHeader";
 import SuggestionCard, {
   links as SuggestionCardLinks,
+  SuggestionCardProps,
 } from "~/components/SuggestionCard";
 
 import feedbackViewStylesUrl from "~/styles/feedback-view.css";
@@ -19,20 +20,10 @@ export const links: LinksFunction = () => {
   ];
 };
 
-type Suggestion = {
-  id: number;
-  title: string;
-  category: string;
-  upvotes: number;
-  status: string;
-  description: string;
-  comments?: number;
+type LoaderData = {
+  comments: CommentReplyProps[];
+  suggestion: SuggestionCardProps;
 };
-
-interface IFeedbackDetail {
-  comments: IComments[];
-  suggestion: Suggestion;
-}
 
 export const loader: LoaderFunction = async ({ params }) => {
   // TODO: Handle missing ID or ID of wrong type
@@ -75,19 +66,19 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export default function FeedbackDetail() {
-  const data = useLoaderData<IFeedbackDetail>();
+  const data = useLoaderData<LoaderData>();
 
   return (
     <>
       <FeedbackDetailHeader id={data.suggestion.id} />
       <div className="feedback-detail-wrapper">
-        <SuggestionCard suggestion={data.suggestion} />
+        <SuggestionCard {...data.suggestion} />
         <div className="feedback-detail-comments">
           <h3 className="h3 feedback-detail-comment-title">
             {data.suggestion.comments} Comments
           </h3>
           {data.comments.map((comment) => (
-            <FeedbackComment comment={comment} key={comment.id} />
+            <FeedbackComment {...comment} key={comment.id} />
           ))}
         </div>
         <div className="feedback-detail-add-comment">

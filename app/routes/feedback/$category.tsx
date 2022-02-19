@@ -6,6 +6,7 @@ import { db } from "~/utils/db.server";
 
 import SuggestionCard, {
   links as SuggestionCardLinks,
+  SuggestionCardProps,
 } from "~/components/SuggestionCard";
 import NoSuggestionsCard, {
   links as NoSuggestionsCardLinks,
@@ -14,7 +15,7 @@ import SuggestionsHeader, {
   links as SuggestionsHeaderLinks,
 } from "~/components/SuggestionsHeader";
 
-type QueryResult = {
+type FeedbackDataQueryResult = {
   id: number;
   title: string;
   category: string;
@@ -26,7 +27,7 @@ type QueryResult = {
 
 type LoaderData = {
   sort: string;
-  suggestionsData: QueryResult[];
+  suggestionsData: SuggestionCardProps[];
 };
 
 export const links: LinksFunction = () => [
@@ -92,7 +93,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     },
   });
 
-  const queryData = data.map((item: QueryResult) => {
+  const queryData = data.map((item: FeedbackDataQueryResult) => {
     return {
       comments: item._count.comments,
       ...item,
@@ -144,7 +145,7 @@ export default function FilteredCategory() {
             onClick={() => onSuggestionCardClick(suggestion.id)}
             onKeyDown={(e) => onSuggestionCardKeypress(suggestion.id, e)}
           >
-            <SuggestionCard suggestion={suggestion} />
+            <SuggestionCard {...suggestion} />
           </div>
         ))
       ) : (

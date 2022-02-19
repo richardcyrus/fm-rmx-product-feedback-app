@@ -12,7 +12,7 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: suggestionCardStylesUrl }];
 };
 
-type Suggestion = {
+export interface SuggestionCardProps {
   id: number;
   title: string;
   category: string;
@@ -20,13 +20,9 @@ type Suggestion = {
   status: string;
   description: string;
   comments?: number;
-};
+}
 
-export default function SuggestionCard({
-  suggestion,
-}: {
-  suggestion: Suggestion;
-}) {
+export default function SuggestionCard(props: SuggestionCardProps) {
   const handleUpvoteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     const button = event.currentTarget;
@@ -37,28 +33,24 @@ export default function SuggestionCard({
     <>
       <div className="suggestion-card">
         <div className="suggestion-summary">
-          <h3 className="h3 suggestion-title">{suggestion.title}</h3>
-          <p className="body1 suggestion-description">
-            {suggestion.description}
-          </p>
-          <p className="suggestion-category">
-            {toTitleCase(suggestion.category)}
-          </p>
+          <h3 className="h3 suggestion-title">{props.title}</h3>
+          <p className="body1 suggestion-description">{props.description}</p>
+          <p className="suggestion-category">{toTitleCase(props.category)}</p>
         </div>
         <div className="vote-container">
           <button
             type="button"
             onClick={(e) => handleUpvoteClick(e)}
             className="button vote-button"
-            data-upvotes={suggestion.upvotes}
+            data-upvotes={props.upvotes}
           >
             <UpVoteIcon className="upvote-icon" />
-            <p className="vote-count">{suggestion.upvotes}</p>
+            <p className="vote-count">{props.upvotes}</p>
           </button>
         </div>
         <div className="comment-info">
           <CommentIcon className="comment-icon" />
-          <span className="comment-count">{suggestion.comments}</span>
+          <span className="comment-count">{props.comments}</span>
         </div>
       </div>
     </>

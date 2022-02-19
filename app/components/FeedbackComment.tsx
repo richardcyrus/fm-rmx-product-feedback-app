@@ -1,21 +1,21 @@
 import * as React from "react";
 import { useState } from "react";
-import CommentReply, { IComments } from "~/components/CommentReply";
+import CommentReply, { CommentReplyProps } from "~/components/CommentReply";
 import CommentReplyForm from "~/components/CommentReplyForm";
 
-export default function FeedbackComment({ comment }: { comment: IComments }) {
+export default function FeedbackComment(props: CommentReplyProps) {
   const [isReplyFormOpen, setReplyFormOpen] = useState(false);
 
   const onReplyButtonClick = () => {
     setReplyFormOpen((currentState) => !currentState);
   };
 
-  const { user, replies } = comment;
+  const { user, replies } = props;
   const replyList = replies ? replies : [];
 
   return (
     <>
-      <div className="feedback-detail-comment" data-comment-id={comment.id}>
+      <div className="feedback-detail-comment" data-comment-id={props.id}>
         <div className="feedback-detail-comment-heading">
           <div className="commenter-image">
             <img src={user.image} alt={`Avatar of ${user.name}`} />
@@ -32,10 +32,10 @@ export default function FeedbackComment({ comment }: { comment: IComments }) {
             Reply
           </button>
         </div>
-        <p className="comment-text">{comment.content}</p>
+        <p className="comment-text">{props.content}</p>
         {isReplyFormOpen ? <CommentReplyForm /> : null}
         {replyList.map((reply) => (
-          <CommentReply comment={reply} key={reply.id} />
+          <CommentReply {...reply} key={reply.id} />
         ))}
       </div>
     </>
