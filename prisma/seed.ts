@@ -13,20 +13,6 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
       create: [
         {
           content:
-            "Please use fun, color-coded labels to easily identify them at a glance",
-          user: {
-            connectOrCreate: {
-              create: {
-                image: "/assets/user-images/image-thomas.jpg",
-                name: "Thomas Hood",
-                username: "brawnybrave",
-              },
-              where: { username: "brawnybrave" },
-            },
-          },
-        },
-        {
-          content:
             "Awesome idea! Trying to find framework-specific projects within the hubs can be tedious",
           user: {
             connectOrCreate: {
@@ -36,6 +22,20 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
                 username: "upbeat1811",
               },
               where: { username: "upbeat1811" },
+            },
+          },
+        },
+        {
+          content:
+            "Please use fun, color-coded labels to easily identify them at a glance",
+          user: {
+            connectOrCreate: {
+              create: {
+                image: "/assets/user-images/image-thomas.jpg",
+                name: "Thomas Hood",
+                username: "brawnybrave",
+              },
+              where: { username: "brawnybrave" },
             },
           },
         },
@@ -51,6 +51,20 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
       "It would help people with light sensitivities and who prefer dark mode.",
     comments: {
       create: [
+        {
+          content:
+            "Also, please allow styles to be applied based on system preferences. I would love to be able to browse Frontend Mentor in the evening after my device’s dark mode turns on without the bright background it currently has.",
+          user: {
+            connectOrCreate: {
+              create: {
+                image: "/assets/user-images/image-elijah.jpg",
+                name: "Elijah Moss",
+                username: "hexagon.bestagon",
+              },
+              where: { username: "hexagon.bestagon" },
+            },
+          },
+        },
         {
           content:
             "Second this! I do a lot of late night coding and reading. Adding a dark theme can be great for preventing eye strain and the headaches that result. It’s also quite a trend with modern apps and  apparently saves battery life.",
@@ -103,20 +117,6 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
             ],
           },
         },
-        {
-          content:
-            "Also, please allow styles to be applied based on system preferences. I would love to be able to browse Frontend Mentor in the evening after my device’s dark mode turns on without the bright background it currently has.",
-          user: {
-            connectOrCreate: {
-              create: {
-                image: "/assets/user-images/image-elijah.jpg",
-                name: "Elijah Moss",
-                username: "hexagon.bestagon",
-              },
-              where: { username: "hexagon.bestagon" },
-            },
-          },
-        },
       ],
     },
   },
@@ -155,20 +155,6 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
       create: [
         {
           content:
-            "Yes I'd like to see this as well. Sometimes I want to add a short video or gif to explain the site's behavior..",
-          user: {
-            connectOrCreate: {
-              create: {
-                image: "/assets/user-images/image-roxanne.jpg",
-                name: "Roxanne Travis",
-                username: "peppersprime32",
-              },
-              where: { username: "peppersprime32" },
-            },
-          },
-        },
-        {
-          content:
             "Right now, there is no ability to add images while giving feedback which isn't ideal because I have to use another app to show what I mean",
           user: {
             connectOrCreate: {
@@ -178,6 +164,20 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
                 username: "warlikeduke",
               },
               where: { username: "warlikeduke" },
+            },
+          },
+        },
+        {
+          content:
+            "Yes I'd like to see this as well. Sometimes I want to add a short video or gif to explain the site's behavior..",
+          user: {
+            connectOrCreate: {
+              create: {
+                image: "/assets/user-images/image-roxanne.jpg",
+                name: "Roxanne Travis",
+                username: "peppersprime32",
+              },
+              where: { username: "peppersprime32" },
             },
           },
         },
@@ -192,20 +192,6 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
     description: "Stay updated on comments and solutions other people post.",
     comments: {
       create: [
-        {
-          content:
-            "I've been saving the profile URLs of a few people and I check what they’ve been doing from time to time. Being able to follow them solves that",
-          user: {
-            connectOrCreate: {
-              create: {
-                image: "/assets/user-images/image-jackson.jpg",
-                name: "Jackson Barker",
-                username: "countryspirit",
-              },
-              where: { username: "countryspirit" },
-            },
-          },
-        },
         {
           content:
             "I also want to be notified when devs I follow submit projects on FEM. Is in-app notification also in the pipeline?",
@@ -241,6 +227,20 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
             ],
           },
         },
+        {
+          content:
+            "I've been saving the profile URLs of a few people and I check what they’ve been doing from time to time. Being able to follow them solves that",
+          user: {
+            connectOrCreate: {
+              create: {
+                image: "/assets/user-images/image-jackson.jpg",
+                name: "Jackson Barker",
+                username: "countryspirit",
+              },
+              where: { username: "countryspirit" },
+            },
+          },
+        },
       ],
     },
   },
@@ -263,20 +263,6 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
       create: [
         {
           content:
-            "Yeah, this would be really good. I'd love to see deeper insights into my code!",
-          user: {
-            connectOrCreate: {
-              create: {
-                image: "/assets/user-images/image-jackson.jpg",
-                name: "Jackson Barker",
-                username: "countryspirit",
-              },
-              where: { username: "countryspirit" },
-            },
-          },
-        },
-        {
-          content:
             "This would be awesome! It would be so helpful to see an overview of my code in a way that makes it easy to spot where things could be improved.",
           user: {
             connectOrCreate: {
@@ -286,6 +272,20 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
                 username: "arlen_the_marlin",
               },
               where: { username: "arlen_the_marlin" },
+            },
+          },
+        },
+        {
+          content:
+            "Yeah, this would be really good. I'd love to see deeper insights into my code!",
+          user: {
+            connectOrCreate: {
+              create: {
+                image: "/assets/user-images/image-jackson.jpg",
+                name: "Jackson Barker",
+                username: "countryspirit",
+              },
+              where: { username: "countryspirit" },
             },
           },
         },
