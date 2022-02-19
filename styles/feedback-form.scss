@@ -66,8 +66,8 @@
 
   @media screen and (min-width: 48em) {
     margin-block-start: 2.5rem;
-    width: 28.5rem;
     margin-inline: auto;
+    width: 28.5rem;
   }
 
   [data-reach-listbox-button] {
@@ -230,6 +230,7 @@ textarea {
 .new-feedback-form {
   .button {
     align-self: stretch;
+
     @media screen and (min-width: 48em) {
       align-self: start;
     }

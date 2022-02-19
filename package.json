@@ -26,6 +26,7 @@
   "dependencies": {
     "@prisma/client": "^3.9.2",
     "@reach/listbox": "^0.16.2",
+    "@reach/tabs": "^0.16.4",
     "@remix-run/react": "^1.2.1",
     "@remix-run/serve": "^1.2.1",
     "@remix-run/vercel": "^1.2.1",

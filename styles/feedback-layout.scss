@@ -185,6 +185,7 @@
     background: #4661e6;
     color: #ffffff;
   }
+
   &:focus {
     box-shadow: 0 0 0 2px scale-color($color: #4661e6, $lightness: -40%);
   }
@@ -235,8 +236,8 @@
 
 .roadmap-view__link {
   color: #4661e6;
-  text-decoration: underline;
   text-decoration-thickness: 1.5px;
+  text-decoration: underline;
   text-underline-offset: 0.3rem;
 
   &:hover {

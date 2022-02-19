@@ -97,8 +97,8 @@
 
   @media screen and (min-width: 48em) {
     border-radius: 0.625em;
-    margin-block-start: 2.5em;
     height: 4.5em;
+    margin-block-start: 2.5em;
   }
 
   @media screen and (min-width: 75em) {
@@ -115,14 +115,14 @@
   display: none;
 
   @media screen and (min-width: 48em) {
-    display: flex;
     align-items: center;
-    margin-inline-end: 2.375em;
     color: #ffffff;
+    display: flex;
+    margin-inline-end: 2.375em;
 
-    & > h3 {
-      margin-inline-start: 1rem;
+    & > .h3 {
       color: #ffffff;
+      margin-inline-start: 1rem;
     }
   }
 }

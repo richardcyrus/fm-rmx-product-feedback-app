@@ -110,8 +110,8 @@
 
   .comment-reply-form {
     @media screen and (min-width: 48em) {
-      padding-inline-start: 4.5rem;
       display: flex;
+      padding-inline-start: 4.5rem;
 
       .form-control-group {
         margin-inline-start: 1rem;
@@ -249,9 +249,9 @@
 
 textarea {
   height: 5rem;
+  min-width: auto;
   padding: 1rem;
   resize: none;
-  min-width: auto;
 
   @media screen and (min-width: 48em) {
     padding-block: 1rem;

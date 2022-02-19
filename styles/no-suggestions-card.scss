@@ -1,15 +1,14 @@
 .no-feedback-container {
   background: #ffffff;
   border-radius: 0.625em;
+  display: flex;
+  flex-direction: column;
   margin-block-start: 2em;
   margin-inline: auto;
   min-height: 28.75em;
   padding-inline: 1.5em;
   text-align: center;
   width: 20.4375em;
-
-  display: flex;
-  flex-direction: column;
 
   @media screen and (min-width: 48em) {
     min-height: 37.5em;
