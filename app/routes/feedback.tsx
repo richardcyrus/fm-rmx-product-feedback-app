@@ -4,10 +4,11 @@ import type { LinksFunction, LoaderFunction } from "remix";
 
 import { db } from "~/utils/db.server";
 import { toTitleCase } from "~/utils/stringUtils";
-import suggestionsStylesUrl from "~/styles/suggestions.css";
+
+import layoutStylesUrl from "~/styles/feedback-layout.css";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: suggestionsStylesUrl }];
+  return [{ rel: "stylesheet", href: layoutStylesUrl }];
 };
 
 type LoaderData = {

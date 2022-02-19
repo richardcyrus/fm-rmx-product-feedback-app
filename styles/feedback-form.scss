@@ -1,0 +1,299 @@
+.feedback-form-header {
+  margin-block-start: 2.125rem;
+  margin-inline: 1.5rem;
+
+  @media screen and (min-width: 48em) {
+    margin-block-start: 3.5rem;
+    margin-inline: auto;
+    width: 33.75rem;
+  }
+
+  .go-back-button {
+    border-radius: 0;
+    color: #647196;
+    justify-content: flex-start;
+    padding-inline-start: 0;
+
+    & .left-arrow-icon {
+      color: #4661e6;
+    }
+  }
+}
+
+.feedback-form-container {
+  background: #ffffff;
+  border-radius: 0.625rem;
+  margin-block-end: 4.8125rem;
+  margin-block-start: 3.5rem;
+  margin-inline: auto;
+  padding-block-end: 1.5rem;
+  padding-block-start: 2.75rem;
+  padding-inline: 1.5rem;
+  position: relative;
+  width: 20.4375rem;
+
+  @media screen and (min-width: 48em) {
+    margin-block-start: 4.25rem;
+    padding-block-start: 3.25rem;
+    padding-inline: 2.625rem;
+    width: 33.75rem;
+  }
+}
+
+.feedback-form-icon {
+  height: 40px;
+  width: 40px;
+
+  @media screen and (min-width: 48em) {
+    height: 56px;
+    width: 56px;
+  }
+}
+
+.feedback-form-image {
+  left: 1.5rem;
+  position: absolute;
+  top: -1.25rem;
+
+  @media screen and (min-width: 48em) {
+    left: 2.625rem;
+    top: -1.75rem;
+  }
+}
+
+.feedback-form {
+  margin-block-start: 1.5rem;
+
+  @media screen and (min-width: 48em) {
+    margin-block-start: 2.5rem;
+    width: 28.5rem;
+    margin-inline: auto;
+  }
+
+  [data-reach-listbox-button] {
+    align-items: center;
+    background: #f7f8fd;
+    border-color: transparent;
+    border-radius: 0.3125rem;
+    color: #3a4374;
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-regular);
+    height: 3rem;
+    line-height: 1.1875rem;
+    margin-block-start: 1rem;
+    padding-inline: 1rem;
+    width: 17.4375rem;
+
+    @media screen and (min-width: 48em) {
+      font-size: 0.875rem;
+      line-height: 0.125rem;
+      padding-inline: 1.5rem;
+      width: 28.5rem;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 1px #4661e6;
+      outline-color: transparent;
+      outline-style: solid;
+    }
+
+    &[aria-expanded] {
+      [data-reach-listbox-arrow] {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  [data-reach-listbox-arrow] {
+    align-self: center;
+    color: #4661e6;
+    font-size: inherit;
+    transform: rotate(0deg);
+  }
+}
+
+.feedback-form-popover[data-reach-listbox-popover] {
+  background-color: #ffffff;
+  border-radius: 0.625rem;
+  border: none;
+  box-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.35);
+  margin-block-start: 1rem;
+  min-width: 15.9375rem;
+
+  &:focus-within {
+    box-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.35);
+    outline-color: transparent;
+    outline-style: solid;
+  }
+
+  [data-reach-listbox-option] {
+    color: #647196;
+    display: inline-flex;
+    font-size: 0.8125rem;
+    line-height: 1.1875rem;
+    padding: 0.75rem 1.5rem;
+    width: 100%;
+
+    @media screen and (min-width: 48em) {
+      font-size: 1rem;
+      line-height: 1.4375rem;
+    }
+
+    &[data-current-nav] {
+      background: none;
+      color: #ad1fea;
+    }
+
+    &[data-current-selected] {
+      font-weight: var(--font-weight-regular);
+
+      &::after {
+        content: url(/assets/shared/icon-check.svg);
+        margin-left: auto;
+        text-align: right;
+      }
+    }
+  }
+
+  [data-reach-listbox-option]:not(:last-of-type) {
+    border-bottom: 1px solid rgba(58, 67, 116, 0.15);
+  }
+}
+
+.form-control {
+  margin-block-start: 1.5rem;
+}
+
+.form-label {
+  color: var(--heading-text-color);
+  font-size: var(--h4-font-size);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--h4-letter-spacing);
+  line-height: var(--h4-line-height);
+}
+
+.form-text {
+  color: #647196;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-regular);
+
+  @media screen and (min-width: 48em) {
+    font-size: 0.875rem;
+  }
+}
+
+.form-control-group {
+  display: flex;
+  flex-direction: column;
+  margin-block-start: 2.5rem;
+  row-gap: 1rem;
+
+  @media screen and (min-width: 48em) {
+    column-gap: 1rem;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+input[type="text"] {
+  height: 3rem;
+  width: 17.4375rem;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 1px #4661e6;
+    outline-color: transparent;
+    outline-style: solid;
+  }
+
+  @media screen and (min-width: 48em) {
+    width: 28.5rem;
+  }
+}
+
+textarea {
+  height: 7.5rem;
+  resize: none;
+  width: 17.4375rem;
+
+  @media screen and (min-width: 48em) {
+    padding-block: 1rem;
+    width: 28.5rem;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 1px #4661e6;
+    outline-color: transparent;
+    outline-style: solid;
+  }
+}
+
+.new-feedback-form {
+  .button {
+    align-self: stretch;
+    @media screen and (min-width: 48em) {
+      align-self: start;
+    }
+
+    &-primary {
+      @media screen and (min-width: 48em) {
+        min-height: 2.75rem;
+        min-width: 9rem;
+        order: 2;
+      }
+    }
+
+    &-secondary {
+      @media screen and (min-width: 48em) {
+        min-height: 2.75rem;
+        min-width: 5.8125rem;
+        order: 1;
+      }
+    }
+  }
+}
+
+.edit-feedback-form {
+  .form-control-group {
+    @media screen and (min-width: 48em) {
+      justify-content: normal;
+    }
+  }
+
+  .button {
+    align-self: stretch;
+
+    @media screen and (min-width: 48em) {
+      align-self: start;
+    }
+  }
+
+  .button-primary {
+    order: 1;
+
+    @media screen and (min-width: 48em) {
+      min-height: 2.75rem;
+      min-width: 9rem;
+      order: 3;
+    }
+  }
+
+  .button-secondary {
+    order: 2;
+
+    @media screen and (min-width: 48em) {
+      margin-inline-start: auto;
+      min-height: 2.75rem;
+      min-width: 5.8125rem;
+    }
+  }
+
+  .button-danger {
+    order: 3;
+
+    @media screen and (min-width: 48em) {
+      min-height: 2.75rem;
+      min-width: 5.8125rem;
+      order: 1;
+    }
+  }
+}

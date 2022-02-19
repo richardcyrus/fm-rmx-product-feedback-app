@@ -4,11 +4,15 @@ import type { LinksFunction, LoaderFunction } from "remix";
 
 import { db } from "~/utils/db.server";
 
-import SuggestionCard from "~/components/SuggestionCard";
-import NoSuggestionsCard from "~/components/NoSuggestionsCard";
-import SuggestionListHeader, {
-  links as SuggestionListHeaderLinks,
-} from "~/components/SuggestionListHeader";
+import SuggestionCard, {
+  links as SuggestionCardLinks,
+} from "~/components/SuggestionCard";
+import NoSuggestionsCard, {
+  links as NoSuggestionsCardLinks,
+} from "~/components/NoSuggestionsCard";
+import SuggestionsHeader, {
+  links as SuggestionsHeaderLinks,
+} from "~/components/SuggestionsHeader";
 
 type QueryResult = {
   id: number;
@@ -25,9 +29,13 @@ type LoaderData = {
   suggestionsData: QueryResult[];
 };
 
-export const links: LinksFunction = () => [...SuggestionListHeaderLinks()];
+export const links: LinksFunction = () => [
+  ...SuggestionsHeaderLinks(),
+  ...SuggestionCardLinks(),
+  ...NoSuggestionsCardLinks(),
+];
 
-export let loader: LoaderFunction = async ({ params, request }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   let url = new URL(request.url);
   let sort = url.searchParams.get("sort");
 
@@ -120,7 +128,7 @@ export default function FilteredCategory() {
   return (
     <>
       <Form id="sortForm" method="post" action=".">
-        <SuggestionListHeader
+        <SuggestionsHeader
           count={suggestionsData.length}
           sortCriteria={sort}
           onSortOptionsChange={onSortOptionsChange}

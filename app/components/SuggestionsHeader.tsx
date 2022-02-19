@@ -9,7 +9,7 @@ import {
 } from "@reach/listbox";
 
 import listboxStyles from "@reach/listbox/styles.css";
-import componentCustomStyles from "~/styles/suggestion-list-header.css";
+import componentCustomStyles from "~/styles/suggestions-header.css";
 
 import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
 import SuggestionsIcon from "~/assets/suggestions/IconSuggestions";
@@ -36,7 +36,7 @@ type ListHeaderProps = {
   sortCriteria: string;
 };
 
-export default function SuggestionListHeader(props: ListHeaderProps) {
+export default function SuggestionsHeader(props: ListHeaderProps) {
   return (
     <>
       <div className="suggestion-list__header">

@@ -1,8 +1,16 @@
 import * as React from "react";
+import type { LinksFunction } from "remix";
+
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
 
 import { toTitleCase } from "~/utils/stringUtils";
+
+import suggestionCardStylesUrl from "~/styles/suggestion-card.css";
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: suggestionCardStylesUrl }];
+};
 
 type Suggestion = {
   id: number;
@@ -29,7 +37,7 @@ export default function SuggestionCard({
     <>
       <div className="suggestion-card">
         <div className="suggestion-summary">
-          <h3 className="suggestion-title">{suggestion.title}</h3>
+          <h3 className="h3 suggestion-title">{suggestion.title}</h3>
           <p className="body1 suggestion-description">
             {suggestion.description}
           </p>

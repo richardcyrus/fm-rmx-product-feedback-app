@@ -1,3 +1,4 @@
+/* #region Button styles */
 $text-color: #f2f4fe;
 $primary-background: #ad1fea;
 $primary-background-hover: #c75af6;
@@ -7,7 +8,7 @@ $danger-background: #d73737;
 $danger-background-hover: #e98888;
 $edit-background: #4661e6;
 $edit-background-hover: #7c91f9;
-
+$vote-button-background-hover: #cfd7ff;
 
 .button {
   align-items: center;
@@ -25,8 +26,8 @@ $edit-background-hover: #7c91f9;
 
   @media screen and (min-width: 48em) {
     font-size: 0.875rem;
-    min-height: 2.75em;
-    min-width: 9.875em;
+    min-height: 2.75rem;
+    min-width: 9.875rem;
   }
 
   &:disabled {
@@ -52,7 +53,8 @@ $edit-background-hover: #7c91f9;
     }
 
     &:focus {
-      box-shadow: 0 0 0 4px scale-color($color: $primary-background, $lightness: -40%);
+      box-shadow: 0 0 0 4px
+        scale-color($color: $primary-background, $lightness: -40%);
     }
   }
 
@@ -66,7 +68,8 @@ $edit-background-hover: #7c91f9;
     }
 
     &:focus {
-      box-shadow: 0 0 0 4px scale-color($color: $secondary-background, $lightness: -40%);
+      box-shadow: 0 0 0 4px
+        scale-color($color: $secondary-background, $lightness: -40%);
     }
   }
 
@@ -80,7 +83,8 @@ $edit-background-hover: #7c91f9;
     }
 
     &:focus {
-      box-shadow: 0 0 0 4px scale-color($color: $danger-background, $lightness: -40%);
+      box-shadow: 0 0 0 4px
+        scale-color($color: $danger-background, $lightness: -40%);
     }
   }
 
@@ -94,41 +98,47 @@ $edit-background-hover: #7c91f9;
     }
 
     &:focus {
-      box-shadow: 0 0 0 4px scale-color($color: $edit-background, $lightness: -40%);
+      box-shadow: 0 0 0 4px
+        scale-color($color: $edit-background, $lightness: -40%);
     }
   }
-
 }
 
 .plus-icon {
   display: inline-block;
-  margin-inline-end: 0.5em;
+  margin-inline-end: 0.5rem;
 }
 
 .vote-button {
   background: $text-color;
-  border-radius: 0.625em;
+  border-radius: 0.625rem;
   color: $secondary-background;
-  font-size: 0.8125em;
+  font-size: 0.8125rem;
   font-weight: var(--font-weight-bold);
-  justify-content: space-between;
+  justify-content: center;
   letter-spacing: -0.01125rem;
   min-height: 2rem;
   min-width: 4.3125rem;
   padding-inline: 1em 0.8125em;
   text-align: center;
 
+  @media screen and (min-width: 48em) {
+    min-width: 2.5rem;
+    min-height: 3.3125rem;
+  }
+
   & .upvote-icon {
     color: $edit-background;
-    margin-inline-end: 0.625em;
+    margin-inline-end: 0.625rem;
   }
 
   &:hover {
-    background: #cfd7ff;
+    background: $vote-button-background-hover;
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px scale-color($color: $secondary-background, $lightness: -40%);
+    box-shadow: 0 0 0 2px
+      scale-color($color: $secondary-background, $lightness: -40%);
   }
 
   &:active,
@@ -141,3 +151,31 @@ $edit-background-hover: #7c91f9;
     }
   }
 }
+
+.go-back-button {
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+
+  @media screen and (min-width: 48em) {
+    font-size: 0.875rem;
+  }
+
+  & .left-arrow-icon {
+    color: #cdd2ee;
+    margin-inline-end: 0.875rem;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3rem;
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+  }
+}
+/* #endregion Button styles */
