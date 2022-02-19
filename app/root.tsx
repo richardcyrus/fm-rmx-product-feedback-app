@@ -9,9 +9,7 @@ import {
 import type { MetaFunction } from "remix";
 import type { LinksFunction } from "remix";
 
-import resetStylesUrl from "~/styles/reset.css";
-import globalStylesUrl from "~/styles/global.css";
-import buttonStylesUrl from "~/styles/button.css";
+import globalStylesUrl from "~/styles/global-styles.css";
 
 export const meta: MetaFunction = () => {
   return {
@@ -29,9 +27,7 @@ export const links: LinksFunction = () => {
       sizes: "32x32",
       href: "/favicon-32x32.png",
     },
-    { rel: "stylesheet", href: resetStylesUrl },
     { rel: "stylesheet", href: globalStylesUrl },
-    { rel: "stylesheet", href: buttonStylesUrl },
   ];
 };
 
