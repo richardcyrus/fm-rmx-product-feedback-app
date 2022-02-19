@@ -6,7 +6,17 @@ import CommentIcon from "~/assets/shared/IconComments";
 
 import { toTitleCase } from "~/utils/stringUtils";
 
-export default function RoadmapCard() {
+export interface FeedbackData {
+  id: number;
+  title: string;
+  category: string;
+  upvotes: number;
+  status: string;
+  description: string;
+  comments?: number;
+}
+
+export default function RoadmapCard(props: FeedbackData) {
   const handleUpvoteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     const button = event.currentTarget;
@@ -15,19 +25,17 @@ export default function RoadmapCard() {
 
   return (
     <>
-      <div className="roadmap-card roadmap-card__planned">
+      <div className={`roadmap-card roadmap-card__${props.status}`}>
         <div className="roadmap-summary">
           <div className="roadmap-summary__category">
-            <div className="bullet bullet__planned" />
-            <p className="body1">Planned</p>
+            <div className={`bullet bullet__${props.status}`} />
+            <p className="body1">{toTitleCase(props.status)}</p>
           </div>
-          <Link to={`/feedback/view/7`}>
-            <h3 className="h3 roadmap-title">More comprehensive reports</h3>
+          <Link to={`/feedback/view/${props.id}`}>
+            <h3 className="h3 roadmap-title">{props.title}</h3>
           </Link>
-          <p className="body1 roadmap-description">
-            It would be great to see a more detailed breakdown of solutions,
-          </p>
-          <p className="roadmap-category">Feature</p>
+          <p className="body1 roadmap-description">{props.description}</p>
+          <p className="roadmap-category">{toTitleCase(props.category)}</p>
         </div>
         <div className="vote-container">
           <button
@@ -36,12 +44,12 @@ export default function RoadmapCard() {
             onClick={(e) => handleUpvoteClick(e)}
           >
             <UpVoteIcon className="upvote-icon" />
-            <p className="vote-count">123</p>
+            <p className="vote-count">{props.upvotes}</p>
           </button>
         </div>
         <div className="comment-info">
           <CommentIcon className="comment-icon" />
-          <span className="comment-count">2</span>
+          <span className="comment-count">{props.comments}</span>
         </div>
       </div>
     </>
