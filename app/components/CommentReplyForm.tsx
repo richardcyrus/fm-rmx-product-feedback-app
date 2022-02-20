@@ -12,6 +12,7 @@ export default function CommentReplyForm() {
           id="addCommentReply"
           cols={30}
           rows={3}
+          maxLength={250}
           className="input"
           placeholder="Type your reply here"
         />
