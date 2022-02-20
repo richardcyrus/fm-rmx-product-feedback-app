@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Form, useLoaderData, useNavigate, useSubmit } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
+import invariant from "tiny-invariant";
 
 import { db } from "~/utils/db.server";
 
@@ -48,6 +49,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     sort = "mostUpvotes";
   }
 
+  invariant(params.category, "Expected params.category");
   if (params.category !== "all") {
     cat = params.category;
   }

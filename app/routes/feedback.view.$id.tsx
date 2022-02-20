@@ -1,5 +1,6 @@
 import type { LinksFunction, LoaderFunction } from "remix";
-import { Form, useLoaderData } from "remix";
+import { Form, useLoaderData, useParams } from "remix";
+import invariant from "tiny-invariant";
 
 import { CommentReplyProps } from "~/components/CommentReply";
 import FeedbackComment from "~/components/FeedbackComment";
@@ -26,9 +27,9 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  // TODO: Handle missing ID or ID of wrong type
-  const id = params.id;
-  const feedbackId = parseInt(id, 10);
+  invariant(params.id, "Expected params.id");
+
+  const feedbackId = parseInt(params.id, 10);
 
   const data = await db.productRequest.findUnique({
     where: { id: feedbackId },
@@ -50,17 +51,20 @@ export const loader: LoaderFunction = async ({ params }) => {
     },
   });
 
-  // TODO: Handle no data returned.
+  if (!data) {
+    throw new Error("Feedback record not found");
+  }
+
   return {
-    comments: data?.comments,
+    comments: data.comments,
     suggestion: {
-      id: data?.id,
-      title: data?.title,
-      category: data?.category,
-      upvotes: data?.upvotes,
-      status: data?.status,
-      description: data?.description,
-      comments: data?._count.comments,
+      id: data.id,
+      title: data.title,
+      category: data.category,
+      upvotes: data.upvotes,
+      status: data.status,
+      description: data.description,
+      comments: data._count.comments,
     },
   };
 };
