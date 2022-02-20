@@ -10,6 +10,7 @@ This is a solution to the [Product feedback app challenge on Frontend Mentor](ht
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
   - [Useful resources](#useful-resources)
 - [Author](#author)
 
@@ -67,6 +68,10 @@ Users should be able to:
 - Mobile-first workflow
 - [Remix](https://remix.run/) - a full stack web framework
 - [React](https://reactjs.org/) - JS library
+
+### What I learned
+
+- [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently because of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
 
 ### Useful resources
 

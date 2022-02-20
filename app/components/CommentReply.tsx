@@ -1,4 +1,5 @@
-import { useState } from "react";
+import * as React from "react";
+import { ForwardedRef, useState } from "react";
 
 import CommentReplyForm from "~/components/CommentReplyForm";
 
@@ -19,39 +20,56 @@ export interface CommentReplyProps {
   replies?: CommentReplyProps[];
 }
 
-export default function CommentReply(props: CommentReplyProps) {
-  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
+const CommentReply = React.forwardRef(
+  (props: CommentReplyProps, ref: ForwardedRef<HTMLFormElement>) => {
+    const [isReplyFormOpen, setReplyFormOpen] = useState(false);
 
-  const onReplyButtonClick = () => {
-    setReplyFormOpen((currentState) => !currentState);
-  };
+    const onReplyButtonClick = () => {
+      setReplyFormOpen((currentState) => !currentState);
+    };
 
-  return (
-    <>
-      <div className="feedback-detail-comment-reply">
-        <div className="feedback-detail-comment-heading">
-          <div className="commenter-image">
-            <img src={props.user.image} alt={`Avatar of ${props.user.name}`} />
+    return (
+      <>
+        <div className="feedback-detail-comment-reply">
+          <div className="feedback-detail-comment-heading">
+            <div className="commenter-image">
+              <img
+                src={props.user.image}
+                alt={`Avatar of ${props.user.name}`}
+              />
+            </div>
+            <div className="commenter-names">
+              <h2 className="h4 commenter-name">{props.user.name}</h2>
+              <p className="commenter-username">@{props.user.username}</p>
+            </div>
+            <button
+              type="button"
+              className="button button-reply"
+              onClick={onReplyButtonClick}
+            >
+              Reply
+            </button>
           </div>
-          <div className="commenter-names">
-            <h2 className="h4 commenter-name">{props.user.name}</h2>
-            <p className="commenter-username">@{props.user.username}</p>
-          </div>
-          <button
-            type="button"
-            className="button button-reply"
-            onClick={onReplyButtonClick}
-          >
-            Reply
-          </button>
+          <p className="comment-text">
+            <span className="replying-to">@{props.replyingTo}</span>
+            &nbsp;&nbsp;
+            {props.content}
+          </p>
+          {isReplyFormOpen ? (
+            <CommentReplyForm
+              ref={ref}
+              replyToCommentId={props.id}
+              replyingToUsername={props.user.username}
+              productRequestId={props.productRequestId}
+            />
+          ) : null}
+          {(props.replies || []).map((reply) => (
+            <CommentReply ref={ref} {...reply} key={reply.id} />
+          ))}
         </div>
-        <p className="comment-text">
-          <span className="replying-to">@{props.replyingTo}</span>
-          &nbsp;&nbsp;
-          {props.content}
-        </p>
-        {isReplyFormOpen ? <CommentReplyForm /> : null}
-      </div>
-    </>
-  );
-}
+      </>
+    );
+  }
+);
+
+export default CommentReply;
