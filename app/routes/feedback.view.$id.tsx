@@ -1,8 +1,11 @@
+import { Prisma } from "@prisma/client";
 import * as React from "react";
-import { useState } from "react";
-import type { LinksFunction, LoaderFunction } from "remix";
-import { Form, useLoaderData } from "remix";
+import { useRef, useState, useEffect } from "react";
+import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
+import { Form, redirect, useLoaderData, useTransition } from "remix";
 import invariant from "tiny-invariant";
+
+import { db } from "~/utils/db.server";
 
 import { CommentReplyProps } from "~/components/CommentReply";
 import FeedbackComment from "~/components/FeedbackComment";
@@ -14,8 +17,6 @@ import SuggestionCard, {
 
 import feedbackViewStylesUrl from "~/styles/feedback-view.css";
 
-import { db } from "~/utils/db.server";
-
 export const links: LinksFunction = () => {
   return [
     ...SuggestionCardLinks(),
@@ -23,9 +24,57 @@ export const links: LinksFunction = () => {
   ];
 };
 
+type CommentData = {
+  content: string;
+  productRequestId: number;
+};
+
 type LoaderData = {
   comments: CommentReplyProps[];
   suggestion: SuggestionCardProps;
+};
+
+async function saveComment(params: CommentData) {
+  let user: Prisma.UserCreateNestedOneWithoutCommentsInput = {
+    connect: { username: "velvetround" },
+  };
+  let productRequest: Prisma.ProductRequestCreateNestedOneWithoutCommentsInput =
+    { connect: { id: params.productRequestId } };
+
+  let comment: Prisma.CommentCreateInput = {
+    content: params.content,
+    user: { ...user },
+    productRequest: { ...productRequest },
+  };
+
+  // TODO: Handle Errors.
+  return db.comment.create({ data: comment });
+}
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  // Handle a new comment
+  if (formData.get("_action") === "new_comment") {
+    const content = formData.get("commentContent");
+    const productId = formData.get("productRequestId");
+
+    // TODO: Also validate length.
+    if (typeof content !== "string") {
+      // TODO: Handle properly.
+      throw new Error("The comment content is not of the correct format");
+    }
+
+    if (typeof productId !== "string") {
+      throw new Error("The product request ID is not of the correct format");
+    }
+
+    const productRequestId = parseInt(productId, 10);
+
+    await saveComment({ content, productRequestId });
+
+    return redirect(request.url);
+  }
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -73,6 +122,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function FeedbackDetail() {
   const data = useLoaderData<LoaderData>();
+  const transition = useTransition();
+  const isAdding =
+    transition.state === "submitting" &&
+    transition.submission.formData.get("_action") === "new_comment";
+
   const [remainingCharacters, setRemainingCharacters] = useState(250);
 
   const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -86,6 +140,15 @@ export default function FeedbackDetail() {
       setRemainingCharacters(charLeft);
     }
   };
+
+  const addCommentFormRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (!isAdding) {
+      addCommentFormRef.current?.reset();
+      setRemainingCharacters(250);
+    }
+  }, [isAdding]);
 
   return (
     <>
@@ -106,13 +169,18 @@ export default function FeedbackDetail() {
             className="feedback-detail-add-comment-form"
             autoComplete="off"
             method="post"
+            ref={addCommentFormRef}
           >
-            <input type="hidden" name="feedbackId" value={data.suggestion.id} />
+            <input
+              type="hidden"
+              name="productRequestId"
+              value={data.suggestion.id}
+            />
             <label htmlFor="addComment" className="sr-only">
               Add comment
             </label>
             <textarea
-              name="addComment"
+              name="commentContent"
               id="addComment"
               cols={30}
               rows={3}
@@ -126,8 +194,14 @@ export default function FeedbackDetail() {
               <div className="form-text" id="feedbackAddCommentHelpBlock">
                 {remainingCharacters} Characters left
               </div>
-              <button type="submit" className="button button-primary">
-                Post Comment
+              <button
+                type="submit"
+                className="button button-primary"
+                name="_action"
+                value="new_comment"
+                disabled={isAdding}
+              >
+                {isAdding ? "Saving..." : "Post Comment"}
               </button>
             </div>
           </Form>
