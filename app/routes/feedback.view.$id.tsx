@@ -1,5 +1,7 @@
+import * as React from "react";
+import { useState } from "react";
 import type { LinksFunction, LoaderFunction } from "remix";
-import { Form, useLoaderData, useParams } from "remix";
+import { Form, useLoaderData } from "remix";
 import invariant from "tiny-invariant";
 
 import { CommentReplyProps } from "~/components/CommentReply";
@@ -71,6 +73,19 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function FeedbackDetail() {
   const data = useLoaderData<LoaderData>();
+  const [remainingCharacters, setRemainingCharacters] = useState(250);
+
+  const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // This check is done, so that the `ts-ignore` rule is safe to use.
+    if (event.target.hasAttribute("maxlength")) {
+      let currentLength = event.target.value.length;
+      // @ts-ignore
+      let maxLength: string = event.target.getAttribute("maxlength");
+      let maxCharCount = parseInt(maxLength, 10);
+      let charLeft = maxCharCount - currentLength;
+      setRemainingCharacters(charLeft);
+    }
+  };
 
   return (
     <>
@@ -92,6 +107,7 @@ export default function FeedbackDetail() {
             autoComplete="off"
             method="post"
           >
+            <input type="hidden" name="feedbackId" value={data.suggestion.id} />
             <label htmlFor="addComment" className="sr-only">
               Add comment
             </label>
@@ -100,13 +116,15 @@ export default function FeedbackDetail() {
               id="addComment"
               cols={30}
               rows={3}
+              maxLength={250}
               placeholder="Type your comment here"
               aria-describedby="feedbackAddCommentHelpBlock"
               className="input"
+              onChange={(e) => onTextareaChange(e)}
             />
             <div className="form-control-group">
               <div className="form-text" id="feedbackAddCommentHelpBlock">
-                250 Characters left
+                {remainingCharacters} Characters left
               </div>
               <button type="submit" className="button button-primary">
                 Post Comment
