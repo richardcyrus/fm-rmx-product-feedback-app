@@ -1,5 +1,16 @@
-import type { LinksFunction } from "remix";
-import { Form, useNavigate } from "remix";
+import { useState } from "react";
+import type { LinksFunction, ActionFunction } from "remix";
+import { Prisma } from "@prisma/client";
+import {
+  Form,
+  useNavigate,
+  redirect,
+  useActionData,
+  useTransition,
+} from "remix";
+import invariant from "tiny-invariant";
+
+import { db } from "~/utils/db.server";
 
 import FeedbackFormListbox, {
   links as FeedbackFormListboxLinks,
@@ -10,13 +21,6 @@ import NewFeedbackIcon from "~/assets/shared/IconNewFeedback";
 
 import newFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
-export const links: LinksFunction = () => {
-  return [
-    ...FeedbackFormListboxLinks(),
-    { rel: "stylesheet", href: newFeedbackFormStylesUrl },
-  ];
-};
-
 const options: Record<string, string> = {
   feature: "Feature",
   ui: "UI",
@@ -25,8 +29,86 @@ const options: Record<string, string> = {
   bug: "Bug",
 };
 
+type NewFeedbackFormError = {
+  title?: boolean;
+  category?: boolean;
+  description?: boolean;
+};
+
+type NewFeedback = {
+  title: string;
+  category: string;
+  description: string;
+};
+
+export const links: LinksFunction = () => {
+  return [
+    ...FeedbackFormListboxLinks(),
+    { rel: "stylesheet", href: newFeedbackFormStylesUrl },
+  ];
+};
+
+async function saveFeedback(params: NewFeedback) {
+  let productRequest: Prisma.ProductRequestCreateInput;
+
+  productRequest = {
+    title: params.title,
+    category: params.category,
+    upvotes: 0,
+    status: "suggestion",
+    description: params.description,
+  };
+
+  return db.productRequest.create({ data: productRequest });
+}
+
+// TODO: Improve data validation.
+// TODO: Improve error handling.
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  if (formData.get("_action") === "cancel") {
+    return redirect("/");
+  }
+
+  if (formData.get("_action") === "save") {
+    const title = formData.get("feedbackTitle");
+    const category = formData.get("feedbackCategory");
+    const description = formData.get("feedbackDetail");
+
+    const errors: NewFeedbackFormError = {};
+    if (!title) errors.title = true;
+    if (!category) errors.category = true;
+    if (!description) errors.description = true;
+
+    if (Object.keys(errors).length) {
+      return errors;
+    }
+
+    invariant(typeof title === "string");
+    invariant(typeof category === "string");
+    invariant(typeof description === "string");
+
+    const record = await saveFeedback({ title, category, description });
+
+    return redirect(`/feedback/view/${record.id}`);
+  }
+};
+
 export default function FeedbackNew() {
   const navigate = useNavigate();
+  const errors = useActionData();
+  const transition = useTransition();
+
+  const [categoryValue, setCategoryValue] = useState("feature");
+
+  const onCategoryOptionChange = (value: string) => {
+    setCategoryValue(value);
+  };
+
+  const isNewFeedback =
+    transition.state === "submitting" &&
+    transition.submission.formData.get("_action") === "save";
 
   return (
     <>
@@ -61,11 +143,12 @@ export default function FeedbackNew() {
               type="text"
               name="feedbackTitle"
               id="feedbackTitle"
-              className="input"
+              className={`input ${errors?.title ? "is-invalid" : null}`}
               aria-describedby="feedbackTitleHelpBlock"
-              required
             />
-            <div className="invalid-input">Can&rsquo;t be empty</div>
+            {errors?.title ? (
+              <div className="invalid-input">Can&rsquo;t be empty</div>
+            ) : null}
           </div>
           <div className="form-control">
             <span className="form-label" id="feedbackCategoryLabel">
@@ -76,11 +159,11 @@ export default function FeedbackNew() {
             </div>
             <FeedbackFormListbox
               name="feedbackCategory"
-              value="feature"
+              value={categoryValue}
               labelledby="feedbackCategoryLabel"
               describedby="feedbackCategoryHelpBlock"
               options={options}
-              required={true}
+              onOptionChange={onCategoryOptionChange}
             />
           </div>
           <div className="form-control">
@@ -96,17 +179,29 @@ export default function FeedbackNew() {
               id="feedbackDetail"
               cols={30}
               rows={4}
-              className="input"
+              maxLength={250}
+              className={`input ${errors?.description ? "is-invalid" : null}`}
               aria-describedby="feedbackDetailHelpBlock"
-              required
             />
-            <div className="invalid-input">Can&rsquo;t be empty</div>
+            {errors?.description ? (
+              <div className="invalid-input">Can&rsquo;t be empty</div>
+            ) : null}
           </div>
           <div className="form-control-group">
-            <button type="submit" className="button button-primary">
-              Add Feedback
+            <button
+              type="submit"
+              name="_action"
+              value="save"
+              className="button button-primary"
+            >
+              {isNewFeedback ? "Saving..." : "Add Feedback"}
             </button>
-            <button type="reset" className="button button-secondary">
+            <button
+              type="submit"
+              name="_action"
+              value="cancel"
+              className="button button-secondary"
+            >
               Cancel
             </button>
           </div>

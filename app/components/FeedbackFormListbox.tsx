@@ -23,6 +23,7 @@ type ListboxProps = {
   describedby: string;
   required?: boolean;
   options: Record<string, string>;
+  onOptionChange: (value: string) => void;
 };
 
 export default function FeedbackFormListbox(props: ListboxProps) {
@@ -33,8 +34,8 @@ export default function FeedbackFormListbox(props: ListboxProps) {
         aria-labelledby={props.labelledby}
         aria-describedby={props.describedby}
         defaultValue={props.value}
-        // value={props.value}
-        required={props.required}
+        required={props.required || false}
+        onChange={props.onOptionChange}
       >
         <ListboxButton arrow={<ListboxArrowIcon />}>
           {props.options[props.value]}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { LinksFunction } from "remix";
 import { Form, useNavigate } from "remix";
 
@@ -34,6 +35,17 @@ const statusOptions: Record<string, string> = {
 
 export default function FeedbackEdit() {
   const navigate = useNavigate();
+
+  const [categoryValue, setCategoryValue] = useState("feature");
+  const [statusValue, setStatusValue] = useState("suggestion");
+
+  const onCategoryOptionChange = (value: string) => {
+    setCategoryValue(value);
+  };
+
+  const onStatusOptionChange = (value: string) => {
+    setStatusValue(value);
+  };
 
   return (
     <>
@@ -86,11 +98,11 @@ export default function FeedbackEdit() {
             </div>
             <FeedbackFormListbox
               name="feedbackCategory"
-              value="feature"
+              value={categoryValue}
               labelledby="feedbackCategoryLabel"
               describedby="feedbackCategoryHelpBlock"
               options={categoryOptions}
-              required={true}
+              onOptionChange={onCategoryOptionChange}
             />
           </div>
           <div className="form-control">
@@ -102,11 +114,11 @@ export default function FeedbackEdit() {
             </div>
             <FeedbackFormListbox
               name="feedbackStatus"
-              value="planned"
+              value={statusValue}
               labelledby="feedbackStatusLabel"
               describedby="feedbackStatusHelpBlock"
               options={statusOptions}
-              required={true}
+              onOptionChange={onStatusOptionChange}
             />
           </div>
           <div className="form-control">

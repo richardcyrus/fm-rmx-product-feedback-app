@@ -35,7 +35,11 @@ export default function SuggestionCard(props: SuggestionCardProps) {
         <div className="suggestion-summary">
           <h3 className="h3 suggestion-title">{props.title}</h3>
           <p className="body1 suggestion-description">{props.description}</p>
-          <p className="suggestion-category">{toTitleCase(props.category)}</p>
+          <p className="suggestion-category">
+            {props.category.length > 2
+              ? toTitleCase(props.category)
+              : props.category.toLocaleUpperCase()}
+          </p>
         </div>
         <div className="vote-container">
           <button
