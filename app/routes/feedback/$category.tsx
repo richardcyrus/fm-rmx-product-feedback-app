@@ -3,7 +3,8 @@ import { Form, useLoaderData, useNavigate, useSubmit } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
 
-import { db } from "~/utils/db.server";
+import { getSortedProductRequestByCategory } from "~/models/productRequest.server";
+import type { SortByOptions } from "~/models/productRequest.server";
 
 import SuggestionCard, {
   links as SuggestionCardLinks,
@@ -15,16 +16,6 @@ import NoSuggestionsCard, {
 import SuggestionsHeader, {
   links as SuggestionsHeaderLinks,
 } from "~/components/SuggestionsHeader";
-
-type FeedbackDataQueryResult = {
-  id: number;
-  title: string;
-  category: string;
-  upvotes: number;
-  status: string;
-  description: string;
-  _count: Record<string, number>;
-};
 
 type LoaderData = {
   sort: string;
@@ -41,71 +32,21 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   let url = new URL(request.url);
   let sort = url.searchParams.get("sort");
 
-  let sortCriteria: any;
-  let filter: any;
-  let cat: string | unknown = null;
-
   if (!sort) {
     sort = "mostUpvotes";
   }
 
   invariant(params.category, "Expected params.category");
-  if (params.category !== "all") {
-    cat = params.category;
-  }
 
-  switch (sort) {
-    case "mostUpvotes": {
-      sortCriteria = { upvotes: "desc" };
-      break;
-    }
-    case "leastUpvotes": {
-      sortCriteria = { upvotes: "asc" };
-      break;
-    }
-    case "mostComments": {
-      sortCriteria = { comments: { _count: "desc" } };
-      break;
-    }
-    case "leastComments": {
-      sortCriteria = { comments: { _count: "asc" } };
-      break;
-    }
-    default: {
-      sortCriteria = { upvotes: "desc" };
-    }
-  }
+  const suggestionsData = await getSortedProductRequestByCategory(
+    params.category,
+    sort as SortByOptions
+  );
 
-  if (cat) {
-    filter = {
-      status: { equals: "suggestion" },
-      category: { equals: cat, mode: "insensitive" },
-    };
-  } else {
-    filter = { status: { equals: "suggestion" } };
-  }
-
-  const data = await db.productRequest.findMany({
-    where: filter,
-    orderBy: sortCriteria,
-    include: {
-      _count: {
-        select: { comments: true },
-      },
-    },
-  });
-
-  const queryData = data.map((item: FeedbackDataQueryResult) => {
-    return {
-      comments: item._count.comments,
-      ...item,
-    };
-  });
-
-  return { sort, suggestionsData: queryData };
+  return { sort, suggestionsData };
 };
 
-export default function FilteredCategory() {
+function FilteredCategory() {
   const { sort, suggestionsData } = useLoaderData<LoaderData>();
   const submit = useSubmit();
   const navigate = useNavigate();
@@ -156,3 +97,5 @@ export default function FilteredCategory() {
     </>
   );
 }
+
+export default FilteredCategory;

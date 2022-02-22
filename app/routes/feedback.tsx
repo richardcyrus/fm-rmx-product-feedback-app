@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useLoaderData, Outlet, Link, NavLink } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 
-import { db } from "~/utils/db.server";
 import { toTitleCase } from "~/utils/stringUtils";
+import { getRoadmapSummary } from "~/models/productRequest.server";
 
 import layoutStylesUrl from "~/styles/feedback-layout.css";
 
@@ -17,19 +17,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async () => {
-  const rawSummary = await db.productRequest.groupBy({
-    by: ["status"],
-    _count: {
-      status: true,
-    },
-  });
-
-  const roadmapSummary = rawSummary.map((entry) => {
-    return {
-      status: entry.status,
-      count: entry._count.status,
-    };
-  });
+  const roadmapSummary = await getRoadmapSummary();
 
   const categories = [
     { key: "all", label: "All" },
@@ -43,7 +31,7 @@ export const loader: LoaderFunction = async () => {
   return { categories, roadmapSummary };
 };
 
-export default function FeedbackLayout() {
+function FeedbackLayout() {
   const data = useLoaderData<LoaderData>();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -103,26 +91,24 @@ export default function FeedbackLayout() {
                 </Link>
               </div>
               <div className="roadmap-summary__list">
-                {data.roadmapSummary.map((summary) =>
-                  summary.status !== "suggestion" ? (
+                {data.roadmapSummary.map((summary) => (
+                  <div
+                    className="roadmap-summary__list-item"
+                    key={summary.status}
+                  >
                     <div
-                      className="roadmap-summary__list-item"
-                      key={summary.status}
-                    >
-                      <div
-                        className={`bullet bullet__${summary.status.toLocaleLowerCase()}`}
-                      />
-                      <p className="roadmap-summary__category">
-                        <span className="body1">
-                          {toTitleCase(summary.status)}
-                        </span>
-                        <span className="roadmap-summary__category-count">
-                          {summary.count}
-                        </span>
-                      </p>
-                    </div>
-                  ) : null
-                )}
+                      className={`bullet bullet__${summary.status.toLocaleLowerCase()}`}
+                    />
+                    <p className="roadmap-summary__category">
+                      <span className="body1">
+                        {toTitleCase(summary.status)}
+                      </span>
+                      <span className="roadmap-summary__category-count">
+                        {summary.count}
+                      </span>
+                    </p>
+                  </div>
+                ))}
               </div>
             </section>
           </aside>
@@ -134,3 +120,5 @@ export default function FeedbackLayout() {
     </>
   );
 }
+
+export default FeedbackLayout;

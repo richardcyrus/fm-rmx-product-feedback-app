@@ -1,11 +1,11 @@
-import { Prisma } from "@prisma/client";
 import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
 import { Form, redirect, useLoaderData, useTransition } from "remix";
 import invariant from "tiny-invariant";
 
-import { db } from "~/utils/db.server";
+import { getProductRequestDetailById } from "~/models/productRequest.server";
+import { createComment, createCommentReply } from "~/models/comment.server";
 
 import { CommentReplyProps } from "~/components/CommentReply";
 import FeedbackComment from "~/components/FeedbackComment";
@@ -24,47 +24,10 @@ export const links: LinksFunction = () => {
   ];
 };
 
-type CommentData = {
-  content: string;
-  productRequestId: number;
-  replyingToUsername?: string;
-  parentId?: number;
-};
-
 type LoaderData = {
-  comments: CommentReplyProps[];
+  comments: Array<CommentReplyProps>;
   suggestion: SuggestionCardProps;
 };
-
-async function saveComment(params: CommentData) {
-  let user: Prisma.UserCreateNestedOneWithoutCommentsInput = {
-    connect: { username: "velvetround" },
-  };
-  let productRequest: Prisma.ProductRequestCreateNestedOneWithoutCommentsInput =
-    { connect: { id: params.productRequestId } };
-
-  let comment: Prisma.CommentCreateInput;
-
-  if ("replyingToUsername" in params && "parentId" in params) {
-    comment = {
-      content: params.content,
-      isReply: true,
-      replyingTo: params.replyingToUsername,
-      productRequest: { ...productRequest },
-      user: { ...user },
-      reply: { connect: { id: params.parentId } },
-    };
-  } else {
-    comment = {
-      content: params.content,
-      user: { ...user },
-      productRequest: { ...productRequest },
-    };
-  }
-
-  // TODO: Handle Errors.
-  return db.comment.create({ data: comment });
-}
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -87,8 +50,9 @@ export const action: ActionFunction = async ({ request }) => {
 
     const productRequestId = parseInt(productId, 10);
 
-    await saveComment({ content, productRequestId });
+    await createComment(content, productRequestId);
 
+    // TODO: Do we add to navigation history?
     return redirect(request.url);
   }
 
@@ -122,13 +86,14 @@ export const action: ActionFunction = async ({ request }) => {
     const productRequestId = parseInt(productId, 10);
     const parentId = parseInt(replyToCommentId, 10);
 
-    await saveComment({
+    await createCommentReply(
       content,
       productRequestId,
       replyingToUsername,
-      parentId,
-    });
+      parentId
+    );
 
+    // TODO: Do we add to navigation history?
     return redirect(request.url);
   }
 };
@@ -138,51 +103,10 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   const feedbackId = parseInt(params.id, 10);
 
-  /**
-   *  Limitation with Prisma, recursive queries not supported.
-   *  The below query will only return two levels of replies for the comments.
-   *  The count of comments, however, will be the correct total.
-   */
-  const data = await db.productRequest.findUnique({
-    where: { id: feedbackId },
-    include: {
-      comments: {
-        where: { isReply: false },
-        include: {
-          user: true,
-          replies: {
-            include: {
-              user: true,
-              replies: { include: { user: true } },
-            },
-          },
-        },
-      },
-      _count: {
-        select: { comments: true },
-      },
-    },
-  });
-
-  if (!data) {
-    throw new Error("Feedback record not found");
-  }
-
-  return {
-    comments: data.comments,
-    suggestion: {
-      id: data.id,
-      title: data.title,
-      category: data.category,
-      upvotes: data.upvotes,
-      status: data.status,
-      description: data.description,
-      comments: data._count.comments,
-    },
-  };
+  return getProductRequestDetailById(feedbackId);
 };
 
-export default function FeedbackDetail() {
+function FeedbackDetail() {
   const data = useLoaderData<LoaderData>();
   const transition = useTransition();
   const isNewComment =
@@ -286,3 +210,5 @@ export default function FeedbackDetail() {
     </>
   );
 }
+
+export default FeedbackDetail;

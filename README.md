@@ -68,10 +68,12 @@ Users should be able to:
 - Mobile-first workflow
 - [Remix](https://remix.run/) - a full stack web framework
 - [React](https://reactjs.org/) - JS library
+- [Reach UI](https://reach.tech/) - React-based design system.
+- [Prisma](https://www.prisma.io/) - Next-generation Node.js and TypeScript ORM
 
 ### What I learned
 
-- [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently because of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
+- [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently, in the interest of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
 
 ### Useful resources
 

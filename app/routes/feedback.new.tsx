@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { LinksFunction, ActionFunction } from "remix";
-import { Prisma } from "@prisma/client";
 import {
   Form,
   useNavigate,
@@ -10,7 +9,7 @@ import {
 } from "remix";
 import invariant from "tiny-invariant";
 
-import { db } from "~/utils/db.server";
+import { createProductRequest } from "~/models/productRequest.server";
 
 import FeedbackFormListbox, {
   links as FeedbackFormListboxLinks,
@@ -35,32 +34,12 @@ type NewFeedbackFormError = {
   description?: boolean;
 };
 
-type NewFeedback = {
-  title: string;
-  category: string;
-  description: string;
-};
-
 export const links: LinksFunction = () => {
   return [
     ...FeedbackFormListboxLinks(),
     { rel: "stylesheet", href: newFeedbackFormStylesUrl },
   ];
 };
-
-async function saveFeedback(params: NewFeedback) {
-  let productRequest: Prisma.ProductRequestCreateInput;
-
-  productRequest = {
-    title: params.title,
-    category: params.category,
-    upvotes: 0,
-    status: "suggestion",
-    description: params.description,
-  };
-
-  return db.productRequest.create({ data: productRequest });
-}
 
 // TODO: Improve data validation.
 // TODO: Improve error handling.
@@ -89,13 +68,13 @@ export const action: ActionFunction = async ({ request }) => {
     invariant(typeof category === "string");
     invariant(typeof description === "string");
 
-    const record = await saveFeedback({ title, category, description });
+    const record = await createProductRequest(title, category, description);
 
     return redirect(`/feedback/view/${record.id}`);
   }
 };
 
-export default function FeedbackNew() {
+function FeedbackNew() {
   const navigate = useNavigate();
   const errors = useActionData();
   const transition = useTransition();
@@ -210,3 +189,5 @@ export default function FeedbackNew() {
     </>
   );
 }
+
+export default FeedbackNew;
