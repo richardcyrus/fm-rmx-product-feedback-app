@@ -4,7 +4,7 @@ import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
 import { Form, redirect, useLoaderData, useTransition } from "remix";
 import invariant from "tiny-invariant";
 
-import { getProductRequestDetailById } from "~/models/productRequest.server";
+import { getProductRequestWithCommentsById } from "~/models/productRequest.server";
 import { createComment, createCommentReply } from "~/models/comment.server";
 
 import { CommentReplyProps } from "~/components/CommentReply";
@@ -103,7 +103,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   const feedbackId = parseInt(params.id, 10);
 
-  return getProductRequestDetailById(feedbackId);
+  return getProductRequestWithCommentsById(feedbackId);
 };
 
 function FeedbackDetail() {

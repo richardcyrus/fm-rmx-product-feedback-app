@@ -12,7 +12,12 @@ export type SortByOptions =
  *
  * @param productRequestId - The id of the product request to find.
  */
-async function getProductRequestDetailById(productRequestId: number) {
+/**
+ * Get a ProductRequest record and associated comments by the product request id.
+ *
+ * @param productRequestId - The id of the product request to find.
+ */
+async function getProductRequestWithCommentsById(productRequestId: number) {
   /**
    *  Limitation with Prisma, recursive queries not supported.
    *  The below query will only return two levels of replies for the comments.
@@ -189,7 +194,7 @@ async function getRoadmapData(filter: string) {
 }
 
 export {
-  getProductRequestDetailById,
+  getProductRequestWithCommentsById,
   getRoadmapSummary,
   getSortedProductRequestByCategory,
   createProductRequest,
