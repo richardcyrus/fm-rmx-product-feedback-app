@@ -1,6 +1,15 @@
 import { useState } from "react";
-import type { LinksFunction } from "remix";
-import { Form, useNavigate } from "remix";
+import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
+import {
+  Form,
+  useNavigate,
+  useLoaderData,
+  useActionData,
+  redirect,
+  json,
+} from "remix";
+import invariant from "tiny-invariant";
+import type { ProductRequest } from "@prisma/client";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import EditFeedbackIcon from "~/assets/shared/IconEditFeedback";
@@ -8,13 +17,22 @@ import EditFeedbackIcon from "~/assets/shared/IconEditFeedback";
 import FeedbackFormListbox, {
   links as FeedbackFormListboxLinks,
 } from "~/components/FeedbackFormListbox";
+import {
+  deleteProductRequest,
+  getProductRequestById,
+  updateProductRequest,
+} from "~/models/productRequest.server";
+import type {
+  CategoryOptions,
+  StatusOptions,
+} from "~/models/productRequest.server";
 
-import newFeedbackFormStylesUrl from "~/styles/feedback-form.css";
+import editFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
 export const links: LinksFunction = () => {
   return [
     ...FeedbackFormListboxLinks(),
-    { rel: "stylesheet", href: newFeedbackFormStylesUrl },
+    { rel: "stylesheet", href: editFeedbackFormStylesUrl },
   ];
 };
 
@@ -33,11 +51,101 @@ const statusOptions: Record<string, string> = {
   live: "Live",
 };
 
-export default function FeedbackEdit() {
-  const navigate = useNavigate();
+interface ActionData {
+  title?: string;
+  category?: string;
+  status?: string;
+  description?: string;
+}
 
-  const [categoryValue, setCategoryValue] = useState("feature");
-  const [statusValue, setStatusValue] = useState("suggestion");
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const feedbackId = formData.get("feedbackId");
+  const actionType = formData.get("_action");
+
+  if (typeof feedbackId !== "string") {
+    throw new Response("feedbackId must be a string", { status: 400 });
+  }
+  const productRequestId = parseInt(feedbackId, 10);
+
+  switch (actionType) {
+    case "cancel": {
+      return redirect(`/feedback/view/${feedbackId}`);
+    }
+    case "delete": {
+      await deleteProductRequest(productRequestId);
+
+      return redirect("/");
+    }
+    case "save": {
+      const title = formData.get("feedbackTitle");
+      const category = formData.get("feedbackCategory");
+      const status = formData.get("feedbackStatus");
+      const description = formData.get("feedbackDetail");
+
+      invariant(typeof title === "string");
+      invariant(typeof category === "string");
+      invariant(typeof status === "string");
+      invariant(typeof description === "string");
+
+      let errors: ActionData = {};
+
+      if (title.length === 0) {
+        errors.title = "Can&rsquo;t be empty";
+      }
+
+      if (description.length === 0) {
+        errors.description = "Can&rsquo;t be empty";
+      }
+      if (description.length > 250) {
+        errors.description = "Too many characters";
+      }
+
+      if (!categoryOptions.hasOwnProperty(category)) {
+        errors.category = "Invalid category option";
+      }
+
+      if (!statusOptions.hasOwnProperty(status)) {
+        errors.status = "Invalid status option";
+      }
+
+      if (Object.keys(errors).length) {
+        return json({ errors }, { status: 400 });
+      }
+
+      await updateProductRequest(
+        productRequestId,
+        title,
+        category as CategoryOptions,
+        status as StatusOptions,
+        description
+      );
+
+      return redirect(`/feedback/view/${feedbackId}`);
+    }
+    default: {
+      throw new Response("Invalid action", { status: 400 });
+    }
+  }
+};
+
+export const loader: LoaderFunction = async ({ params }) => {
+  invariant(params.id, "Expected params.id");
+
+  const feedbackId = parseInt(params.id, 10);
+
+  const feedback = await getProductRequestById(feedbackId);
+  return json(feedback);
+};
+
+function FeedbackEdit() {
+  const navigate = useNavigate();
+  const data = useLoaderData<ProductRequest>();
+  const errors = useActionData<ActionData>();
+
+  const [categoryValue, setCategoryValue] = useState(data.category);
+  const [statusValue, setStatusValue] = useState(data.status);
 
   const onCategoryOptionChange = (value: string) => {
     setCategoryValue(value);
@@ -64,14 +172,14 @@ export default function FeedbackEdit() {
           <EditFeedbackIcon className="feedback-form-icon" />
         </div>
         <h1 className="h1 feedback-form-title">
-          Editing &lsquo;Feedback&rsquo;
+          Editing &lsquo;{data.title}&rsquo;
         </h1>
         <Form
           method="post"
           className="edit-feedback-form feedback-form"
           autoComplete="off"
         >
-          <input type="hidden" name="feedbackId" />
+          <input type="hidden" name="feedbackId" value={data.id} />
           <div className="form-control">
             <label htmlFor="feedbackTitle" className="form-label">
               Feedback Title
@@ -83,11 +191,17 @@ export default function FeedbackEdit() {
               type="text"
               name="feedbackTitle"
               id="feedbackTitle"
-              className="input"
+              className={`input ${errors?.title ? "is-invalid" : null}`}
               aria-describedby="feedbackTitleHelpBlock"
-              required
+              defaultValue={data.title}
+              aria-invalid={errors?.title ? true : undefined}
+              aria-errormessage={errors?.title ? "title-error" : undefined}
             />
-            <div className="invalid-input">Can&rsquo;t be empty</div>
+            {errors?.title && errors.title.length > 0 ? (
+              <div id="title-error" className="invalid-input">
+                {errors.title}
+              </div>
+            ) : null}
           </div>
           <div className="form-control">
             <span className="form-label" id="feedbackCategoryLabel">
@@ -104,6 +218,9 @@ export default function FeedbackEdit() {
               options={categoryOptions}
               onOptionChange={onCategoryOptionChange}
             />
+            {errors?.category && errors.category.length > 0 ? (
+              <div className="invalid-input">{errors.category}</div>
+            ) : null}
           </div>
           <div className="form-control">
             <span className="form-label" id="feedbackStatusLabel">
@@ -120,6 +237,9 @@ export default function FeedbackEdit() {
               options={statusOptions}
               onOptionChange={onStatusOptionChange}
             />
+            {errors?.status && errors.status.length > 0 ? (
+              <div className="invalid-input">{errors.status}</div>
+            ) : null}
           </div>
           <div className="form-control">
             <label htmlFor="feedbackDetail" className="form-label">
@@ -134,20 +254,44 @@ export default function FeedbackEdit() {
               id="feedbackDetail"
               cols={30}
               rows={4}
-              className="input"
+              maxLength={250}
+              className={`input ${errors?.description ? "is-invalid" : null}`}
               aria-describedby="feedbackDetailHelpBlock"
-              required
+              defaultValue={data.description}
+              aria-invalid={errors?.description ? true : undefined}
+              aria-errormessage={
+                errors?.description ? "description-error" : undefined
+              }
             />
-            <div className="invalid-input">Can&rsquo;t be empty</div>
+            {errors?.description && errors.description.length > 0 ? (
+              <div id="description-error" className="invalid-input">
+                {errors.description}
+              </div>
+            ) : null}
           </div>
           <div className="form-control-group">
-            <button type="button" className="button button-danger">
+            <button
+              type="submit"
+              name="_action"
+              value="delete"
+              className="button button-danger"
+            >
               Delete
             </button>
-            <button type="submit" className="button button-primary">
+            <button
+              type="submit"
+              name="_action"
+              value="save"
+              className="button button-primary"
+            >
               Save Changes
             </button>
-            <button type="reset" className="button button-secondary">
+            <button
+              type="submit"
+              name="_action"
+              value="cancel"
+              className="button button-secondary"
+            >
               Cancel
             </button>
           </div>
@@ -156,3 +300,5 @@ export default function FeedbackEdit() {
     </>
   );
 }
+
+export default FeedbackEdit;

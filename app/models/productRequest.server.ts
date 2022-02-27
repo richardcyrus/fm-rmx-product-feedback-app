@@ -7,11 +7,27 @@ export type SortByOptions =
   | "mostComments"
   | "leastComments";
 
+export type CategoryOptions = "feature" | "ui" | "ux" | "enhancement" | "bug";
+
+export type StatusOptions = "suggestion" | "planned" | "in-progress" | "live";
+
 /**
- * Get a ProductRequest record by its id.
+ * Get a ProductRequest record by the product request id.
  *
- * @param productRequestId - The id of the product request to find.
+ * @param id - The id of the product request to find.
  */
+async function getProductRequestById(id: number) {
+  const productRequest = await db.productRequest.findUnique({
+    where: { id },
+  });
+
+  if (!productRequest) {
+    throw new Error(`ProductRequest with id=${id} was not found.`);
+  }
+
+  return productRequest;
+}
+
 /**
  * Get a ProductRequest record and associated comments by the product request id.
  *
@@ -170,6 +186,47 @@ async function createProductRequest(
 }
 
 /**
+ * Update a ProductRequest record.
+ *
+ * @param id - The id of the ProductRequest record to update.
+ * @param title - The title of the product request.
+ * @param category - the category of the product request.
+ * @param status - the status of the product request.
+ * @param description - the descriptions of the product request.
+ */
+async function updateProductRequest(
+  id: number,
+  title: string,
+  category: CategoryOptions,
+  status: StatusOptions,
+  description: string
+) {
+  let where: Prisma.ProductRequestWhereUniqueInput = { id };
+  let data: Prisma.ProductRequestUpdateInput = {
+    title,
+    category,
+    status,
+    description,
+  };
+
+  return db.productRequest.update({
+    where,
+    data,
+  });
+}
+
+/**
+ * Deleted a ProductRequest record.
+ *
+ * @param id - The id of the record to delete.
+ */
+async function deleteProductRequest(id: number) {
+  return db.productRequest.delete({
+    where: { id },
+  });
+}
+
+/**
  * Get the ProductRequest entries for a particular status.
  *
  * @param filter - the status to filter by.
@@ -194,9 +251,12 @@ async function getRoadmapData(filter: string) {
 }
 
 export {
+  getProductRequestById,
   getProductRequestWithCommentsById,
   getRoadmapSummary,
   getSortedProductRequestByCategory,
   createProductRequest,
+  updateProductRequest,
+  deleteProductRequest,
   getRoadmapData,
 };
