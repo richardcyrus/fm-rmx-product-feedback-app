@@ -35,7 +35,11 @@ export default function RoadmapCard(props: FeedbackData) {
             <h3 className="h3 roadmap-title">{props.title}</h3>
           </Link>
           <p className="body1 roadmap-description">{props.description}</p>
-          <p className="roadmap-category">{toTitleCase(props.category)}</p>
+          <p className="roadmap-category">
+            {props.category.length > 2
+              ? toTitleCase(props.category)
+              : props.category.toLocaleUpperCase()}
+          </p>
         </div>
         <div className="vote-container">
           <button
