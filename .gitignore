@@ -202,8 +202,6 @@ typings/
 ################################################
 *.xd
 
-.vercel
-
 # Vite
 dist
 dist-ssr
@@ -216,9 +214,11 @@ cypress/downloads/
 
 # remix.run
 .cache
+.vercel
 .output
 
-public/build
+/build/
+/public/build
 api/_build
 app/styles
-
+/api/index.js
