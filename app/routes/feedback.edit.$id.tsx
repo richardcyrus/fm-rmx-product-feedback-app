@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+import type { ProductRequest } from "@prisma/client";
 import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
 import {
   Form,
@@ -9,11 +11,9 @@ import {
   json,
 } from "remix";
 import invariant from "tiny-invariant";
-import type { ProductRequest } from "@prisma/client";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import EditFeedbackIcon from "~/assets/shared/IconEditFeedback";
-
 import FeedbackFormListbox, {
   links as FeedbackFormListboxLinks,
 } from "~/components/FeedbackFormListbox";
@@ -26,7 +26,6 @@ import type {
   CategoryOptions,
   StatusOptions,
 } from "~/models/productRequest.server";
-
 import editFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
 export const links: LinksFunction = () => {

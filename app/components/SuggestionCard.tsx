@@ -1,12 +1,11 @@
 import * as React from "react";
+
 import type { LinksFunction } from "remix";
 
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
-
-import { toTitleCase } from "~/utils/stringUtils";
-
 import suggestionCardStylesUrl from "~/styles/suggestion-card.css";
+import { toTitleCase } from "~/utils/stringUtils";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: suggestionCardStylesUrl }];

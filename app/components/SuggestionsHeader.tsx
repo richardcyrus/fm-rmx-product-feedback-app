@@ -1,5 +1,3 @@
-import type { LinksFunction } from "remix";
-
 import {
   ListboxInput,
   ListboxButton,
@@ -7,14 +5,13 @@ import {
   ListboxList,
   ListboxOption,
 } from "@reach/listbox";
-
 import listboxStyles from "@reach/listbox/styles.css";
-import componentCustomStyles from "~/styles/suggestions-header.css";
+import type { LinksFunction } from "remix";
 
 import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
 import SuggestionsIcon from "~/assets/suggestions/IconSuggestions";
-
 import AddFeedbackButton from "~/components/AddFeedbackButton";
+import componentCustomStyles from "~/styles/suggestions-header.css";
 
 export const links: LinksFunction = () => {
   return [

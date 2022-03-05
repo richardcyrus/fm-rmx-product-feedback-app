@@ -1,5 +1,3 @@
-import type { LinksFunction } from "remix";
-
 import {
   ListboxInput,
   ListboxButton,
@@ -7,8 +5,8 @@ import {
   ListboxList,
   ListboxOption,
 } from "@reach/listbox";
-
 import listboxStyles from "@reach/listbox/styles.css";
+import type { LinksFunction } from "remix";
 
 import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
 

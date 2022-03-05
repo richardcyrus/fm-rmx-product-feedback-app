@@ -1,21 +1,21 @@
 import * as React from "react";
+
 import { Form, useLoaderData, useNavigate, useSubmit } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
 
-import { getSortedProductRequestByCategory } from "~/models/productRequest.server";
-import type { SortByOptions } from "~/models/productRequest.server";
-
+import NoSuggestionsCard, {
+  links as NoSuggestionsCardLinks,
+} from "~/components/NoSuggestionsCard";
 import SuggestionCard, {
   links as SuggestionCardLinks,
   SuggestionCardProps,
 } from "~/components/SuggestionCard";
-import NoSuggestionsCard, {
-  links as NoSuggestionsCardLinks,
-} from "~/components/NoSuggestionsCard";
 import SuggestionsHeader, {
   links as SuggestionsHeaderLinks,
 } from "~/components/SuggestionsHeader";
+import { getSortedProductRequestByCategory } from "~/models/productRequest.server";
+import type { SortByOptions } from "~/models/productRequest.server";
 
 type LoaderData = {
   sort: string;

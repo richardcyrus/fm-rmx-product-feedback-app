@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { db } from "~/utils/db.server";
 
 export type SortByOptions =

@@ -1,11 +1,9 @@
 import * as React from "react";
 import { useRef, useState, useEffect } from "react";
+
 import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
 import { Form, redirect, useLoaderData, useTransition } from "remix";
 import invariant from "tiny-invariant";
-
-import { getProductRequestWithCommentsById } from "~/models/productRequest.server";
-import { createComment, createCommentReply } from "~/models/comment.server";
 
 import { CommentReplyProps } from "~/components/CommentReply";
 import FeedbackComment from "~/components/FeedbackComment";
@@ -14,7 +12,8 @@ import SuggestionCard, {
   links as SuggestionCardLinks,
   SuggestionCardProps,
 } from "~/components/SuggestionCard";
-
+import { createComment, createCommentReply } from "~/models/comment.server";
+import { getProductRequestWithCommentsById } from "~/models/productRequest.server";
 import feedbackViewStylesUrl from "~/styles/feedback-view.css";
 
 export const links: LinksFunction = () => {

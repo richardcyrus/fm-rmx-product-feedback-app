@@ -1,11 +1,11 @@
 import { useState } from "react";
+
 import { useLoaderData, Outlet, Link, NavLink } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 
-import { toTitleCase } from "~/utils/stringUtils";
 import { getRoadmapSummary } from "~/models/productRequest.server";
-
 import layoutStylesUrl from "~/styles/feedback-layout.css";
+import { toTitleCase } from "~/utils/stringUtils";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: layoutStylesUrl }];

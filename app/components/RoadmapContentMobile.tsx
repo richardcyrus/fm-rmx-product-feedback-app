@@ -1,12 +1,10 @@
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
+import tabsStyles from "@reach/tabs/styles.css";
 import type { LinksFunction } from "remix";
 
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
-
 import RoadmapCard from "~/components/RoadmapCard";
-import RoadmapHeader from "~/components/RoadmapHeader";
 import { RoadmapContentProps } from "~/components/RoadmapContent";
-
-import tabsStyles from "@reach/tabs/styles.css";
+import RoadmapHeader from "~/components/RoadmapHeader";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tabsStyles }];

@@ -1,9 +1,9 @@
 import * as React from "react";
+
 import { Link } from "remix";
 
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
-
 import { toTitleCase } from "~/utils/stringUtils";
 
 export interface FeedbackData {

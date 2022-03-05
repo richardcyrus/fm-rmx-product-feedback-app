@@ -6,8 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "remix";
-import type { MetaFunction } from "remix";
-import type { LinksFunction } from "remix";
+import type { MetaFunction, LinksFunction } from "remix";
 
 import globalStylesUrl from "~/styles/global-styles.css";
 
