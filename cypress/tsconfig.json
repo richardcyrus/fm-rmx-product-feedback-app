@@ -1,0 +1,17 @@
+{
+ "compilerOptions": {
+   "baseUrl": ".",
+   "lib": ["DOM", "DOM.Iterable", "ES2019"],
+   "types": ["node", "cypress", "cypress-axe"],
+   "isolatedModules": true,
+   "esModuleInterop": true,
+   "jsx": "react-jsx",
+   "moduleResolution": "node",
+   "resolveJsonModule": true,
+   "target": "ES2019",
+   "strict": true,
+   "skipLibCheck": true,
+   "noEmit": true
+ },
+  "include": ["../node_modules/cypress","**/*.ts"]
+}
