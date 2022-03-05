@@ -69,4 +69,3 @@ const SvgIllustrationEmpty = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export default SvgIllustrationEmpty;
-

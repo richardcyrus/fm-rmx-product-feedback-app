@@ -15,7 +15,11 @@
     "dev": "run-p dev:*",
     "dev:css": "sass styles/:app/styles --color --no-source-map --watch",
     "dev:remix": "cross-env NODE_ENV=development PORT=7369 remix dev",
-    "postinstall": "remix setup node"
+    "lint": "eslint --cache --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
+    "lint:fix": "eslint --cache --fix --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
+    "postinstall": "remix setup node",
+    "prepare": "husky install",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",
@@ -55,6 +59,9 @@
     "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
+    "micromatch": "^4.0.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
     "prisma": "^3.9.2",
