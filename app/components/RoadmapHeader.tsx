@@ -9,7 +9,7 @@ export default function RoadmapHeader() {
       <header className="roadmap-header" role="banner">
         <div className="roadmap-header__wrapper">
           <Link to="/" className="button go-back-button">
-            <LeftArrowIcon className="left-arrow-icon" />
+            <LeftArrowIcon aria-hidden="true" className="left-arrow-icon" />
             <span className="go-back-button__label">Go Back</span>
           </Link>
           <h1 className="h1 roadmap-header__title">Roadmap</h1>

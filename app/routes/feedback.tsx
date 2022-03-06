@@ -38,7 +38,7 @@ function FeedbackLayout() {
   return (
     <>
       <div className="header__panel">
-        <header className="site-header">
+        <header className="site-header" role="banner">
           <div className="wrapper-site__title">
             <Link to="/">
               <p className="h2 site__title">Frontend Mentor</p>
@@ -114,7 +114,7 @@ function FeedbackLayout() {
           </aside>
         </div>
       </div>
-      <main id="main-content" className="main-content">
+      <main role="main" id="main-content" className="main-content">
         <Outlet />
       </main>
     </>

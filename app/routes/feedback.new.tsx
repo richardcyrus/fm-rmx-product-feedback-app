@@ -89,19 +89,19 @@ function FeedbackNew() {
 
   return (
     <>
-      <header className="feedback-form-header">
+      <header className="feedback-form-header" role="banner">
         <button
           className="button go-back-button"
           type="button"
           onClick={() => navigate(-1)}
         >
-          <LeftArrowIcon className="left-arrow-icon" />
+          <LeftArrowIcon aria-hidden="true" className="left-arrow-icon" />
           <span className="go-back-button__label">Go Back</span>
         </button>
       </header>
-      <div className="feedback-form-container">
+      <main role="main" className="feedback-form-container">
         <div className="feedback-form-image">
-          <NewFeedbackIcon className="feedback-form-icon" />
+          <NewFeedbackIcon aria-hidden="true" className="feedback-form-icon" />
         </div>
         <h1 className="h1 feedback-form-title">Create New Feedback</h1>
         <Form
@@ -183,7 +183,7 @@ function FeedbackNew() {
             </button>
           </div>
         </Form>
-      </div>
+      </main>
     </>
   );
 }

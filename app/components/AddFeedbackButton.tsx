@@ -5,7 +5,7 @@ import IconPlus from "~/assets/shared/IconPlus";
 function AddFeedbackButton() {
   return (
     <Link to="/feedback/new" className="button button-primary">
-      <IconPlus className="plus-icon" /> Add Feedback
+      <IconPlus aria-hidden="true" className="plus-icon" /> Add Feedback
     </Link>
   );
 }

@@ -151,7 +151,7 @@ function FeedbackDetail() {
         id={data.suggestion.id}
         title={data.suggestion.title}
       />
-      <div className="feedback-detail-wrapper">
+      <main role="main" className="feedback-detail-wrapper">
         <SuggestionCard
           id={data.suggestion.id}
           title={data.suggestion.title}
@@ -224,7 +224,7 @@ function FeedbackDetail() {
             </div>
           </Form>
         </div>
-      </div>
+      </main>
     </>
   );
 }

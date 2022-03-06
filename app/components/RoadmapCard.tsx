@@ -47,12 +47,12 @@ export default function RoadmapCard(props: FeedbackData) {
             className="button vote-button"
             onClick={(e) => handleUpvoteClick(e)}
           >
-            <UpVoteIcon className="upvote-icon" />
+            <UpVoteIcon aria-hidden="true" className="upvote-icon" />
             <p className="vote-count">{props.upvotes}</p>
           </button>
         </div>
         <div className="comment-info">
-          <CommentIcon className="comment-icon" />
+          <CommentIcon aria-hidden="true" className="comment-icon" />
           <span className="comment-count">{props.comments}</span>
         </div>
       </div>

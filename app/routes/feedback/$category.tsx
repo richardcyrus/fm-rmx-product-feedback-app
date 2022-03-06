@@ -59,16 +59,6 @@ function FilteredCategory() {
     navigate(`/feedback/view/${id}`);
   };
 
-  const onSuggestionCardKeypress = (
-    id: number,
-    event: React.KeyboardEvent<HTMLDivElement>
-  ) => {
-    // Handle <Enter> or <Space>
-    if (event.key === "Enter" || event.key === " ") {
-      navigate(`/feedback/view/${id}`);
-    }
-  };
-
   return (
     <>
       <Form id="sortForm" method="post" action=".">
@@ -83,10 +73,8 @@ function FilteredCategory() {
           <div
             className="suggestion-card-wrapper"
             key={suggestion.id}
-            role="button"
             tabIndex={0}
             onClick={() => onSuggestionCardClick(suggestion.id)}
-            onKeyDown={(e) => onSuggestionCardKeypress(suggestion.id, e)}
           >
             <SuggestionCard
               id={suggestion.id}

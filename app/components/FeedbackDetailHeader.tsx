@@ -18,7 +18,7 @@ export default function FeedbackDetailHeader(props: HeaderProps) {
           className="button go-back-button"
           onClick={() => navigate(-1)}
         >
-          <LeftArrowIcon className="left-arrow-icon" />
+          <LeftArrowIcon aria-hidden="true" className="left-arrow-icon" />
           <span className="go-back-button__label">Go Back</span>
         </button>
         <Link to={`/feedback/edit/${props.id}`} className="button button-edit">

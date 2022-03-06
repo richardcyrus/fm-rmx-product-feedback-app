@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import type { LinksFunction } from "remix";
+import { Link } from "remix";
 
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
@@ -32,12 +33,14 @@ export default function SuggestionCard(props: SuggestionCardProps) {
     <>
       <div className="suggestion-card">
         <div className="suggestion-summary">
-          <h2
-            className="h3 suggestion-title"
-            aria-label={`Feedback title: ${props.title}`}
-          >
-            {props.title}
-          </h2>
+          <Link to={`/feedback/view/${props.id}`}>
+            <h2
+              className="h3 suggestion-title"
+              aria-label={`Feedback title: ${props.title}`}
+            >
+              {props.title}
+            </h2>
+          </Link>
           <p className="body1 suggestion-description">{props.description}</p>
           <p className="suggestion-category">
             {props.category.length > 2
@@ -52,12 +55,12 @@ export default function SuggestionCard(props: SuggestionCardProps) {
             className="button vote-button"
             data-upvotes={props.upvotes}
           >
-            <UpVoteIcon className="upvote-icon" />
+            <UpVoteIcon aria-hidden="true" className="upvote-icon" />
             <p className="vote-count">{props.upvotes}</p>
           </button>
         </div>
         <div className="comment-info">
-          <CommentIcon className="comment-icon" />
+          <CommentIcon aria-hidden="true" className="comment-icon" />
           <span className="comment-count">{props.comments}</span>
         </div>
       </div>
