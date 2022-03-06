@@ -7,9 +7,9 @@ import RoadmapContent, {
 import RoadmapContentMobile, {
   links as RoadmapContentMobileLinks,
 } from "~/components/RoadmapContentMobile";
+import useWindowSize from "~/hooks/useWindowSize";
 import { getRoadmapData } from "~/models/productRequest.server";
 import roadmapStylesUrl from "~/styles/roadmap.css";
-import useWindowSize from "~/utils/useWindowSize";
 
 export const links: LinksFunction = () => {
   return [
