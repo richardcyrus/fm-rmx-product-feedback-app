@@ -1,5 +1,10 @@
 module.exports = {
-  extends: ["@remix-run/eslint-config", "plugin:prettier/recommended"],
+  extends: [
+    "@remix-run/eslint-config",
+    "plugin:chai-friendly/recommended",
+    "plugin:cypress/recommended",
+    "plugin:prettier/recommended",
+  ],
   rules: {
     "import/no-extraneous-dependencies": [
       "error",
