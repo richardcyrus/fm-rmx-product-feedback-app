@@ -13,7 +13,7 @@ export interface FeedbackData {
   upvotes: number;
   status: string;
   description: string;
-  comments?: number;
+  comments: number;
 }
 
 export default function RoadmapCard(props: FeedbackData) {

@@ -88,7 +88,15 @@ function FilteredCategory() {
             onClick={() => onSuggestionCardClick(suggestion.id)}
             onKeyDown={(e) => onSuggestionCardKeypress(suggestion.id, e)}
           >
-            <SuggestionCard {...suggestion} />
+            <SuggestionCard
+              id={suggestion.id}
+              title={suggestion.title}
+              category={suggestion.category}
+              upvotes={suggestion.upvotes}
+              status={suggestion.status}
+              description={suggestion.description}
+              comments={suggestion.comments}
+            />
           </div>
         ))
       ) : (

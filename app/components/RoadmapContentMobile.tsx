@@ -45,7 +45,16 @@ export default function RoadmapContentMobile(props: RoadmapContentProps) {
                       Ideas prioritized for research
                     </p>
                     {props.plannedStatusData.map((item) => (
-                      <RoadmapCard key={item.id} {...item} />
+                      <RoadmapCard
+                        id={item.id}
+                        title={item.title}
+                        category={item.category}
+                        upvotes={item.upvotes}
+                        status={item.status}
+                        description={item.description}
+                        comments={item.comments}
+                        key={item.id}
+                      />
                     ))}
                   </>
                 )}
@@ -62,7 +71,16 @@ export default function RoadmapContentMobile(props: RoadmapContentProps) {
                       Currently being developed
                     </p>
                     {props.inProgressStatusData.map((item) => (
-                      <RoadmapCard key={item.id} {...item} />
+                      <RoadmapCard
+                        id={item.id}
+                        title={item.title}
+                        category={item.category}
+                        upvotes={item.upvotes}
+                        status={item.status}
+                        description={item.description}
+                        comments={item.comments}
+                        key={item.id}
+                      />
                     ))}
                   </>
                 )}
@@ -79,7 +97,16 @@ export default function RoadmapContentMobile(props: RoadmapContentProps) {
                       Released features
                     </p>
                     {props.liveStatusData.map((item) => (
-                      <RoadmapCard key={item.id} {...item} />
+                      <RoadmapCard
+                        id={item.id}
+                        title={item.title}
+                        category={item.category}
+                        upvotes={item.upvotes}
+                        status={item.status}
+                        description={item.description}
+                        comments={item.comments}
+                        key={item.id}
+                      />
                     ))}
                   </>
                 )}

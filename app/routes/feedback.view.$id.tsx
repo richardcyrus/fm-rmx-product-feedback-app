@@ -149,7 +149,15 @@ function FeedbackDetail() {
     <>
       <FeedbackDetailHeader id={data.suggestion.id} />
       <div className="feedback-detail-wrapper">
-        <SuggestionCard {...data.suggestion} />
+        <SuggestionCard
+          id={data.suggestion.id}
+          title={data.suggestion.title}
+          category={data.suggestion.category}
+          upvotes={data.suggestion.upvotes}
+          status={data.suggestion.status}
+          description={data.suggestion.description}
+          comments={data.suggestion.comments}
+        />
         <div className="feedback-detail-comments">
           <h3 className="h3 feedback-detail-comment-title">
             {data.suggestion.comments} Comments
@@ -157,8 +165,16 @@ function FeedbackDetail() {
           {data.comments.map((comment) => (
             <FeedbackComment
               ref={commentReplyFormRef}
-              {...comment}
               key={comment.id}
+              id={comment.id}
+              content={comment.content}
+              isReply={comment.isReply}
+              replyingTo={comment.replyingTo}
+              parentId={comment.parentId}
+              userId={comment.userId}
+              productRequestId={comment.productRequestId}
+              user={comment.user}
+              replies={comment.replies}
             />
           ))}
         </div>

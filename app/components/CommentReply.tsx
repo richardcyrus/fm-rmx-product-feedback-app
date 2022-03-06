@@ -64,7 +64,19 @@ const CommentReply = React.forwardRef(
             />
           ) : null}
           {(props.replies || []).map((reply) => (
-            <CommentReply ref={ref} {...reply} key={reply.id} />
+            <CommentReply
+              id={reply.id}
+              content={reply.content}
+              isReply={reply.isReply}
+              replyingTo={reply.replyingTo}
+              parentId={reply.parentId}
+              userId={reply.userId}
+              productRequestId={reply.productRequestId}
+              user={reply.user}
+              replies={reply.replies}
+              ref={ref}
+              key={reply.id}
+            />
           ))}
         </div>
       </>

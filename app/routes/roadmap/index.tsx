@@ -33,9 +33,17 @@ function RoadmapIndex() {
   return (
     <>
       {windowSize.width <= 767 ? (
-        <RoadmapContentMobile {...data} />
+        <RoadmapContentMobile
+          liveStatusData={data.liveStatusData}
+          plannedStatusData={data.plannedStatusData}
+          inProgressStatusData={data.inProgressStatusData}
+        />
       ) : (
-        <RoadmapContent {...data} />
+        <RoadmapContent
+          liveStatusData={data.liveStatusData}
+          plannedStatusData={data.plannedStatusData}
+          inProgressStatusData={data.inProgressStatusData}
+        />
       )}
     </>
   );

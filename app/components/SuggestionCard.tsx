@@ -18,7 +18,7 @@ export interface SuggestionCardProps {
   upvotes: number;
   status: string;
   description: string;
-  comments?: number;
+  comments: number;
 }
 
 export default function SuggestionCard(props: SuggestionCardProps) {

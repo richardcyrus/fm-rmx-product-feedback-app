@@ -35,6 +35,18 @@ module.exports = {
         },
       },
     ],
+    "react/jsx-props-no-spreading": [
+      "error",
+      {
+        exceptions: ["svg"],
+      },
+    ],
+    "react/function-component-definition": [
+      "error",
+      {
+        namedComponents: "function-declaration",
+      },
+    ],
     "prettier/prettier": "error",
   },
 };
