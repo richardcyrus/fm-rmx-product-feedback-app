@@ -6,7 +6,7 @@ import AddFeedbackButton from "~/components/AddFeedbackButton";
 export default function RoadmapHeader() {
   return (
     <>
-      <header className="roadmap-header">
+      <header className="roadmap-header" role="banner">
         <div className="roadmap-header__wrapper">
           <Link to="/" className="button go-back-button">
             <LeftArrowIcon className="left-arrow-icon" />
