@@ -41,8 +41,8 @@ function FeedbackLayout() {
         <header className="site-header">
           <div className="wrapper-site__title">
             <Link to="/">
-              <h1 className="h2 site__title">Frontend Mentor</h1>
-              <p className="body2 site__subtitle">Feedback Board</p>
+              <p className="h2 site__title">Frontend Mentor</p>
+              <h1 className="body2 site__subtitle">Feedback Board</h1>
             </Link>
           </div>
           <div

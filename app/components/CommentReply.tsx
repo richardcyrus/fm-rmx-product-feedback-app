@@ -39,7 +39,12 @@ const CommentReply = React.forwardRef(
               />
             </div>
             <div className="commenter-names">
-              <h2 className="h4 commenter-name">{props.user.name}</h2>
+              <h5
+                className="h4 commenter-name"
+                aria-label={`Reply from ${props.user.name}`}
+              >
+                {props.user.name}
+              </h5>
               <p className="commenter-username">@{props.user.username}</p>
             </div>
             <button

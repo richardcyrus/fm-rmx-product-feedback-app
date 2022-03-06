@@ -22,7 +22,12 @@ const FeedbackComment = React.forwardRef(
               <img src={user.image} alt={`Avatar of ${user.name}`} />
             </div>
             <div className="commenter-names">
-              <h2 className="h4 commenter-name">{user.name}</h2>
+              <h4
+                className="h4 commenter-name"
+                aria-label={`Comment from ${user.name}`}
+              >
+                {user.name}
+              </h4>
               <p className="commenter-username">@{user.username}</p>
             </div>
             <button

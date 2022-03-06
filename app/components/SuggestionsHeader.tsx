@@ -39,7 +39,7 @@ export default function SuggestionsHeader(props: ListHeaderProps) {
       <div className="suggestion-list__header">
         <div className="suggestions-count">
           <SuggestionsIcon />
-          <h3 className="h3">{props.count} Suggestions</h3>
+          <h2 className="h3">{props.count} Suggestions</h2>
         </div>
         <div className="filter-control">
           <span id="filter-label" className="filter-label">

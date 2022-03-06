@@ -147,7 +147,10 @@ function FeedbackDetail() {
 
   return (
     <>
-      <FeedbackDetailHeader id={data.suggestion.id} />
+      <FeedbackDetailHeader
+        id={data.suggestion.id}
+        title={data.suggestion.title}
+      />
       <div className="feedback-detail-wrapper">
         <SuggestionCard
           id={data.suggestion.id}

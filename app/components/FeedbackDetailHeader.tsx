@@ -4,6 +4,7 @@ import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 
 type HeaderProps = {
   id: number;
+  title: string;
 };
 
 export default function FeedbackDetailHeader(props: HeaderProps) {
@@ -11,7 +12,7 @@ export default function FeedbackDetailHeader(props: HeaderProps) {
 
   return (
     <>
-      <header className="feedback-detail-header">
+      <header className="feedback-detail-header" role="banner">
         <button
           type="button"
           className="button go-back-button"
@@ -23,6 +24,9 @@ export default function FeedbackDetailHeader(props: HeaderProps) {
         <Link to={`/feedback/edit/${props.id}`} className="button button-edit">
           Edit Feedback
         </Link>
+        <h1 className="h1 feedback-view-title sr-only">
+          Viewing feedback detail for &lsquo;{props.title}&rsquo;
+        </h1>
       </header>
     </>
   );

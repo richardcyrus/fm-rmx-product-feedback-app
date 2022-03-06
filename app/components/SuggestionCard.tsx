@@ -32,7 +32,12 @@ export default function SuggestionCard(props: SuggestionCardProps) {
     <>
       <div className="suggestion-card">
         <div className="suggestion-summary">
-          <h3 className="h3 suggestion-title">{props.title}</h3>
+          <h2
+            className="h3 suggestion-title"
+            aria-label={`Feedback title: ${props.title}`}
+          >
+            {props.title}
+          </h2>
           <p className="body1 suggestion-description">{props.description}</p>
           <p className="suggestion-category">
             {props.category.length > 2
