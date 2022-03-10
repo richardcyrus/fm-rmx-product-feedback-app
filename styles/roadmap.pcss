@@ -35,7 +35,7 @@
   }
 
   &__title {
-    color: #ffffff;
+    color: #fff;
   }
 }
 
@@ -72,33 +72,11 @@
   position: relative;
 
   &::before {
-    background: rgba(140, 146, 179, 0.25);
+    background: rgb(140 146 179 / 25%);
     content: "";
     height: 1px;
     inset: 0;
     position: absolute;
-  }
-}
-
-[data-reach-tab-panel] {
-  padding-inline: 1.5em;
-
-  .column {
-    padding-block-end: 6.125rem;
-    padding-block-start: 1.5rem;
-
-    &-heading {
-      font-size: 1.125rem;
-      letter-spacing: -0.015625rem;
-    }
-
-    &-description {
-      margin-block-start: 0.25rem;
-    }
-
-    & .roadmap-card:first-of-type {
-      margin-block-start: 1.5rem;
-    }
   }
 }
 
@@ -156,7 +134,7 @@
 .roadmap {
   &-card {
     align-items: center;
-    background: #ffffff;
+    background: #fff;
     border-radius: 0.625rem;
     display: flex;
     flex-direction: row;
@@ -204,11 +182,46 @@
     &__planned::before {
       background: #f49f85;
     }
+
     &__in-progress::before {
       background: #ad1fea;
     }
+
     &__live::before {
       background: #62bcfa;
+    }
+
+    .vote-container,
+    .comment-info {
+      flex-basis: 50%;
+      margin-block-start: 1rem;
+    }
+
+    .vote-button {
+      @media screen and (min-width: 48em) {
+        min-height: 2rem;
+      }
+
+      @media screen and (min-width: 75em) {
+        min-height: 2.5rem;
+      }
+    }
+
+    .comment-info {
+      align-items: center;
+      align-self: center;
+      display: inline-flex;
+      justify-content: flex-end;
+      margin-inline-start: auto;
+    }
+
+    .comment-count {
+      color: #3a4374;
+      font-size: 0.8125rem;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.01125rem;
+      margin-inline-start: 0.5em;
+      text-align: center;
     }
   }
 
@@ -249,37 +262,24 @@
   }
 }
 
-.roadmap-card {
-  .vote-container,
-  .comment-info {
-    flex-basis: 50%;
-    margin-block-start: 1rem;
-  }
+[data-reach-tab-panel] {
+  padding-inline: 1.5em;
 
-  .vote-button {
-    @media screen and (min-width: 48em) {
-      min-height: 2rem;
+  .column {
+    padding-block-end: 6.125rem;
+    padding-block-start: 1.5rem;
+
+    &-heading {
+      font-size: 1.125rem;
+      letter-spacing: -0.015625rem;
     }
 
-    @media screen and (min-width: 75em) {
-      min-height: 2.5rem;
+    &-description {
+      margin-block-start: 0.25rem;
     }
-  }
 
-  .comment-info {
-    align-items: center;
-    align-self: center;
-    display: inline-flex;
-    justify-content: flex-end;
-    margin-inline-start: auto;
-  }
-
-  .comment-count {
-    color: #3a4374;
-    font-size: 0.8125rem;
-    font-weight: var(--font-weight-bold);
-    letter-spacing: -0.01125rem;
-    margin-inline-start: 0.5em;
-    text-align: center;
+    & .roadmap-card:first-of-type {
+      margin-block-start: 1.5rem;
+    }
   }
 }

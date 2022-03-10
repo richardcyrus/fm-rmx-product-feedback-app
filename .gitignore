@@ -222,3 +222,4 @@ cypress/downloads/
 api/_build
 app/styles
 /api/index.js
+.stylelintcache

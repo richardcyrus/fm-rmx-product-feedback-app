@@ -1,0 +1,7 @@
+.cache
+.vercel
+.output
+
+/build/
+/public/build
+app/styles

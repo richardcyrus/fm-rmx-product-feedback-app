@@ -16,7 +16,9 @@
     "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development PORT=7369 remix dev",
     "generate:css": "postcss styles --base styles --ext css --dir app/styles",
-    "lint": "eslint --cache --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
+    "lint:code": "eslint --cache --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
+    "lint:css": "stylelint \"**/*.pcss\" --cache",
+    "lint:fix-css": "stylelint \"**/*.pcss\" --cache --fix",
     "lint:fix": "eslint --cache --fix --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
     "postinstall": "remix setup node",
     "prepare": "husky install",
@@ -72,6 +74,10 @@
     "postcss-sort-media-queries": "^4.2.1",
     "prettier": "^2.5.1",
     "prisma": "^3.9.2",
+    "stylelint": "^14.5.3",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-order": "^5.0.0",
     "typescript": "^4.1.2"
   },
   "browserslist": [

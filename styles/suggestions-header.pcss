@@ -1,3 +1,9 @@
+[data-reach-listbox-arrow] {
+  align-self: center;
+  font-size: inherit;
+  transform: rotate(0deg);
+}
+
 [data-reach-listbox-button] {
   align-items: center;
   border-color: transparent;
@@ -18,7 +24,7 @@
   }
 
   &[aria-expanded] {
-    color: rgba(242, 244, 254, 0.75);
+    color: rgb(242 244 254 / 75%);
 
     [data-reach-listbox-arrow] {
       transform: rotate(180deg);
@@ -26,17 +32,11 @@
   }
 }
 
-[data-reach-listbox-arrow] {
-  align-self: center;
-  font-size: inherit;
-  transform: rotate(0deg);
-}
-
 [data-reach-listbox-popover] {
-  background-color: #ffffff;
-  border-radius: 0.625em;
+  background-color: #fff;
   border: none;
-  box-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.35);
+  border-radius: 0.625em;
+  box-shadow: 0 10px 40px -7px rgb(55 63 104 / 35%);
   min-width: 15.9375em;
   top: 145px !important;
 
@@ -49,7 +49,7 @@
   }
 
   &:focus-within {
-    box-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.35);
+    box-shadow: 0 10px 40px -7px rgb(55 63 104 / 35%);
     outline-color: transparent;
     outline-style: solid;
   }
@@ -77,7 +77,7 @@
     font-weight: var(--font-weight-regular);
 
     &::after {
-      content: url(/assets/shared/icon-check.svg);
+      content: url("/assets/shared/icon-check.svg");
       margin-left: auto;
       text-align: right;
     }
@@ -85,7 +85,7 @@
 }
 
 [data-reach-listbox-option]:not(:last-of-type) {
-  border-bottom: 1px solid rgba(58, 67, 116, 0.15);
+  border-bottom: 1px solid rgb(58 67 116 / 15%);
 }
 
 .suggestion-list__header {
@@ -116,12 +116,12 @@
 
   @media screen and (min-width: 48em) {
     align-items: center;
-    color: #ffffff;
+    color: #fff;
     display: flex;
     margin-inline-end: 2.375em;
 
     & > .h3 {
-      color: #ffffff;
+      color: #fff;
       margin-inline-start: 1rem;
     }
   }

@@ -28,7 +28,7 @@
 
 .site-header {
   align-items: center;
-  background-image: url(/assets/suggestions/mobile/background-header.png);
+  background-image: url("/assets/suggestions/mobile/background-header.png");
   background-repeat: no-repeat;
   display: flex;
   min-height: 4.5rem;
@@ -36,7 +36,7 @@
 
   @media screen and (min-width: 48em) {
     align-items: flex-end;
-    background-image: url(/assets/suggestions/tablet/background-header.png);
+    background-image: url("/assets/suggestions/tablet/background-header.png");
     border-radius: 0.625rem;
     height: 11.125rem;
     margin-inline-end: 0.625rem;
@@ -45,7 +45,7 @@
   }
 
   @media screen and (min-width: 75em) {
-    background-image: url(/assets/suggestions/desktop/background-header.png);
+    background-image: url("/assets/suggestions/desktop/background-header.png");
     height: 8.5625rem;
     margin-inline-end: 0;
     width: 15.9375rem;
@@ -53,11 +53,11 @@
 }
 
 .site__title {
-  color: #ffffff;
+  color: #fff;
 }
 
 .site__subtitle {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgb(255 255 255 / 75%);
   font-weight: var(--font-weight-medium);
 }
 
@@ -69,18 +69,8 @@
   }
 }
 
-.mobile-sidebar__trigger {
-  &[aria-expanded="true"] {
-    .mobile-sidebar__trigger-icon {
-      background-image: url(/assets/shared/mobile/icon-close.svg);
-      height: 17px;
-      width: 18px;
-    }
-  }
-}
-
 .mobile-sidebar__trigger-icon {
-  background-image: url(/assets/shared/mobile/icon-hamburger.svg);
+  background-image: url("/assets/shared/mobile/icon-hamburger.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -89,6 +79,16 @@
   height: 17px;
   width: 20px;
   z-index: 1;
+}
+
+.mobile-sidebar__trigger {
+  &[aria-expanded="true"] {
+    .mobile-sidebar__trigger-icon {
+      background-image: url("/assets/shared/mobile/icon-close.svg");
+      height: 17px;
+      width: 18px;
+    }
+  }
 }
 
 .hidden {
@@ -131,7 +131,7 @@
 
 @media screen and (max-width: 767px) {
   .mobile-sidebar__panel {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(0 0 0 / 50%);
     display: flex;
     height: 100vh;
     overflow-x: hidden;
@@ -152,7 +152,7 @@
 }
 
 .category-filter {
-  background: #ffffff;
+  background: #fff;
   border-radius: 0.625rem;
   display: flex;
   flex-wrap: wrap;
@@ -183,11 +183,11 @@
   &:active,
   &.active {
     background: #4661e6;
-    color: #ffffff;
+    color: #fff;
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px #0B1855;
+    box-shadow: 0 0 0 2px #0b1855;
   }
 
   &:hover {
@@ -196,7 +196,7 @@
 }
 
 .roadmap-summary {
-  background: #ffffff;
+  background: #fff;
   border-radius: 0.625rem;
   margin-block-start: 1.5rem;
   padding-block-end: 1.5rem;
@@ -236,8 +236,8 @@
 
 .roadmap-view__link {
   color: #4661e6;
-  text-decoration-thickness: 1.5px;
   text-decoration: underline;
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 0.3rem;
 
   &:hover {
