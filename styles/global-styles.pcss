@@ -1,3 +1,76 @@
+/* #region reset */
+/*
+  Adapted from:
+    https://www.joshwcomeau.com/css/custom-css-reset/
+    https://piccalil.li/blog/a-modern-css-reset/
+    https://css-tricks.com/notes-on-josh-comeaus-custom-css-reset/
+*/
+
+/* Use a more intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Remove default spacing */
+* {
+  margin: 0;
+}
+
+/* Allow percentage-based heights in the application */
+html, body {
+  height: 100%;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/*
+  Add accessible line-height
+  Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+}
+
+/* Improve media defaults */
+canvas, iframe, img, object, picture, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+/* Remove built-in form typography styles */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* Avoid text overflows */
+blockquote, dl, dt, h1, h2, h3, h4, h5, h6, li, p  {
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* #endregion reset */
+
+/* #region Global styles */
 @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap");
 
 :root {
@@ -159,7 +232,7 @@ a.button {
   position: absolute;
   width: 1px;
 
-  // https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+  /* https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
   white-space: nowrap;
   word-wrap: normal;
 }
@@ -176,6 +249,7 @@ a.button {
     max-width: 69.375em;
   }
 }
+/* #endregion Global styles */
 
 /* #region Roadmap Summary and Roadmap Cards */
 .bullet {
@@ -232,3 +306,182 @@ textarea.input {
   resize: none;
 }
 /* #endregion Common Form Styles */
+
+/* #region Button styles */
+:root {
+  --button-text-color: #f2f4fe;
+  --button-primary-background: #ad1fea;
+  --button-primary-background-hover: #c75af6;
+  --button-secondary-background: #3a4374;
+  --button-secondary-background-hover: #656ea3;
+  --button-danger-background: #d73737;
+  --button-danger-background-hover: #e98888;
+  --button-edit-background: #4661e6;
+  --button-edit-background-hover: #7c91f9;
+  --button-vote-button-background-hover: #cfd7ff;
+}
+
+.button {
+  align-items: center;
+  align-self: start;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  min-height: 2.5rem;
+  padding-inline: 1rem;
+  text-align: center;
+  transition: 220ms all ease-in-out;
+
+  @media screen and (min-width: 48em) {
+    font-size: 0.875rem;
+    min-height: 2.75rem;
+    min-width: 9.875rem;
+  }
+
+  &:disabled {
+    opacity: 0.2;
+  }
+
+  &:focus {
+    outline-color: transparent;
+    outline-style: solid;
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &-primary {
+    background-color: var(--button-primary-background);
+    color: var(--button-text-color);
+
+    &:hover,
+    &:active {
+      background-color: var(--button-primary-background-hover);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px #6a0e91;
+    }
+  }
+
+  &-secondary {
+    background-color: var(--button-secondary-background);
+    color: var(--button-text-color);
+
+    &:hover,
+    &:active {
+      background-color: var(--button-secondary-background-hover);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px #232846;
+    }
+  }
+
+  &-danger {
+    background-color: var(--button-danger-background);
+    color: var(--button-text-color);
+
+    &:hover,
+    &:active {
+      background-color: var(--button-danger-background-hover);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px #871b1b;
+    }
+  }
+
+  &-edit {
+    background-color: var(--button-edit-background);
+    color: var(--button-text-color);
+
+    &:hover,
+    &:active {
+      background-color: var(--button-edit-background-hover);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 4px #152d9f;
+    }
+  }
+}
+
+.plus-icon {
+  display: inline-block;
+  margin-inline-end: 0.5rem;
+}
+
+.vote-button {
+  background: var(--button-text-color);
+  border-radius: 0.625rem;
+  color: var(--button-secondary-background);
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  letter-spacing: -0.01125rem;
+  min-height: 2rem;
+  min-width: 4.3125rem;
+  padding-inline: 1em 0.8125em;
+  text-align: center;
+
+  @media screen and (min-width: 48em) {
+    min-width: 2.5rem;
+    min-height: 3.3125rem;
+  }
+
+  & .upvote-icon {
+    color: var(--button-edit-background);
+    margin-inline-end: 0.625rem;
+  }
+
+  &:hover {
+    background: var(--button-vote-button-background-hover);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px #232846;
+  }
+
+  &:active,
+  &.active {
+    background: var(--button-edit-background);
+    color: #ffffff;
+
+    & .upvote-icon {
+      color: #ffffff;
+    }
+  }
+}
+
+.go-back-button {
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+
+  @media screen and (min-width: 48em) {
+    font-size: 0.875rem;
+  }
+
+  & .left-arrow-icon {
+    color: #cdd2ee;
+    margin-inline-end: 0.875rem;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3rem;
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+  }
+}
+/* #endregion Button styles */

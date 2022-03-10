@@ -90,6 +90,9 @@ Users should be able to:
 - [How-to: Hide content](https://www.a11yproject.com/posts/how-to-hide-content/)
 - [Visually Hidden](https://reach.tech/visually-hidden)
 - [Remix: Sharing Your Index Layout with Sub-Routes](https://dev.to/pckilgore/remix-sharing-your-index-layout-with-sub-routes-2856)
+- [Remix | Styling](https://remix.run/docs/en/v1/guides/styling#postcss)
+- [How to Use PostCSS as a Configurable Alternative to Sass](https://www.sitepoint.com/postcss-sass-configurable-alternative/)
+- [Styling Remix using Tailwind and PostCSS](https://codegino.com/blog/remix-styling-tailwind-postcss)
 
 ## Author
 

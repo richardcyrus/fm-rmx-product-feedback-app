@@ -8,13 +8,14 @@
   },
   "scripts": {
     "build": "run-s build:*",
-    "build:css": "sass styles/:app/styles --style=compressed",
+    "build:css": "npm run generate:css -- --env production",
     "build:remix": "cross-env NODE_ENV=production remix build",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "dev": "run-p dev:*",
-    "dev:css": "sass styles/:app/styles --color --no-source-map --watch",
+    "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development PORT=7369 remix dev",
+    "generate:css": "postcss styles --base styles --ext css --dir app/styles",
     "lint": "eslint --cache --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
     "lint:fix": "eslint --cache --fix --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
     "postinstall": "remix setup node",
@@ -49,8 +50,10 @@
     "@svgr/cli": "^6.2.1",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
+    "autoprefixer": "^10.4.2",
     "axe-core": "^4.4.1",
     "cross-env": "^7.0.3",
+    "cssnano": "^5.1.1",
     "cypress": "^9.5.1",
     "cypress-axe": "^0.14.0",
     "esbuild-register": "^3.3.2",
@@ -63,11 +66,19 @@
     "lint-staged": "^12.3.4",
     "micromatch": "^4.0.4",
     "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.8",
+    "postcss-cli": "^9.1.0",
+    "postcss-nested": "^5.0.6",
+    "postcss-sort-media-queries": "^4.2.1",
     "prettier": "^2.5.1",
     "prisma": "^3.9.2",
-    "sass": "^1.49.7",
     "typescript": "^4.1.2"
   },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ],
   "engines": {
     "node": ">=14"
   },
