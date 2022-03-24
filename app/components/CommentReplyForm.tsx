@@ -61,5 +61,6 @@ const CommentReplyForm = React.forwardRef(
     );
   }
 );
+CommentReplyForm.displayName = "CommentReplyForm";
 
 export default CommentReplyForm;

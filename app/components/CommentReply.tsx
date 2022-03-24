@@ -88,5 +88,6 @@ const CommentReply = React.forwardRef(
     );
   }
 );
+CommentReply.displayName = "CommentReply";
 
 export default CommentReply;

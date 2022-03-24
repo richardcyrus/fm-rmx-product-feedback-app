@@ -67,5 +67,6 @@ const FeedbackComment = React.forwardRef(
     );
   }
 );
+FeedbackComment.displayName = "FeedbackComment";
 
 export default FeedbackComment;
