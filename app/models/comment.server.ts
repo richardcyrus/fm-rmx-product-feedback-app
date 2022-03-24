@@ -6,7 +6,7 @@ import { db } from "~/utils/db.server";
  * For this project, the `current user` is hard-coded to a specific value.
  */
 function getCurrentUser() {
-  let user: Prisma.UserCreateNestedOneWithoutCommentsInput = {
+  const user: Prisma.UserCreateNestedOneWithoutCommentsInput = {
     connect: { username: "velvetround" },
   };
 
@@ -16,18 +16,18 @@ function getCurrentUser() {
 /**
  * Create a new Comment record.
  *
- * @param content - The comment content.
- * @param productRequestId - The id of the associated product request.
+ * @param {string} content - The comment content.
+ * @param {number} id - The id of the associated product request.
  */
-async function createComment(content: string, productRequestId: number) {
-  let user = getCurrentUser();
+async function createComment(content: string, id: number) {
+  const user = getCurrentUser();
 
-  let productRequest: Prisma.ProductRequestCreateNestedOneWithoutCommentsInput =
+  const productRequest: Prisma.ProductRequestCreateNestedOneWithoutCommentsInput =
     {
-      connect: { id: productRequestId },
+      connect: { id },
     };
 
-  let comment = Prisma.validator<Prisma.CommentCreateInput>()({
+  const comment = Prisma.validator<Prisma.CommentCreateInput>()({
     content: content,
     user: { ...user },
     productRequest: { ...productRequest },
@@ -39,25 +39,25 @@ async function createComment(content: string, productRequestId: number) {
 /**
  * Create a new Comment reply.
  *
- * @param content - The comment content.
- * @param productRequestId - The id of the associated product request.
- * @param replyingToUsername - The username of the comment for this reply.
- * @param parentId - The id of the parent comment for this reply.
+ * @param {string} content - The comment content.
+ * @param {number} id - The id of the associated product request.
+ * @param {string} replyingToUsername - The username of the comment for this reply.
+ * @param {number} parentId - The id of the parent comment for this reply.
  */
 async function createCommentReply(
   content: string,
-  productRequestId: number,
+  id: number,
   replyingToUsername: string,
   parentId: number
 ) {
-  let user = getCurrentUser();
+  const user = getCurrentUser();
 
-  let productRequest: Prisma.ProductRequestCreateNestedOneWithoutCommentsInput =
+  const productRequest: Prisma.ProductRequestCreateNestedOneWithoutCommentsInput =
     {
-      connect: { id: productRequestId },
+      connect: { id },
     };
 
-  let comment = Prisma.validator<Prisma.CommentCreateInput>()({
+  const comment = Prisma.validator<Prisma.CommentCreateInput>()({
     content: content,
     isReply: true,
     replyingTo: replyingToUsername,
