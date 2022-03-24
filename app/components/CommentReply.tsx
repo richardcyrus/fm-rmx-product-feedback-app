@@ -6,18 +6,18 @@ import CommentReplyForm from "~/components/CommentReplyForm";
 export interface CommentReplyProps {
   id: number;
   content: string;
-  isReply?: boolean;
-  replyingTo?: string | unknown;
-  parentId?: number | unknown;
+  isReply: boolean;
+  replyingTo?: string | null;
+  parentId?: number | null;
   userId: number;
-  productRequestId?: number;
+  productRequestId: number;
   user: {
     id: number;
     name: string;
     username: string;
     image: string;
   };
-  replies?: CommentReplyProps[];
+  replies: Array<CommentReplyProps>;
 }
 
 const CommentReply = React.forwardRef(
