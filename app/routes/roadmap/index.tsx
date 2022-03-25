@@ -1,8 +1,8 @@
 import type { LinksFunction, LoaderFunction } from "remix";
-import { useLoaderData } from "remix";
+import { json, useLoaderData } from "remix";
 
 import RoadmapContent, {
-  RoadmapContentProps,
+  RoadmapContentProps as LoaderData,
 } from "~/components/RoadmapContent";
 import RoadmapContentMobile, {
   links as RoadmapContentMobileLinks,
@@ -18,17 +18,30 @@ export const links: LinksFunction = () => {
   ];
 };
 
+type RoadmapData = Awaited<ReturnType<typeof getRoadmapData>>;
+
+function transformRoadmapData(productRequests: RoadmapData) {
+  return productRequests.map((productRequest) => ({
+    comments: productRequest._count.comments,
+    ...productRequest,
+  }));
+}
+
 export const loader: LoaderFunction = async () => {
-  return {
-    liveStatusData: await getRoadmapData("live"),
-    plannedStatusData: await getRoadmapData("planned"),
-    inProgressStatusData: await getRoadmapData("in-progress"),
-  };
+  const liveStatus = await getRoadmapData("live");
+  const plannedStatus = await getRoadmapData("planned");
+  const inProgressStatus = await getRoadmapData("in-progress");
+
+  return json<LoaderData>({
+    liveStatusData: transformRoadmapData(liveStatus),
+    plannedStatusData: transformRoadmapData(plannedStatus),
+    inProgressStatusData: transformRoadmapData(inProgressStatus),
+  });
 };
 
 function RoadmapIndex() {
   const windowSize = useWindowSize();
-  const data = useLoaderData<RoadmapContentProps>();
+  const data = useLoaderData<LoaderData>();
 
   return (
     <>

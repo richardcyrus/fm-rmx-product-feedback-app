@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Form, useLoaderData, useNavigate, useSubmit } from "remix";
+import { Form, json, useLoaderData, useNavigate, useSubmit } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
 
@@ -19,7 +19,7 @@ import type { SortByOptions } from "~/models/productRequest.server";
 
 type LoaderData = {
   sort: string;
-  suggestionsData: SuggestionCardProps[];
+  suggestionsData: Array<SuggestionCardProps>;
 };
 
 export const links: LinksFunction = () => [
@@ -38,12 +38,17 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   invariant(params.category, "Expected params.category");
 
-  const suggestionsData = await getSortedProductRequestByCategory(
+  const productRequests = await getSortedProductRequestByCategory(
     params.category,
     sort as SortByOptions
   );
 
-  return { sort, suggestionsData };
+  const suggestionsData = productRequests.map((productRequest) => ({
+    comments: productRequest._count.comments,
+    ...productRequest,
+  }));
+
+  return json<LoaderData>({ sort, suggestionsData });
 };
 
 function FilteredCategory() {

@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-import type { ProductRequest } from "@prisma/client";
 import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
 import {
   Form,
+  json,
+  redirect,
   useNavigate,
   useLoaderData,
   useActionData,
-  redirect,
-  json,
 } from "remix";
 import invariant from "tiny-invariant";
 
@@ -56,6 +55,8 @@ interface ActionData {
   status?: string;
   description?: string;
 }
+
+type LoaderData = Awaited<ReturnType<typeof getProductRequestById>>;
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -135,13 +136,13 @@ export const loader: LoaderFunction = async ({ params }) => {
   const feedbackId = parseInt(params.id, 10);
 
   const feedback = await getProductRequestById(feedbackId);
-  return json(feedback);
+  return json<LoaderData>(feedback);
 };
 
 function FeedbackEdit() {
   const navigate = useNavigate();
-  const data = useLoaderData<ProductRequest>();
-  const errors = useActionData<ActionData>();
+  const data = useLoaderData<LoaderData>();
+  const errors = useActionData() as ActionData;
 
   const [categoryValue, setCategoryValue] = useState(data.category);
   const [statusValue, setStatusValue] = useState(data.status);

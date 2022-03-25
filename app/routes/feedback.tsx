@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useLoaderData, Outlet, Link, NavLink } from "remix";
+import { json, Link, NavLink, Outlet, useLoaderData } from "remix";
 import type { LinksFunction, LoaderFunction } from "remix";
 
 import { getRoadmapSummary } from "~/models/productRequest.server";
@@ -17,7 +17,12 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async () => {
-  const roadmapSummary = await getRoadmapSummary();
+  const roadmapSummaryResults = await getRoadmapSummary();
+
+  const roadmapSummary = roadmapSummaryResults.map((entry) => ({
+    status: entry.status,
+    count: entry._count.status,
+  }));
 
   const categories = [
     { key: "all", label: "All" },
@@ -28,7 +33,7 @@ export const loader: LoaderFunction = async () => {
     { key: "feature", label: "Feature" },
   ];
 
-  return { categories, roadmapSummary };
+  return json<LoaderData>({ categories, roadmapSummary });
 };
 
 function FeedbackLayout() {

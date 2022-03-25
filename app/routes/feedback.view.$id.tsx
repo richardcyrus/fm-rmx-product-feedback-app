@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 
 import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
-import { Form, redirect, useLoaderData, useTransition } from "remix";
+import { Form, json, redirect, useLoaderData, useTransition } from "remix";
 import invariant from "tiny-invariant";
 
 import { CommentReplyProps } from "~/components/CommentReply";
@@ -102,7 +102,20 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   const feedbackId = parseInt(params.id, 10);
 
-  return getProductRequestWithCommentsById(feedbackId);
+  const productRequest = await getProductRequestWithCommentsById(feedbackId);
+
+  return json<LoaderData>({
+    comments: productRequest.comments,
+    suggestion: {
+      id: productRequest.id,
+      title: productRequest.title,
+      category: productRequest.category,
+      upvotes: productRequest.upvotes,
+      status: productRequest.status,
+      description: productRequest.description,
+      comments: productRequest._count.comments,
+    },
+  });
 };
 
 function FeedbackDetail() {

@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { json } from "remix";
 
 import { db } from "~/utils/db.server";
 
@@ -15,15 +16,19 @@ export type StatusOptions = "suggestion" | "planned" | "in-progress" | "live";
 /**
  * Get a ProductRequest record by the product request id.
  *
- * @param id - The id of the product request to find.
+ * @param {number} id - The id of the product request to find.
  */
 async function getProductRequestById(id: number) {
+  const whereCriteria = Prisma.validator<Prisma.ProductRequestWhereInput>()({
+    id,
+  });
+
   const productRequest = await db.productRequest.findUnique({
-    where: { id },
+    where: whereCriteria,
   });
 
   if (!productRequest) {
-    throw new Error(`ProductRequest with id=${id} was not found.`);
+    throw json(`ProductRequest with id=${id} was not found.`, { status: 404 });
   }
 
   return productRequest;
@@ -32,51 +37,56 @@ async function getProductRequestById(id: number) {
 /**
  * Get a ProductRequest record and associated comments by the product request id.
  *
- * @param productRequestId - The id of the product request to find.
+ * @param {number} id - The id of the product request to find.
  */
-async function getProductRequestWithCommentsById(productRequestId: number) {
+async function getProductRequestWithCommentsById(id: number) {
+  const productRequestWhere =
+    Prisma.validator<Prisma.ProductRequestWhereInput>()({
+      id,
+    });
+
+  const withCommentReplyUser = Prisma.validator<Prisma.CommentInclude>()({
+    user: true,
+  });
+
+  const withNestedCommentReplies = Prisma.validator<Prisma.CommentInclude>()({
+    user: true,
+    replies: { include: withCommentReplyUser },
+  });
+
   /**
    *  Limitation with Prisma, recursive queries not supported.
-   *  The below query will only return two levels of replies for the comments.
+   *  This query fragment will only return two levels of replies for the comments.
    *  The count of comments, however, will be the correct total.
    */
-  const productRequest = await db.productRequest.findUnique({
-    where: { id: productRequestId },
-    include: {
+  const productRequestInclude =
+    Prisma.validator<Prisma.ProductRequestInclude>()({
       comments: {
         where: { isReply: false },
         include: {
           user: true,
           replies: {
-            include: {
-              user: true,
-              replies: { include: { user: true } },
-            },
+            include: withNestedCommentReplies,
           },
         },
       },
       _count: {
         select: { comments: true },
       },
-    },
+    });
+
+  const productRequest = await db.productRequest.findUnique({
+    where: productRequestWhere,
+    include: productRequestInclude,
   });
 
   if (!productRequest) {
-    throw new Error(`ProductRequest ${productRequestId} was not found`);
+    throw json(`ProductRequest with id=${id} was not found`, {
+      status: 404,
+    });
   }
 
-  return {
-    comments: productRequest.comments,
-    suggestion: {
-      id: productRequest.id,
-      title: productRequest.title,
-      category: productRequest.category,
-      upvotes: productRequest.upvotes,
-      status: productRequest.status,
-      description: productRequest.description,
-      comments: productRequest._count.comments,
-    },
-  };
+  return productRequest;
 }
 
 /**
@@ -84,30 +94,34 @@ async function getProductRequestWithCommentsById(productRequestId: number) {
  * status of `suggestion`.
  */
 async function getRoadmapSummary() {
-  const roadmapSummary = await db.productRequest.groupBy({
-    by: ["status"],
-    where: {
-      status: {
-        not: "suggestion",
-      },
-    },
-    _count: {
-      status: true,
-    },
+  const whereCriteria = Prisma.validator<Prisma.ProductRequestWhereInput>()({
+    status: { not: "suggestion" },
   });
 
-  return roadmapSummary.map((entry) => ({
-    status: entry.status,
-    count: entry._count.status,
-  }));
+  const countAggregate =
+    Prisma.validator<Prisma.ProductRequestCountAggregateInputType>()({
+      status: true,
+    });
+
+  const roadmapSummary = await db.productRequest.groupBy({
+    by: ["status"],
+    where: whereCriteria,
+    _count: countAggregate,
+  });
+
+  if (!roadmapSummary) {
+    throw json("Roadmap summary information not found!", { status: 404 });
+  }
+
+  return roadmapSummary;
 }
 
 /**
  * Get ProductRequest records that are of a particular Category and a specific
  * sort order.
  *
- * @param category - The category to filter by.
- * @param sortBy - The sort criteria.
+ * @param {string} category - The category to filter by.
+ * @param {string} sortBy - The sort criteria.
  */
 async function getSortedProductRequestByCategory(
   category: string,
@@ -115,6 +129,12 @@ async function getSortedProductRequestByCategory(
 ) {
   let sortCriteria: Prisma.ProductRequestOrderByWithRelationInput;
   let filter: Prisma.ProductRequestWhereInput;
+
+  const includeCommentCount = Prisma.validator<Prisma.ProductRequestInclude>()({
+    _count: {
+      select: { comments: true },
+    },
+  });
 
   switch (sortBy) {
     case "mostUpvotes": {
@@ -147,35 +167,26 @@ async function getSortedProductRequestByCategory(
     filter = { status: { equals: "suggestion" } };
   }
 
-  const productRequests = await db.productRequest.findMany({
+  return db.productRequest.findMany({
     where: filter,
     orderBy: sortCriteria,
-    include: {
-      _count: {
-        select: { comments: true },
-      },
-    },
+    include: includeCommentCount,
   });
-
-  return productRequests.map((productRequest) => ({
-    comments: productRequest._count.comments,
-    ...productRequest,
-  }));
 }
 
 /**
  * Create a new ProductRequest record.
  *
- * @param title - The title of the product request.
- * @param category - The category for the product request
- * @param description - The description of the product request.
+ * @param {string} title - The title of the product request.
+ * @param {string} category - The category for the product request
+ * @param {string} description - The description of the product request.
  */
 async function createProductRequest(
   title: string,
   category: string,
   description: string
 ) {
-  let productRequest = Prisma.validator<Prisma.ProductRequestCreateInput>()({
+  const productRequest = Prisma.validator<Prisma.ProductRequestCreateInput>()({
     title: title,
     category: category,
     upvotes: 0,
@@ -189,11 +200,11 @@ async function createProductRequest(
 /**
  * Update a ProductRequest record.
  *
- * @param id - The id of the ProductRequest record to update.
- * @param title - The title of the product request.
- * @param category - the category of the product request.
- * @param status - the status of the product request.
- * @param description - the descriptions of the product request.
+ * @param {number} id - The id of the ProductRequest record to update.
+ * @param {string} title - The title of the product request.
+ * @param {string} category - the category of the product request.
+ * @param {string} status - the status of the product request.
+ * @param {string} description - the descriptions of the product request.
  */
 async function updateProductRequest(
   id: number,
@@ -202,8 +213,8 @@ async function updateProductRequest(
   status: StatusOptions,
   description: string
 ) {
-  let where: Prisma.ProductRequestWhereUniqueInput = { id };
-  let data: Prisma.ProductRequestUpdateInput = {
+  const where: Prisma.ProductRequestWhereUniqueInput = { id };
+  const data: Prisma.ProductRequestUpdateInput = {
     title,
     category,
     status,
@@ -219,7 +230,7 @@ async function updateProductRequest(
 /**
  * Deleted a ProductRequest record.
  *
- * @param id - The id of the record to delete.
+ * @param {number} id - The id of the record to delete.
  */
 async function deleteProductRequest(id: number) {
   return db.productRequest.delete({
@@ -230,10 +241,10 @@ async function deleteProductRequest(id: number) {
 /**
  * Get the ProductRequest entries for a particular status.
  *
- * @param filter - the status to filter by.
+ * @param {string} filter - The status to filter by.
  */
 async function getRoadmapData(filter: string) {
-  let productRequest = Prisma.validator<Prisma.ProductRequestFindManyArgs>()({
+  const productRequest = Prisma.validator<Prisma.ProductRequestFindManyArgs>()({
     where: { status: filter },
     orderBy: { upvotes: "desc" },
     include: {
@@ -243,12 +254,7 @@ async function getRoadmapData(filter: string) {
     },
   });
 
-  let productRequests = await db.productRequest.findMany(productRequest);
-
-  return productRequests.map((productRequest) => ({
-    comments: productRequest._count.comments,
-    ...productRequest,
-  }));
+  return db.productRequest.findMany(productRequest);
 }
 
 export {

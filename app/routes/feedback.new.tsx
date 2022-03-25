@@ -3,8 +3,9 @@ import { useState } from "react";
 import type { LinksFunction, ActionFunction } from "remix";
 import {
   Form,
-  useNavigate,
+  json,
   redirect,
+  useNavigate,
   useActionData,
   useTransition,
 } from "remix";
@@ -26,7 +27,7 @@ const options: Record<string, string> = {
   bug: "Bug",
 };
 
-type NewFeedbackFormError = {
+type ActionData = {
   title?: boolean;
   category?: boolean;
   description?: boolean;
@@ -53,13 +54,13 @@ export const action: ActionFunction = async ({ request }) => {
     const category = formData.get("feedbackCategory");
     const description = formData.get("feedbackDetail");
 
-    const errors: NewFeedbackFormError = {};
+    const errors: ActionData = {};
     if (!title) errors.title = true;
     if (!category) errors.category = true;
     if (!description) errors.description = true;
 
     if (Object.keys(errors).length) {
-      return errors;
+      return json(errors);
     }
 
     invariant(typeof title === "string");
@@ -74,7 +75,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 function FeedbackNew() {
   const navigate = useNavigate();
-  const errors = useActionData();
+  const errors = useActionData() as ActionData;
   const transition = useTransition();
 
   const [categoryValue, setCategoryValue] = useState("feature");
