@@ -27,10 +27,15 @@ const options: Record<string, string> = {
   bug: "Bug",
 };
 
+type FormErrors = {
+  title?: string;
+  category?: string;
+  description?: string;
+};
+
 type ActionData = {
-  title?: boolean;
-  category?: boolean;
-  description?: boolean;
+  errors: FormErrors;
+  values: Record<string, string>;
 };
 
 export const links: LinksFunction = () => {
@@ -40,45 +45,66 @@ export const links: LinksFunction = () => {
   ];
 };
 
-// TODO: Improve data validation.
-// TODO: Improve error handling.
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
+  const actionType = formData.get("_action");
 
-  if (formData.get("_action") === "cancel") {
-    return redirect("/");
-  }
-
-  if (formData.get("_action") === "save") {
-    const title = formData.get("feedbackTitle");
-    const category = formData.get("feedbackCategory");
-    const description = formData.get("feedbackDetail");
-
-    const errors: ActionData = {};
-    if (!title) errors.title = true;
-    if (!category) errors.category = true;
-    if (!description) errors.description = true;
-
-    if (Object.keys(errors).length) {
-      return json(errors);
+  switch (actionType) {
+    case "cancel": {
+      return redirect("/");
     }
+    case "save": {
+      const validCategories = Object.keys(options);
 
-    invariant(typeof title === "string");
-    invariant(typeof category === "string");
-    invariant(typeof description === "string");
+      const title = formData.get("feedbackTitle");
+      const category = formData.get("feedbackCategory");
+      const description = formData.get("feedbackDetail");
 
-    const record = await createProductRequest(title, category, description);
+      // TODO: Do better validation and type checking
+      invariant(typeof title === "string");
+      invariant(typeof category === "string");
+      invariant(typeof description === "string");
 
-    return redirect(`/feedback/view/${record.id}`);
+      const errors: FormErrors = {};
+      if (!title) {
+        errors.title = "Can't be empty";
+      }
+
+      if (!category || !validCategories.includes(category)) {
+        errors.category = "Please select a category";
+      }
+
+      if (!description) {
+        errors.description = "Can't be empty";
+      }
+
+      if (Object.keys(errors).length) {
+        const values = Object.fromEntries(formData) as Record<string, string>;
+
+        return json<ActionData>({ errors, values }, { status: 400 });
+      }
+
+      const record = await createProductRequest(title, category, description);
+
+      return redirect(`/feedback/view/${record.id}`);
+    }
+    default: {
+      throw new Response("Invalid action", { status: 400 });
+    }
   }
 };
 
 function FeedbackNew() {
   const navigate = useNavigate();
-  const errors = useActionData() as ActionData;
+  const actionData = useActionData() as ActionData;
   const transition = useTransition();
+  let category = "feature";
 
-  const [categoryValue, setCategoryValue] = useState("feature");
+  if (actionData && "values" in actionData) {
+    category = actionData.values.feedbackCategory;
+  }
+
+  const [categoryValue, setCategoryValue] = useState(category);
 
   const onCategoryOptionChange = (value: string) => {
     setCategoryValue(value);
@@ -121,11 +147,14 @@ function FeedbackNew() {
               type="text"
               name="feedbackTitle"
               id="feedbackTitle"
-              className={`input ${errors?.title ? "is-invalid" : null}`}
+              className={`input ${
+                actionData?.errors?.title ? "is-invalid" : null
+              }`}
               aria-describedby="feedbackTitleHelpBlock"
+              defaultValue={actionData?.values.feedbackTitle}
             />
-            {errors?.title ? (
-              <div className="invalid-input">Can&rsquo;t be empty</div>
+            {actionData?.errors?.title ? (
+              <div className="invalid-input">{actionData.errors.title}</div>
             ) : null}
           </div>
           <div className="form-control">
@@ -144,6 +173,9 @@ function FeedbackNew() {
               onOptionChange={onCategoryOptionChange}
             />
           </div>
+          {actionData?.errors?.category ? (
+            <div className="invalid-input">{actionData.errors.category}</div>
+          ) : null}
           <div className="form-control">
             <label htmlFor="feedbackDetail" className="form-label">
               Feedback Detail
@@ -158,11 +190,16 @@ function FeedbackNew() {
               cols={30}
               rows={4}
               maxLength={250}
-              className={`input ${errors?.description ? "is-invalid" : null}`}
+              className={`input ${
+                actionData?.errors?.description ? "is-invalid" : null
+              }`}
               aria-describedby="feedbackDetailHelpBlock"
+              defaultValue={actionData?.values.feedbackDetail}
             />
-            {errors?.description ? (
-              <div className="invalid-input">Can&rsquo;t be empty</div>
+            {actionData?.errors?.description ? (
+              <div className="invalid-input">
+                {actionData.errors.description}
+              </div>
             ) : null}
           </div>
           <div className="form-control-group">
