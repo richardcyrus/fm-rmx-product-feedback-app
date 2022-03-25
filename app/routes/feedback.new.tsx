@@ -56,9 +56,9 @@ export const action: ActionFunction = async ({ request }) => {
     case "save": {
       const validCategories = Object.keys(options);
 
-      const title = formData.get("feedbackTitle");
-      const category = formData.get("feedbackCategory");
-      const description = formData.get("feedbackDetail");
+      const title = formData.get("title");
+      const category = formData.get("category");
+      const description = formData.get("description");
 
       // TODO: Do better validation and type checking
       invariant(typeof title === "string");
@@ -101,7 +101,7 @@ function FeedbackNew() {
   let category = "feature";
 
   if (actionData && "values" in actionData) {
-    category = actionData.values.feedbackCategory;
+    category = actionData.values.category;
   }
 
   const [categoryValue, setCategoryValue] = useState(category);
@@ -137,64 +137,62 @@ function FeedbackNew() {
           autoComplete="off"
         >
           <div className="form-control">
-            <label htmlFor="feedbackTitle" className="form-label">
+            <label htmlFor="title" className="form-label">
               Feedback Title
             </label>
-            <div id="feedbackTitleHelpBlock">
-              Add a short, descriptive headline
-            </div>
+            <div id="title-help-block">Add a short, descriptive headline</div>
             <input
               type="text"
-              name="feedbackTitle"
-              id="feedbackTitle"
+              name="title"
+              id="title"
               className={`input ${
-                actionData?.errors?.title ? "is-invalid" : null
+                actionData?.errors?.title ? "is-invalid" : ""
               }`}
-              aria-describedby="feedbackTitleHelpBlock"
-              defaultValue={actionData?.values.feedbackTitle}
+              aria-describedby="title-help-block"
+              defaultValue={actionData?.values.title}
             />
             {actionData?.errors?.title ? (
               <div className="invalid-input">{actionData.errors.title}</div>
             ) : null}
           </div>
           <div className="form-control">
-            <span className="form-label" id="feedbackCategoryLabel">
+            <span className="form-label" id="category-label">
               Category
             </span>
-            <div className="form-text" id="feedbackCategoryHelpBlock">
+            <div className="form-text" id="category-help-block">
               Choose a category for your feedback
             </div>
             <FeedbackFormListbox
-              name="feedbackCategory"
+              name="category"
               value={categoryValue}
-              labelledby="feedbackCategoryLabel"
-              describedby="feedbackCategoryHelpBlock"
+              labelledby="category-label"
+              describedby="category-help-block"
               options={options}
               onOptionChange={onCategoryOptionChange}
             />
+            {actionData?.errors?.category ? (
+              <div className="invalid-input">{actionData.errors.category}</div>
+            ) : null}
           </div>
-          {actionData?.errors?.category ? (
-            <div className="invalid-input">{actionData.errors.category}</div>
-          ) : null}
           <div className="form-control">
-            <label htmlFor="feedbackDetail" className="form-label">
+            <label htmlFor="description" className="form-label">
               Feedback Detail
             </label>
-            <div className="form-text" id="feedbackDetailHelpBlock">
+            <div className="form-text" id="description-help-block">
               Include any specific comments on what should be improved, added,
               etc.
             </div>
             <textarea
-              name="feedbackDetail"
-              id="feedbackDetail"
+              name="description"
+              id="description"
               cols={30}
               rows={4}
               maxLength={250}
               className={`input ${
-                actionData?.errors?.description ? "is-invalid" : null
+                actionData?.errors?.description ? "is-invalid" : ""
               }`}
-              aria-describedby="feedbackDetailHelpBlock"
-              defaultValue={actionData?.values.feedbackDetail}
+              aria-describedby="description-help-block"
+              defaultValue={actionData?.values.description}
             />
             {actionData?.errors?.description ? (
               <div className="invalid-input">
