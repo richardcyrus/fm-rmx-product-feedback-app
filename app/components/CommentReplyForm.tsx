@@ -31,15 +31,15 @@ const CommentReplyForm = React.forwardRef(
           />
           <input
             type="hidden"
-            name="productRequestId"
+            name="productId"
             value={props.productRequestId}
           />
-          <label htmlFor="addCommentReply" className="sr-only">
+          <label htmlFor="add-comment-reply" className="sr-only">
             Add comment reply
           </label>
           <textarea
-            name="commentReplyContent"
-            id="addCommentReply"
+            name="content"
+            id="add-comment-reply"
             cols={30}
             rows={3}
             maxLength={250}

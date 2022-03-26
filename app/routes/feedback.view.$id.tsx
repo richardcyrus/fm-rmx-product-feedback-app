@@ -2,8 +2,16 @@ import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 
 import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
-import { Form, json, redirect, useLoaderData, useTransition } from "remix";
+import {
+  Form,
+  json,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from "remix";
 import invariant from "tiny-invariant";
+import { z } from "zod";
 
 import { CommentReplyProps } from "~/components/CommentReply";
 import FeedbackComment from "~/components/FeedbackComment";
@@ -28,72 +36,99 @@ type LoaderData = {
   suggestion: SuggestionCardProps;
 };
 
+const NewCommentFormValidator = z.object({
+  productId: z.string({
+    required_error: "productId is required",
+    invalid_type_error: "productId must be a string",
+  }),
+  content: z
+    .string()
+    .min(1, { message: "Can't be empty" })
+    .max(250, { message: "Too many characters" }),
+  _action: z.enum(["new_comment", "comment_reply"]),
+});
+
+const CommentReplyFormValidator = NewCommentFormValidator.extend({
+  replyToCommentId: z.string({
+    required_error: "replyToCommentId is required",
+    invalid_type_error: "replyToCommentId must be a string",
+  }),
+  replyingToUsername: z.string({
+    required_error: "replyingToUsername is required",
+    invalid_type_error: "replyingToUsername must be a string",
+  }),
+});
+
+type NewCommentFormDataErrors = z.inferFlattenedErrors<
+  typeof NewCommentFormValidator
+>;
+type CommentReplyFormDataErrors = z.inferFlattenedErrors<
+  typeof CommentReplyFormValidator
+>;
+
+type ActionData = {
+  errors: typeof CommentReplyFormValidator extends typeof NewCommentFormValidator
+    ? CommentReplyFormDataErrors
+    : NewCommentFormDataErrors;
+  formData: Record<string, string>;
+};
+
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
+  const formData = Object.fromEntries(await request.formData()) as Record<
+    string,
+    string
+  >;
 
-  // TODO: Properly handle errors with the form data.
-  // TODO: Properly validate the data received in the form.
+  const actionType = formData._action;
 
-  // Handle a new comment
-  if (formData.get("_action") === "new_comment") {
-    const content = formData.get("commentContent");
-    const productId = formData.get("productRequestId");
+  switch (actionType) {
+    case "new_comment": {
+      // Handle a new comment
+      const result = NewCommentFormValidator.safeParse(formData);
+      if (!result.success) {
+        const errors: NewCommentFormDataErrors = result.error.flatten();
 
-    if (typeof content !== "string") {
-      throw new Error("The comment content is not of the correct format");
+        return json<ActionData>({ errors, formData }, { status: 400 });
+      }
+
+      const content = result.data.content;
+      const productId = result.data.productId;
+
+      const productRequestId = parseInt(productId, 10);
+
+      await createComment(content, productRequestId);
+
+      return redirect(request.url);
     }
+    case "comment_reply": {
+      // Handle a comment reply
+      const result = CommentReplyFormValidator.safeParse(formData);
+      if (!result.success) {
+        const errors: NewCommentFormDataErrors = result.error.flatten();
 
-    if (typeof productId !== "string") {
-      throw new Error("The product request ID is not of the correct format");
-    }
+        return json<ActionData>({ errors, formData }, { status: 400 });
+      }
 
-    const productRequestId = parseInt(productId, 10);
+      const content = result.data.content;
+      const productId = result.data.productId;
+      const replyingToUsername = result.data.replyingToUsername;
+      const replyToCommentId = result.data.replyToCommentId;
 
-    await createComment(content, productRequestId);
+      const productRequestId = parseInt(productId, 10);
+      const parentId = parseInt(replyToCommentId, 10);
 
-    // TODO: Do we add to navigation history?
-    return redirect(request.url);
-  }
-
-  // Handle a comment reply
-  if (formData.get("_action") === "comment_reply") {
-    const content = formData.get("commentReplyContent");
-    const productId = formData.get("productRequestId");
-    const replyingToUsername = formData.get("replyingToUsername");
-    const replyToCommentId = formData.get("replyToCommentId");
-
-    if (typeof content !== "string") {
-      throw new Error("The comment content is not of the correct format");
-    }
-
-    if (typeof productId !== "string") {
-      throw new Error("The product request ID is not of the correct format");
-    }
-
-    if (typeof replyingToUsername !== "string") {
-      throw new Error(
-        "The username for the comment reply is not of the correct format."
+      await createCommentReply(
+        content,
+        productRequestId,
+        replyingToUsername,
+        parentId
       );
+
+      return redirect(request.url);
     }
-
-    if (typeof replyToCommentId !== "string") {
-      throw new Error(
-        "The parent comment for the comment reply is not of the correct format."
-      );
+    default: {
+      throw new Response("Invalid action", { status: 400 });
     }
-
-    const productRequestId = parseInt(productId, 10);
-    const parentId = parseInt(replyToCommentId, 10);
-
-    await createCommentReply(
-      content,
-      productRequestId,
-      replyingToUsername,
-      parentId
-    );
-
-    // TODO: Do we add to navigation history?
-    return redirect(request.url);
   }
 };
 
@@ -119,6 +154,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 function FeedbackDetail() {
+  const actionData = useActionData() as ActionData;
   const data = useLoaderData<LoaderData>();
   const transition = useTransition();
   const isNewComment =
@@ -131,7 +167,7 @@ function FeedbackDetail() {
   const [remainingCharacters, setRemainingCharacters] = useState(250);
 
   const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // This check is done, so that the `ts-ignore` rule is safe to use.
+    // This check is done, so that the `ts-ignore` rule is safer to use.
     if (event.target.hasAttribute("maxlength")) {
       let currentLength = event.target.value.length;
       // @ts-ignore
@@ -202,27 +238,56 @@ function FeedbackDetail() {
             method="post"
             ref={addCommentFormRef}
           >
-            <input
-              type="hidden"
-              name="productRequestId"
-              value={data.suggestion.id}
-            />
-            <label htmlFor="addComment" className="sr-only">
+            <input type="hidden" name="productId" value={data.suggestion.id} />
+            <label htmlFor="add-comment" className="sr-only">
               Add comment
             </label>
             <textarea
-              name="commentContent"
-              id="addComment"
+              name="content"
+              id="add-comment"
               cols={30}
               rows={3}
               maxLength={250}
               placeholder="Type your comment here"
-              aria-describedby="feedbackAddCommentHelpBlock"
-              className="input"
+              defaultValue={
+                actionData?.formData?._action === "new_comment"
+                  ? actionData?.formData?.description
+                  : ""
+              }
+              aria-describedby="add-comment-help-block"
+              className={`input ${
+                actionData?.formData?._action === "new_comment"
+                  ? actionData?.errors?.fieldErrors?.content
+                    ? "is-invalid"
+                    : ""
+                  : ""
+              }`}
               onChange={(e) => onTextareaChange(e)}
+              aria-invalid={
+                actionData?.formData?._action === "new_comment"
+                  ? actionData?.errors?.fieldErrors?.content
+                    ? true
+                    : undefined
+                  : undefined
+              }
+              aria-errormessage={
+                actionData?.formData?._action === "new_comment"
+                  ? actionData?.errors?.fieldErrors?.content
+                    ? "description-error"
+                    : undefined
+                  : undefined
+              }
             />
+            {actionData?.formData?._action === "new_comment" ? (
+              actionData?.errors?.fieldErrors?.content &&
+              actionData.errors.fieldErrors.content.length > 0 ? (
+                <div id="description-error" className="invalid-input">
+                  {actionData.errors.fieldErrors.content}
+                </div>
+              ) : null
+            ) : null}
             <div className="form-control-group">
-              <div className="form-text" id="feedbackAddCommentHelpBlock">
+              <div className="form-text" id="add-comment-help-block">
                 {remainingCharacters} Characters left
               </div>
               <button

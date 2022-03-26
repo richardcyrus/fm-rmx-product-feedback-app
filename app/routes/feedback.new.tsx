@@ -9,7 +9,7 @@ import {
   useActionData,
   useTransition,
 } from "remix";
-import invariant from "tiny-invariant";
+import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import NewFeedbackIcon from "~/assets/shared/IconNewFeedback";
@@ -27,15 +27,21 @@ const options: Record<string, string> = {
   bug: "Bug",
 };
 
-type FormErrors = {
-  title?: string;
-  category?: string;
-  description?: string;
-};
+const FormDataValidator = z.object({
+  title: z.string().min(1, { message: "Can't be empty" }),
+  description: z
+    .string()
+    .min(1, { message: "Can't be empty" })
+    .max(250, { message: "Too many characters" }),
+  category: z.enum(["feature", "ui", "ux", "enhancement", "bug"]),
+  _action: z.enum(["cancel", "save"]),
+});
+
+type FormDataErrors = z.inferFlattenedErrors<typeof FormDataValidator>;
 
 type ActionData = {
-  errors: FormErrors;
-  values: Record<string, string>;
+  errors: FormDataErrors;
+  formData: Record<string, string>;
 };
 
 export const links: LinksFunction = () => {
@@ -46,45 +52,36 @@ export const links: LinksFunction = () => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-  const actionType = formData.get("_action");
+  const formData = Object.fromEntries(await request.formData()) as Record<
+    string,
+    string
+  >;
+
+  const result = FormDataValidator.safeParse(formData);
+  if (!result.success) {
+    const errors: FormDataErrors = result.error.flatten();
+
+    return json<ActionData>({ errors, formData }, { status: 400 });
+  }
+
+  const actionType = result.data._action;
 
   switch (actionType) {
     case "cancel": {
       return redirect("/");
     }
     case "save": {
-      const validCategories = Object.keys(options);
+      const record = await createProductRequest(
+        result.data.title,
+        result.data.category,
+        result.data.description
+      );
 
-      const title = formData.get("title");
-      const category = formData.get("category");
-      const description = formData.get("description");
-
-      // TODO: Do better validation and type checking
-      invariant(typeof title === "string");
-      invariant(typeof category === "string");
-      invariant(typeof description === "string");
-
-      const errors: FormErrors = {};
-      if (!title) {
-        errors.title = "Can't be empty";
+      if (!record) {
+        throw new Response("An error occurred saving the new request.", {
+          status: 400,
+        });
       }
-
-      if (!category || !validCategories.includes(category)) {
-        errors.category = "Please select a category";
-      }
-
-      if (!description) {
-        errors.description = "Can't be empty";
-      }
-
-      if (Object.keys(errors).length) {
-        const values = Object.fromEntries(formData) as Record<string, string>;
-
-        return json<ActionData>({ errors, values }, { status: 400 });
-      }
-
-      const record = await createProductRequest(title, category, description);
 
       return redirect(`/feedback/view/${record.id}`);
     }
@@ -100,8 +97,8 @@ function FeedbackNew() {
   const transition = useTransition();
   let category = "feature";
 
-  if (actionData && "values" in actionData) {
-    category = actionData.values.category;
+  if (actionData && "formData" in actionData) {
+    category = actionData.formData.category;
   }
 
   const [categoryValue, setCategoryValue] = useState(category);
@@ -146,13 +143,23 @@ function FeedbackNew() {
               name="title"
               id="title"
               className={`input ${
-                actionData?.errors?.title ? "is-invalid" : ""
+                actionData?.errors?.fieldErrors?.title ? "is-invalid" : ""
               }`}
               aria-describedby="title-help-block"
-              defaultValue={actionData?.values.title}
+              defaultValue={actionData?.formData?.title}
+              aria-invalid={
+                actionData?.errors?.fieldErrors?.title ? true : undefined
+              }
+              aria-errormessage={
+                actionData?.errors?.fieldErrors?.title
+                  ? "title-error"
+                  : undefined
+              }
             />
-            {actionData?.errors?.title ? (
-              <div className="invalid-input">{actionData.errors.title}</div>
+            {actionData?.errors?.fieldErrors?.title ? (
+              <div id="title-error" className="invalid-input">
+                {actionData.errors.fieldErrors.title[0]}
+              </div>
             ) : null}
           </div>
           <div className="form-control">
@@ -170,8 +177,10 @@ function FeedbackNew() {
               options={options}
               onOptionChange={onCategoryOptionChange}
             />
-            {actionData?.errors?.category ? (
-              <div className="invalid-input">{actionData.errors.category}</div>
+            {actionData?.errors?.fieldErrors?.category ? (
+              <div className="invalid-input">
+                {actionData.errors.fieldErrors.category[0]}
+              </div>
             ) : null}
           </div>
           <div className="form-control">
@@ -189,14 +198,22 @@ function FeedbackNew() {
               rows={4}
               maxLength={250}
               className={`input ${
-                actionData?.errors?.description ? "is-invalid" : ""
+                actionData?.errors?.fieldErrors?.description ? "is-invalid" : ""
               }`}
               aria-describedby="description-help-block"
-              defaultValue={actionData?.values.description}
+              defaultValue={actionData?.formData?.description}
+              aria-invalid={
+                actionData?.errors?.fieldErrors?.description ? true : undefined
+              }
+              aria-errormessage={
+                actionData?.errors?.fieldErrors?.description
+                  ? "description-error"
+                  : undefined
+              }
             />
-            {actionData?.errors?.description ? (
-              <div className="invalid-input">
-                {actionData.errors.description}
+            {actionData?.errors?.fieldErrors?.description ? (
+              <div id="description-error" className="invalid-input">
+                {actionData.errors.fieldErrors.description[0]}
               </div>
             ) : null}
           </div>

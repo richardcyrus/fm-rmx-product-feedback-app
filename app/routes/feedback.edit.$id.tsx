@@ -10,6 +10,7 @@ import {
   useActionData,
 } from "remix";
 import invariant from "tiny-invariant";
+import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import EditFeedbackIcon from "~/assets/shared/IconEditFeedback";
@@ -49,24 +50,46 @@ const statusOptions: Record<string, string> = {
   live: "Live",
 };
 
-interface ActionData {
-  title?: string;
-  category?: string;
-  status?: string;
-  description?: string;
-}
+const FormDataValidator = z.object({
+  feedbackId: z.string({
+    required_error: "feedbackId is required",
+    invalid_type_error: "feedbackId must be a string",
+  }),
+  title: z.string().min(1, { message: "Can't be empty" }),
+  description: z
+    .string()
+    .min(1, { message: "Can't be empty" })
+    .max(250, { message: "Too many characters" }),
+  category: z.enum(["feature", "ui", "ux", "enhancement", "bug"]),
+  status: z.enum(["suggestion", "planned", "in-progress", "live"]),
+  _action: z.enum(["cancel", "delete", "save"]),
+});
+
+type FormDataErrors = z.inferFlattenedErrors<typeof FormDataValidator>;
+
+type ActionData = {
+  errors: FormDataErrors;
+};
 
 type LoaderData = Awaited<ReturnType<typeof getProductRequestById>>;
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
+  const formData = Object.fromEntries(await request.formData()) as Record<
+    string,
+    string
+  >;
 
-  const feedbackId = formData.get("feedbackId");
-  const actionType = formData.get("_action");
+  const result = FormDataValidator.safeParse(formData);
+  if (!result.success) {
+    const errors: FormDataErrors = result.error.flatten();
 
-  if (typeof feedbackId !== "string") {
-    throw new Response("feedbackId must be a string", { status: 400 });
+    return json<ActionData>({ errors }, { status: 400 });
   }
+
+  const actionType = result.data._action;
+
+  const feedbackId = result.data.feedbackId;
+
   const productRequestId = parseInt(feedbackId, 10);
 
   switch (actionType) {
@@ -79,47 +102,12 @@ export const action: ActionFunction = async ({ request }) => {
       return redirect("/");
     }
     case "save": {
-      const title = formData.get("feedbackTitle");
-      const category = formData.get("feedbackCategory");
-      const status = formData.get("feedbackStatus");
-      const description = formData.get("feedbackDetail");
-
-      invariant(typeof title === "string");
-      invariant(typeof category === "string");
-      invariant(typeof status === "string");
-      invariant(typeof description === "string");
-
-      let errors: ActionData = {};
-
-      if (title.length === 0) {
-        errors.title = "Can&rsquo;t be empty";
-      }
-
-      if (description.length === 0) {
-        errors.description = "Can&rsquo;t be empty";
-      }
-      if (description.length > 250) {
-        errors.description = "Too many characters";
-      }
-
-      if (!categoryOptions.hasOwnProperty(category)) {
-        errors.category = "Invalid category option";
-      }
-
-      if (!statusOptions.hasOwnProperty(status)) {
-        errors.status = "Invalid status option";
-      }
-
-      if (Object.keys(errors).length) {
-        return json({ errors }, { status: 400 });
-      }
-
       await updateProductRequest(
         productRequestId,
-        title,
-        category as CategoryOptions,
-        status as StatusOptions,
-        description
+        result.data.title,
+        result.data.category as CategoryOptions,
+        result.data.status as StatusOptions,
+        result.data.description
       );
 
       return redirect(`/feedback/view/${feedbackId}`);
@@ -142,7 +130,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 function FeedbackEdit() {
   const navigate = useNavigate();
   const data = useLoaderData<LoaderData>();
-  const errors = useActionData() as ActionData;
+  const actionData = useActionData() as ActionData;
 
   const [categoryValue, setCategoryValue] = useState(data.category);
   const [statusValue, setStatusValue] = useState(data.status);
@@ -181,91 +169,111 @@ function FeedbackEdit() {
         >
           <input type="hidden" name="feedbackId" value={data.id} />
           <div className="form-control">
-            <label htmlFor="feedbackTitle" className="form-label">
+            <label htmlFor="title" className="form-label">
               Feedback Title
             </label>
-            <div id="feedbackTitleHelpBlock">
-              Add a short, descriptive headline
-            </div>
+            <div id="title-help-block">Add a short, descriptive headline</div>
             <input
               type="text"
-              name="feedbackTitle"
-              id="feedbackTitle"
-              className={`input ${errors?.title ? "is-invalid" : null}`}
-              aria-describedby="feedbackTitleHelpBlock"
+              name="title"
+              id="title"
+              className={`input ${
+                actionData?.errors?.fieldErrors?.title ? "is-invalid" : ""
+              }`}
+              aria-describedby="title-help-block"
               defaultValue={data.title}
-              aria-invalid={errors?.title ? true : undefined}
-              aria-errormessage={errors?.title ? "title-error" : undefined}
+              aria-invalid={
+                actionData?.errors?.fieldErrors?.title ? true : undefined
+              }
+              aria-errormessage={
+                actionData?.errors?.fieldErrors?.title
+                  ? "title-error"
+                  : undefined
+              }
             />
-            {errors?.title && errors.title.length > 0 ? (
+            {actionData?.errors?.fieldErrors?.title &&
+            actionData.errors.fieldErrors.title.length > 0 ? (
               <div id="title-error" className="invalid-input">
-                {errors.title}
+                {actionData.errors.fieldErrors.title}
               </div>
             ) : null}
           </div>
           <div className="form-control">
-            <span className="form-label" id="feedbackCategoryLabel">
+            <span className="form-label" id="category-label">
               Category
             </span>
-            <div className="form-text" id="feedbackCategoryHelpBlock">
+            <div className="form-text" id="category-help-block">
               Choose a category for your feedback
             </div>
             <FeedbackFormListbox
-              name="feedbackCategory"
+              name="category"
               value={categoryValue}
-              labelledby="feedbackCategoryLabel"
-              describedby="feedbackCategoryHelpBlock"
+              labelledby="category-label"
+              describedby="category-help-block"
               options={categoryOptions}
               onOptionChange={onCategoryOptionChange}
             />
-            {errors?.category && errors.category.length > 0 ? (
-              <div className="invalid-input">{errors.category}</div>
+            {actionData?.errors?.fieldErrors?.category &&
+            actionData.errors.fieldErrors.category.length > 0 ? (
+              <div className="invalid-input">
+                {actionData.errors.fieldErrors.category}
+              </div>
             ) : null}
           </div>
           <div className="form-control">
-            <span className="form-label" id="feedbackStatusLabel">
+            <span className="form-label" id="status-label">
               Update Status
             </span>
-            <div className="form-text" id="feedbackStatusHelpBlock">
+            <div className="form-text" id="status-help-block">
               Change feedback state
             </div>
             <FeedbackFormListbox
-              name="feedbackStatus"
+              name="status"
               value={statusValue}
-              labelledby="feedbackStatusLabel"
-              describedby="feedbackStatusHelpBlock"
+              labelledby="status-label"
+              describedby="status-help-block"
               options={statusOptions}
               onOptionChange={onStatusOptionChange}
             />
-            {errors?.status && errors.status.length > 0 ? (
-              <div className="invalid-input">{errors.status}</div>
+            {actionData?.errors?.fieldErrors?.status &&
+            actionData.errors.fieldErrors.status.length > 0 ? (
+              <div className="invalid-input">
+                {actionData.errors.fieldErrors.status}
+              </div>
             ) : null}
           </div>
           <div className="form-control">
-            <label htmlFor="feedbackDetail" className="form-label">
+            <label htmlFor="description" className="form-label">
               Feedback Detail
             </label>
-            <div className="form-text" id="feedbackDetailHelpBlock">
+            <div className="form-text" id="description-help-block">
               Include any specific comments on what should be improved, added,
               etc.
             </div>
             <textarea
-              name="feedbackDetail"
-              id="feedbackDetail"
+              name="description"
+              id="description"
               cols={30}
               rows={4}
               maxLength={250}
-              className={`input ${errors?.description ? "is-invalid" : null}`}
-              aria-describedby="feedbackDetailHelpBlock"
+              className={`input ${
+                actionData?.errors?.fieldErrors?.description ? "is-invalid" : ""
+              }`}
+              aria-describedby="description-help-block"
               defaultValue={data.description}
-              aria-invalid={errors?.description ? true : undefined}
+              aria-invalid={
+                actionData?.errors?.fieldErrors?.description ? true : undefined
+              }
               aria-errormessage={
-                errors?.description ? "description-error" : undefined
+                actionData?.errors?.fieldErrors?.description
+                  ? "description-error"
+                  : undefined
               }
             />
-            {errors?.description && errors.description.length > 0 ? (
+            {actionData?.errors?.fieldErrors?.description &&
+            actionData.errors.fieldErrors.description.length > 0 ? (
               <div id="description-error" className="invalid-input">
-                {errors.description}
+                {actionData.errors.fieldErrors.description}
               </div>
             ) : null}
           </div>
