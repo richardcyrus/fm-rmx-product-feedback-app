@@ -67,9 +67,7 @@ type CommentReplyFormDataErrors = z.inferFlattenedErrors<
 >;
 
 type ActionData = {
-  errors: typeof CommentReplyFormValidator extends typeof NewCommentFormValidator
-    ? CommentReplyFormDataErrors
-    : NewCommentFormDataErrors;
+  errors: CommentReplyFormDataErrors | NewCommentFormDataErrors;
   formData: Record<string, string>;
 };
 
