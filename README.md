@@ -74,6 +74,7 @@ Users should be able to:
 ### What I learned
 
 - [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently, in the interest of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
+- [React Pre-rendering and Potential Hydration Issue](https://blog.jannikwempe.com/react-pre-rendering-and-potential-hydration-issue): This was used to resolve a React browser warning when updating the upvotes from local storage, but the upvote count in the database was different.
 
 ### Useful resources
 
@@ -93,6 +94,7 @@ Users should be able to:
 - [Remix | Styling](https://remix.run/docs/en/v1/guides/styling#postcss)
 - [How to Use PostCSS as a Configurable Alternative to Sass](https://www.sitepoint.com/postcss-sass-configurable-alternative/)
 - [Styling Remix using Tailwind and PostCSS](https://codegino.com/blog/remix-styling-tailwind-postcss)
+- [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
 
 ## Author
 

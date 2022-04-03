@@ -5,6 +5,8 @@ import { Link } from "remix";
 
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
+import { useLocalStorage } from "~/hooks/use-local-storage";
+import { useMounted } from "~/hooks/use-mounted";
 import suggestionCardStylesUrl from "~/styles/suggestion-card.css";
 import { toTitleCase } from "~/utils/stringUtils";
 
@@ -23,10 +25,22 @@ export interface SuggestionCardProps {
 }
 
 export default function SuggestionCard(props: SuggestionCardProps) {
+  const { hasMounted } = useMounted();
+  const [myUpvotes, setMyUpvotes] = useLocalStorage(
+    String(props.id),
+    props.upvotes
+  );
+
   const handleUpvoteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     const button = event.currentTarget;
     button.classList.toggle("active");
+
+    if (button.classList.contains("active")) {
+      setMyUpvotes((current: number) => current + 1);
+    } else {
+      setMyUpvotes((current: number) => current - 1);
+    }
   };
 
   return (
@@ -52,11 +66,15 @@ export default function SuggestionCard(props: SuggestionCardProps) {
           <button
             type="button"
             onClick={(e) => handleUpvoteClick(e)}
-            className="button vote-button"
-            data-upvotes={props.upvotes}
+            className={`button vote-button ${
+              hasMounted && myUpvotes > props.upvotes ? "active" : ""
+            }`}
+            data-upvotes={hasMounted ? myUpvotes : props.upvotes}
           >
             <UpVoteIcon aria-hidden="true" className="upvote-icon" />
-            <p className="vote-count">{props.upvotes}</p>
+            <p className="vote-count">
+              {hasMounted ? myUpvotes : props.upvotes}
+            </p>
           </button>
         </div>
         <div className="comment-info">
