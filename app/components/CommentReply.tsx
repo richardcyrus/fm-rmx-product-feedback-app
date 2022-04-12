@@ -20,6 +20,16 @@ export interface CommentReplyProps {
   replies: Array<CommentReplyProps>;
 }
 
+/**
+ * I'd prefer if this were a traditional function declaration. I think it makes it
+ * easier to read and eliminates the need to set the `displayName` property.
+ *
+ * Intentionally left as an arrow function. Attempting to convert it to a standard
+ * function declaration caused TypeScript to complain about the `ref` property
+ * when using the component in a recursive manner,
+ *
+ * May re-visit in the future for a fix, just don't know how to fix it at the moment.
+ */
 const CommentReply = React.forwardRef(
   (props: CommentReplyProps, ref: ForwardedRef<HTMLFormElement>) => {
     const [isReplyFormOpen, setReplyFormOpen] = useState(false);

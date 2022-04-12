@@ -11,6 +11,7 @@ This is a solution to the [Product feedback app challenge on Frontend Mentor](ht
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
 
@@ -75,6 +76,11 @@ Users should be able to:
 
 - [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently, in the interest of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
 - [React Pre-rendering and Potential Hydration Issue](https://blog.jannikwempe.com/react-pre-rendering-and-potential-hydration-issue): This was used to resolve a React browser warning when updating the upvotes from local storage, but the upvote count in the database was different.
+
+### Continued development
+
+- The `<CommentReply />` component and `React.forwardRef()`.
+  - I'd prefer if this were a traditional function declaration. I think it makes it easier to read. However, my attempt to convert it, caused TypeScript to complain about the `ref` property when using the component in a recursive manner, I don't know yet how to get TypeScript to not complain (without a `ts-ignore` directive).
 
 ### Useful resources
 
