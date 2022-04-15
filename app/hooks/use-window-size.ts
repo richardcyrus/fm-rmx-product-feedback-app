@@ -5,7 +5,7 @@ export default function useWindowSize() {
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
-  useEffect(() => {
+  useEffect(function handleWindowSizeUpdate() {
     // Handler to call on window resize
     function handleResize() {
       // Set window width/height in state
@@ -22,7 +22,9 @@ export default function useWindowSize() {
     handleResize();
 
     // Remove the event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize);
+    return function removeWindowSizeEventListener() {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []); // Empty dependencies ensures that effect is only run on mount
 
   return windowSize;

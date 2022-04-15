@@ -182,18 +182,24 @@ function FeedbackDetail() {
   const addCommentFormRef = useRef<HTMLFormElement>(null);
   const commentReplyFormRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    if (!isNewComment) {
-      addCommentFormRef.current?.reset();
-      setRemainingCharacters(250);
-    }
-  }, [isNewComment]);
+  useEffect(
+    function handleAddCommentUpdates() {
+      if (!isNewComment) {
+        addCommentFormRef.current?.reset();
+        setRemainingCharacters(250);
+      }
+    },
+    [isNewComment]
+  );
 
-  useEffect(() => {
-    if (!isCommentReply) {
-      commentReplyFormRef.current?.reset();
-    }
-  }, [isCommentReply]);
+  useEffect(
+    function handleCommentReplyUpdates() {
+      if (!isCommentReply) {
+        commentReplyFormRef.current?.reset();
+      }
+    },
+    [isCommentReply]
+  );
 
   return (
     <>
