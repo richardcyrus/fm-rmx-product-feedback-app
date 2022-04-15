@@ -67,19 +67,27 @@ Users should be able to:
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [Remix](https://remix.run/) - a full stack web framework
-- [React](https://reactjs.org/) - JS library
+- [Remix](https://remix.run/) - a full stack web framework.
+- [React](https://reactjs.org/) - JS library.
 - [Reach UI](https://reach.tech/) - React-based design system.
-- [Prisma](https://www.prisma.io/) - Next-generation Node.js and TypeScript ORM
+- [Prisma](https://www.prisma.io/) - Next-generation Node.js and TypeScript ORM.
+- [Cypress](https://www.cypress.io) - JavaScript end-to-end testing framework.
+- [Vitest](https://vitest.dev) - A blazing fast unit-test framework powered by Vite.
+- [Testing Library](https://testing-library.com) - Simple and complete testing utilities that encourage good testing practices.
 
 ### What I learned
 
+- The testing configuration, using `vitest` is based on the `Indie Stack` from the Remix stacks starter project. I also used the "Testing JavaScript" course by Kent C. Dodds to help me on my journey in testing this Frontend Mentor challenge.
 - [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently, in the interest of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
 - [React Pre-rendering and Potential Hydration Issue](https://blog.jannikwempe.com/react-pre-rendering-and-potential-hydration-issue): This was used to resolve a React browser warning when updating the upvotes from local storage, but the upvote count in the database was different.
 
 ### Continued development
 
-- The `<CommentReply />` component and `React.forwardRef()`.
+I initially started this project with a Next JS implementation. I will likely revisit that implementation and make changes based on what I've done here.
+
+I decided to re-implement in Remix, to go back to my roots in web development. Other than learning basic TypeScript as part of this (and the initial Next JS implementation), I managed to simplify the app significantly.
+
+- The `<CommentReply />` component and `React.forwardRef()`:
   - I'd prefer if this were a traditional function declaration. I think it makes it easier to read. However, my attempt to convert it, caused TypeScript to complain about the `ref` property when using the component in a recursive manner, I don't know yet how to get TypeScript to not complain (without a `ts-ignore` directive).
 
 ### Useful resources
@@ -101,6 +109,7 @@ Users should be able to:
 - [How to Use PostCSS as a Configurable Alternative to Sass](https://www.sitepoint.com/postcss-sass-configurable-alternative/)
 - [Styling Remix using Tailwind and PostCSS](https://codegino.com/blog/remix-styling-tailwind-postcss)
 - [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
+- [toTitleCase | 30 Seconds of TypeScript](https://decipher.dev/30-seconds-of-typescript/docs/toTitleCase/)
 
 ## Author
 

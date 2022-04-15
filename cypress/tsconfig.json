@@ -16,6 +16,10 @@
     "typeRoots": ["../types", "../node_modules/@types"],
     "types": ["node", "cypress", "cypress-axe", "@testing-library/cypress"]
   },
+  "exclude": [
+    "../node_modules/@types/jest",
+    "../node_modules/@testing-library/jest-dom"
+  ],
   "include": [
     "integration/**/*",
     "plugins/**/*",
