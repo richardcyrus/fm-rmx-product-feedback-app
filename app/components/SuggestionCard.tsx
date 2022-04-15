@@ -8,7 +8,7 @@ import CommentIcon from "~/assets/shared/IconComments";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import { useMounted } from "~/hooks/use-mounted";
 import suggestionCardStylesUrl from "~/styles/suggestion-card.css";
-import { toTitleCase } from "~/utils/stringUtils";
+import { toTitleCase } from "~/utils/string-utils";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: suggestionCardStylesUrl }];

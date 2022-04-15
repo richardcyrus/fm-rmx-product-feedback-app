@@ -6,7 +6,7 @@ import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import { useMounted } from "~/hooks/use-mounted";
-import { toTitleCase } from "~/utils/stringUtils";
+import { toTitleCase } from "~/utils/string-utils";
 
 export interface FeedbackData {
   id: number;

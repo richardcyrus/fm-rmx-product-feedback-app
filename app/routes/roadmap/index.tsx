@@ -7,7 +7,7 @@ import RoadmapContent from "~/components/RoadmapContent";
 import RoadmapContentMobile, {
   links as RoadmapContentMobileLinks,
 } from "~/components/RoadmapContentMobile";
-import useWindowSize from "~/hooks/useWindowSize";
+import useWindowSize from "~/hooks/use-window-size";
 import { getRoadmapData } from "~/models/productRequest.server";
 import roadmapStylesUrl from "~/styles/roadmap.css";
 

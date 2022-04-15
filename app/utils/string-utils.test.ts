@@ -1,4 +1,4 @@
-import { toTitleCase } from "~/utils/stringUtils";
+import { toTitleCase } from "~/utils/string-utils";
 
 describe("Converts a string to `Title Case`", () => {
   it("should convert a `snake_case` string", () => {

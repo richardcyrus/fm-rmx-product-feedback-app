@@ -6,7 +6,7 @@ import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { getRoadmapSummary } from "~/models/productRequest.server";
 import layoutStylesUrl from "~/styles/feedback-layout.css";
-import { toTitleCase } from "~/utils/stringUtils";
+import { toTitleCase } from "~/utils/string-utils";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: layoutStylesUrl }];
