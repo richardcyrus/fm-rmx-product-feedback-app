@@ -1,7 +1,9 @@
+import type { ForwardedRef } from "react";
 import * as React from "react";
-import { ForwardedRef, useState } from "react";
+import { useState } from "react";
 
-import CommentReply, { CommentReplyProps } from "~/components/CommentReply";
+import type { CommentReplyProps } from "~/components/CommentReply";
+import CommentReply from "~/components/CommentReply";
 import CommentReplyForm from "~/components/CommentReplyForm";
 
 function FeedbackComment(

@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import type { SVGProps } from "react";
 
 function SvgIconSuggestions(props: SVGProps<SVGSVGElement>) {
   return (

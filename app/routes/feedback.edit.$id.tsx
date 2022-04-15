@@ -1,14 +1,17 @@
 import { useState } from "react";
 
-import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
+import type {
+  ActionFunction,
+  LinksFunction,
+  LoaderFunction,
+} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Form,
-  json,
-  redirect,
-  useNavigate,
-  useLoaderData,
   useActionData,
-} from "remix";
+  useLoaderData,
+  useNavigate,
+} from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 

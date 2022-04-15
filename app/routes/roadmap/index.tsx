@@ -1,9 +1,9 @@
-import type { LinksFunction, LoaderFunction } from "remix";
-import { json, useLoaderData } from "remix";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
-import RoadmapContent, {
-  RoadmapContentProps as LoaderData,
-} from "~/components/RoadmapContent";
+import type { RoadmapContentProps as LoaderData } from "~/components/RoadmapContent";
+import RoadmapContent from "~/components/RoadmapContent";
 import RoadmapContentMobile, {
   links as RoadmapContentMobileLinks,
 } from "~/components/RoadmapContentMobile";

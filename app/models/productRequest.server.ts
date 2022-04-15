@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { json } from "remix";
+import { json } from "@remix-run/node";
 
 import { db } from "~/utils/db.server";
 

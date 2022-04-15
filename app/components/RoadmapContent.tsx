@@ -1,4 +1,5 @@
-import RoadmapCard, { FeedbackData } from "~/components/RoadmapCard";
+import type { FeedbackData } from "~/components/RoadmapCard";
+import RoadmapCard from "~/components/RoadmapCard";
 import RoadmapHeader from "~/components/RoadmapHeader";
 
 export interface RoadmapContentProps {

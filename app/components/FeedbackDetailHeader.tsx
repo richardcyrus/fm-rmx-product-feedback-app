@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "remix";
+import { Link, useNavigate } from "@remix-run/react";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 

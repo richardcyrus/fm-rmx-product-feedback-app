@@ -1,4 +1,4 @@
-import type { LinksFunction } from "remix";
+import type { LinksFunction } from "@remix-run/node";
 
 import NoSuggestionIcon from "~/assets/suggestions/IllustrationEmpty";
 import AddFeedbackButton from "~/components/AddFeedbackButton";

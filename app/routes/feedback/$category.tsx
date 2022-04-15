@@ -1,15 +1,16 @@
 import * as React from "react";
 
-import { Form, json, useLoaderData, useNavigate, useSubmit } from "remix";
-import type { LinksFunction, LoaderFunction } from "remix";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Form, useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import NoSuggestionsCard, {
   links as NoSuggestionsCardLinks,
 } from "~/components/NoSuggestionsCard";
+import type { SuggestionCardProps } from "~/components/SuggestionCard";
 import SuggestionCard, {
   links as SuggestionCardLinks,
-  SuggestionCardProps,
 } from "~/components/SuggestionCard";
 import SuggestionsHeader, {
   links as SuggestionsHeaderLinks,

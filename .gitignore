@@ -219,7 +219,6 @@ cypress/downloads/
 
 /build/
 /public/build
-api/_build
-app/styles
 /api/index.js
+app/styles
 .stylelintcache

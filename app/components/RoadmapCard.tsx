@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Link } from "remix";
+import { Link } from "@remix-run/react";
 
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";

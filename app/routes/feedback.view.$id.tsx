@@ -1,24 +1,27 @@
 import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 
-import type { LinksFunction, LoaderFunction, ActionFunction } from "remix";
+import type {
+  ActionFunction,
+  LinksFunction,
+  LoaderFunction,
+} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Form,
-  json,
-  redirect,
   useActionData,
   useLoaderData,
   useTransition,
-} from "remix";
+} from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
-import { CommentReplyProps } from "~/components/CommentReply";
+import type { CommentReplyProps } from "~/components/CommentReply";
 import FeedbackComment from "~/components/FeedbackComment";
 import FeedbackDetailHeader from "~/components/FeedbackDetailHeader";
+import type { SuggestionCardProps } from "~/components/SuggestionCard";
 import SuggestionCard, {
   links as SuggestionCardLinks,
-  SuggestionCardProps,
 } from "~/components/SuggestionCard";
 import { createComment, createCommentReply } from "~/models/comment.server";
 import { getProductRequestWithCommentsById } from "~/models/productRequest.server";

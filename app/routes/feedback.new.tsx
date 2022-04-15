@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-import type { LinksFunction, ActionFunction } from "remix";
+import type { ActionFunction, LinksFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Form,
-  json,
-  redirect,
-  useNavigate,
   useActionData,
+  useNavigate,
   useTransition,
-} from "remix";
+} from "@remix-run/react";
 import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";

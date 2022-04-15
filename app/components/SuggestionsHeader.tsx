@@ -6,7 +6,7 @@ import {
   ListboxOption,
 } from "@reach/listbox";
 import listboxStyles from "@reach/listbox/styles.css";
-import type { LinksFunction } from "remix";
+import type { LinksFunction } from "@remix-run/node";
 
 import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
 import SuggestionsIcon from "~/assets/suggestions/IconSuggestions";

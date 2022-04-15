@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-import { json, Link, NavLink, Outlet, useLoaderData } from "remix";
-import type { LinksFunction, LoaderFunction } from "remix";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { getRoadmapSummary } from "~/models/productRequest.server";
 import layoutStylesUrl from "~/styles/feedback-layout.css";
