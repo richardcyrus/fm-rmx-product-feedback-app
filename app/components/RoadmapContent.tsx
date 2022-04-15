@@ -8,7 +8,7 @@ export interface RoadmapContentProps {
   inProgressStatusData: FeedbackData[];
 }
 
-export default function RoadmapContent(props: RoadmapContentProps) {
+function RoadmapContent(props: RoadmapContentProps) {
   return (
     <>
       <RoadmapHeader />
@@ -87,3 +87,5 @@ export default function RoadmapContent(props: RoadmapContentProps) {
     </>
   );
 }
+
+export default RoadmapContent;

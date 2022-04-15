@@ -10,7 +10,7 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tabsStyles }];
 };
 
-export default function RoadmapContentMobile(props: RoadmapContentProps) {
+function RoadmapContentMobile(props: RoadmapContentProps) {
   return (
     <>
       <RoadmapHeader />
@@ -118,3 +118,5 @@ export default function RoadmapContentMobile(props: RoadmapContentProps) {
     </>
   );
 }
+
+export default RoadmapContentMobile;

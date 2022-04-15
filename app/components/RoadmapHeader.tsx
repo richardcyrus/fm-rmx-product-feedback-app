@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react";
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import AddFeedbackButton from "~/components/AddFeedbackButton";
 
-export default function RoadmapHeader() {
+function RoadmapHeader() {
   return (
     <>
       <header className="roadmap-header" role="banner">
@@ -19,3 +19,5 @@ export default function RoadmapHeader() {
     </>
   );
 }
+
+export default RoadmapHeader;

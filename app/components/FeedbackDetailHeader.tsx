@@ -7,7 +7,7 @@ type HeaderProps = {
   title: string;
 };
 
-export default function FeedbackDetailHeader(props: HeaderProps) {
+function FeedbackDetailHeader(props: HeaderProps) {
   const navigate = useNavigate();
 
   return (
@@ -31,3 +31,5 @@ export default function FeedbackDetailHeader(props: HeaderProps) {
     </>
   );
 }
+
+export default FeedbackDetailHeader;

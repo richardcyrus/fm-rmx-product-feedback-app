@@ -8,7 +8,7 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: noSuggestionsStylesUrl }];
 };
 
-export default function NoSuggestionsCard() {
+function NoSuggestionsCard() {
   return (
     <div className="no-feedback-container">
       <NoSuggestionIcon className="no-feedback-icon" />
@@ -21,3 +21,5 @@ export default function NoSuggestionsCard() {
     </div>
   );
 }
+
+export default NoSuggestionsCard;

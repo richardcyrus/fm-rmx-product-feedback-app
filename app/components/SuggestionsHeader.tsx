@@ -33,7 +33,7 @@ type ListHeaderProps = {
   sortCriteria: string;
 };
 
-export default function SuggestionsHeader(props: ListHeaderProps) {
+function SuggestionsHeader(props: ListHeaderProps) {
   return (
     <>
       <div className="suggestion-list__header">
@@ -76,3 +76,5 @@ export default function SuggestionsHeader(props: ListHeaderProps) {
     </>
   );
 }
+
+export default SuggestionsHeader;

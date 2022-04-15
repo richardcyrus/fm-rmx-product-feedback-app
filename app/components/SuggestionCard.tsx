@@ -24,7 +24,7 @@ export interface SuggestionCardProps {
   comments: number;
 }
 
-export default function SuggestionCard(props: SuggestionCardProps) {
+function SuggestionCard(props: SuggestionCardProps) {
   const { hasMounted } = useMounted();
   const [myUpvotes, setMyUpvotes] = useLocalStorage(
     String(props.id),
@@ -85,3 +85,5 @@ export default function SuggestionCard(props: SuggestionCardProps) {
     </>
   );
 }
+
+export default SuggestionCard;

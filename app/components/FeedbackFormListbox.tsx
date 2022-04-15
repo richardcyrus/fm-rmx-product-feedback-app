@@ -24,7 +24,7 @@ type ListboxProps = {
   onOptionChange: (value: string) => void;
 };
 
-export default function FeedbackFormListbox(props: ListboxProps) {
+function FeedbackFormListbox(props: ListboxProps) {
   return (
     <>
       <ListboxInput
@@ -55,3 +55,5 @@ export default function FeedbackFormListbox(props: ListboxProps) {
     </>
   );
 }
+
+export default FeedbackFormListbox;

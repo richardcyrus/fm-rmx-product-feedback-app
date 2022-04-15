@@ -18,7 +18,7 @@ export interface FeedbackData {
   comments: number;
 }
 
-export default function RoadmapCard(props: FeedbackData) {
+function RoadmapCard(props: FeedbackData) {
   const { hasMounted } = useMounted();
   const [myUpvotes, setMyUpvotes] = useLocalStorage(
     String(props.id),
@@ -78,3 +78,5 @@ export default function RoadmapCard(props: FeedbackData) {
     </>
   );
 }
+
+export default RoadmapCard;
