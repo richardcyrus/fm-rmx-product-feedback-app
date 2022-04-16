@@ -13,6 +13,7 @@ This is a solution to the [Product feedback app challenge on Frontend Mentor](ht
   - [What I learned](#what-i-learned)
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
+- [Developer Setup](#developer-setup)
 - [Author](#author)
 
 ## Overview
@@ -110,6 +111,18 @@ I decided to re-implement in Remix, to go back to my roots in web development. O
 - [Styling Remix using Tailwind and PostCSS](https://codegino.com/blog/remix-styling-tailwind-postcss)
 - [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
 - [toTitleCase | 30 Seconds of TypeScript](https://decipher.dev/30-seconds-of-typescript/docs/toTitleCase/)
+
+## Developer Setup
+
+1. This project is configured for Node.js version 16+ and `npm` version 8+.
+2. Clone the Repository and checkout or create the branch on which you wish to work.
+3. Copy the `env.example` file and save it as `.env`.
+4. Update the `DATABASE_URL` variable to point to your database environment.
+5. At the shell prompt, in the project folder, if using NVM, type `nvm use` to configure the version of `node` and `npm`.
+6. At the shell prompt, type `npm i` to install the project dependencies.
+7. At the shell prompt, type `npx prisma migrate dev` to configure and seed the database.
+8. At the shell prompt, type `npm run build` to check that the project builds successfully.
+9. At the shell prompt, type `npm run dev` to start the dev server.
 
 ## Author
 
