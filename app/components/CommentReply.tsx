@@ -1,8 +1,7 @@
 import type { ForwardedRef } from "react";
-import * as React from "react";
-import { useState } from "react";
+import { forwardRef } from "react";
 
-import CommentReplyForm from "~/components/CommentReplyForm";
+import CommentReplyEntry from "~/components/CommentReplyEntry";
 
 export interface CommentReplyProps {
   id: number;
@@ -21,66 +20,31 @@ export interface CommentReplyProps {
   replies: Array<CommentReplyProps>;
 }
 
-/**
- * I'd prefer if this were a traditional function declaration. I think it makes it
- * easier to read and eliminates the need to set the `displayName` property.
- *
- * Intentionally left as an arrow function. Attempting to convert it to a standard
- * function declaration caused TypeScript to complain about the `ref` property
- * when using the component in a recursive manner,
- *
- * May re-visit in the future for a fix, just don't know how to fix it at the moment.
- */
-const CommentReply = React.forwardRef(
-  (props: CommentReplyProps, ref: ForwardedRef<HTMLFormElement>) => {
-    const [isReplyFormOpen, setReplyFormOpen] = useState(false);
-
-    const onReplyButtonClick = () => {
-      setReplyFormOpen((currentState) => !currentState);
-    };
-
-    return (
-      <>
-        <div className="feedback-detail-comment-reply">
-          <div className="feedback-detail-comment-heading">
-            <div className="commenter-image">
-              <img
-                src={props.user.image}
-                alt={`Avatar of ${props.user.name}`}
-              />
-            </div>
-            <div className="commenter-names">
-              <h5
-                className="h4 commenter-name"
-                aria-label={`Reply from ${props.user.name}`}
-              >
-                {props.user.name}
-              </h5>
-              <p className="commenter-username">@{props.user.username}</p>
-            </div>
-            <button
-              type="button"
-              className="button button-reply"
-              onClick={onReplyButtonClick}
-            >
-              Reply
-            </button>
-          </div>
-          <p className="comment-text">
-            <span className="replying-to">@{props.replyingTo}</span>
-            &nbsp;&nbsp;
-            {props.content}
-          </p>
-          {isReplyFormOpen ? (
-            <CommentReplyForm
-              ref={ref}
-              replyToCommentId={props.id}
-              replyingToUsername={props.user.username}
-              productRequestId={props.productRequestId}
-            />
-          ) : null}
-          {(props.replies || []).map((reply) => (
-            <CommentReply
+function CommentReply(
+  props: CommentReplyProps,
+  ref: ForwardedRef<HTMLFormElement>
+) {
+  return (
+    <>
+      <div className="feedback-detail-comment-reply">
+        <CommentReplyEntry
+          id={props.id}
+          content={props.content}
+          isReply={props.isReply}
+          replyingTo={props.replyingTo}
+          parentId={props.parentId}
+          userId={props.userId}
+          productRequestId={props.productRequestId}
+          user={props.user}
+          ref={ref}
+          key={props.id}
+        />
+        {(props.replies || []).map((reply) => (
+          <div
+            key={reply.id}
+            className="feedback-detail-comment-reply nested-comment-reply nested-level-one"
+          >
+            <CommentReplyEntry
               id={reply.id}
               content={reply.content}
               isReply={reply.isReply}
@@ -89,16 +53,33 @@ const CommentReply = React.forwardRef(
               userId={reply.userId}
               productRequestId={reply.productRequestId}
               user={reply.user}
-              replies={reply.replies}
               ref={ref}
               key={reply.id}
             />
-          ))}
-        </div>
-      </>
-    );
-  }
-);
-CommentReply.displayName = "CommentReply";
+            {(reply.replies || []).map((entry) => (
+              <div
+                key={entry.id}
+                className="feedback-detail-comment-reply nested-comment-reply nested-level-two"
+              >
+                <CommentReplyEntry
+                  id={entry.id}
+                  content={entry.content}
+                  isReply={entry.isReply}
+                  replyingTo={entry.replyingTo}
+                  parentId={entry.parentId}
+                  userId={entry.userId}
+                  productRequestId={entry.productRequestId}
+                  user={entry.user}
+                  ref={ref}
+                  key={entry.id}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
-export default CommentReply;
+export default forwardRef(CommentReply);

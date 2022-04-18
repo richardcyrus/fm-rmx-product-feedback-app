@@ -88,9 +88,6 @@ I initially started this project with a Next JS implementation. I will likely re
 
 I decided to re-implement in Remix, to go back to my roots in web development. Other than learning basic TypeScript as part of this (and the initial Next JS implementation), I managed to simplify the app significantly.
 
-- The `<CommentReply />` component and `React.forwardRef()`:
-  - I'd prefer if this were a traditional function declaration. I think it makes it easier to read. However, my attempt to convert it, caused TypeScript to complain about the `ref` property when using the component in a recursive manner, I don't know yet how to get TypeScript to not complain (without a `ts-ignore` directive).
-
 ### Useful resources
 
 - [My Custom CSS Reset](https://www.joshwcomeau.com/css/custom-css-reset/)
