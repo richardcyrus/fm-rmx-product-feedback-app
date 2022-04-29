@@ -117,9 +117,10 @@ I decided to re-implement in Remix, to go back to my roots in web development. O
 4. Update the `DATABASE_URL` variable to point to your database environment.
 5. At the shell prompt, in the project folder, if using NVM, type `nvm use` to configure the version of `node` and `npm`.
 6. At the shell prompt, type `npm i` to install the project dependencies.
-7. At the shell prompt, type `npx prisma migrate dev` to configure and seed the database.
-8. At the shell prompt, type `npm run build` to check that the project builds successfully.
-9. At the shell prompt, type `npm run dev` to start the dev server.
+7. At the shell prompt, type `npx prisma db push` to configure the database.
+8. At the shell prompt, type `npm run db:seed` to seed the database with sample data.
+9. At the shell prompt, type `npm run build` to check that the project builds successfully.
+10. At the shell prompt, type `npm run dev` to start the dev server.
 
 ## Author
 
