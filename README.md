@@ -114,7 +114,7 @@ I decided to re-implement in Remix, to go back to my roots in web development. O
 1. This project is configured for Node.js version 16+ and `npm` version 8+.
 2. Clone the Repository and checkout or create the branch on which you wish to work.
 3. Copy the `env.example` file and save it as `.env`.
-4. Update the `DATABASE_URL` variable to point to your database environment.
+4. Update the `PLANETSCALE_PRISMA_DATABASE_URL` variable to point to your database environment.
 5. At the shell prompt, in the project folder, if using NVM, type `nvm use` to configure the version of `node` and `npm`.
 6. At the shell prompt, type `npm i` to install the project dependencies.
 7. At the shell prompt, type `npx prisma db push` to configure the database.
