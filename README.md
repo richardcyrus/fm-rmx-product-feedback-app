@@ -108,6 +108,7 @@ I decided to re-implement in Remix, to go back to my roots in web development. O
 - [Styling Remix using Tailwind and PostCSS](https://codegino.com/blog/remix-styling-tailwind-postcss)
 - [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
 - [toTitleCase | 30 Seconds of TypeScript](https://decipher.dev/30-seconds-of-typescript/docs/toTitleCase/)
+- [How to Test HTTP Responses and Redirects with Cypress](https://www.riccardogiorato.com/blog/a/cypress-http-response)
 
 ## Developer Setup
 

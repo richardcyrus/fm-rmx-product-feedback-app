@@ -20,13 +20,13 @@ function a11yCheck() {
   });
 }
 
-describe("Feedback Category page", () => {
-  beforeEach(() => {
-    cy.visit("/feedback/all");
-  });
-
-  it("Feedback Category page accessibility check", () => {
-    cy.contains("Feedback Board");
-    a11yCheck();
+describe("When visiting the app's base URL", () => {
+  it("should redirect to `/feedback/all`", () => {
+    cy.request({ url: "/", followRedirect: false }).then((res) => {
+      expect(res.status).to.eq(302);
+      expect(res.redirectedToUrl).to.eq(
+        `${Cypress.config("baseUrl")}/feedback/all`
+      );
+    });
   });
 });
