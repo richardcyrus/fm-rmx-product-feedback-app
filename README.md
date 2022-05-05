@@ -84,9 +84,9 @@ Users should be able to:
 
 ### Continued development
 
-I initially started this project with a Next JS implementation. I will likely revisit that implementation and make changes based on what I've done here.
+I initially started this project with a Next.js implementation. I will likely revisit that implementation and make changes based on what I've done here.
 
-I decided to re-implement in Remix, to go back to my roots in web development. Other than learning basic TypeScript as part of this (and the initial Next JS implementation), I managed to simplify the app significantly.
+I decided to re-implement in Remix, to go back to my roots in web development. Other than learning basic TypeScript as part of this (and the initial Next.js implementation), I managed to simplify the app significantly.
 
 ### Useful resources
 
@@ -109,6 +109,7 @@ I decided to re-implement in Remix, to go back to my roots in web development. O
 - [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
 - [toTitleCase | 30 Seconds of TypeScript](https://decipher.dev/30-seconds-of-typescript/docs/toTitleCase/)
 - [How to Test HTTP Responses and Redirects with Cypress](https://www.riccardogiorato.com/blog/a/cypress-http-response)
+- [Setting up Cypress with axe for accessibility](https://timdeschryver.dev/blog/setting-up-cypress-with-axe-for-accessibility#different-color-schemes)
 
 ## Developer Setup
 
