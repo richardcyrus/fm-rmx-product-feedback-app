@@ -110,6 +110,8 @@ I decided to re-implement in Remix, to go back to my roots in web development. O
 - [toTitleCase | 30 Seconds of TypeScript](https://decipher.dev/30-seconds-of-typescript/docs/toTitleCase/)
 - [How to Test HTTP Responses and Redirects with Cypress](https://www.riccardogiorato.com/blog/a/cypress-http-response)
 - [Setting up Cypress with axe for accessibility](https://timdeschryver.dev/blog/setting-up-cypress-with-axe-for-accessibility#different-color-schemes)
+- [Using multiple .env files](https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files)
+- [Isolated Integration Testing with Remix, Vitest, and Prisma](https://www.simplethread.com/isolated-integration-testing-with-remix-vitest-and-prisma/)
 
 ## Developer Setup
 
