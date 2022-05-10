@@ -161,7 +161,7 @@ async function getSortedProductRequestByCategory(
   if (category !== "all") {
     filter = {
       status: { equals: "suggestion" },
-      category: { equals: category },
+      category: { equals: category, mode: "insensitive" },
     };
   } else {
     filter = { status: { equals: "suggestion" } };
