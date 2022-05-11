@@ -10,9 +10,42 @@ describe("When visiting the app's base URL", () => {
     });
   });
 
-  it("it should render the category `All` page", () => {
+  it("it should render the category `All` view", () => {
     cy.visit("/");
-    cy.contains(/feedback board/i);
+    cy.findByRole("link", { name: "All" })
+      .should("exist")
+      .and("have.class", "active");
+  });
+
+  it("should have a link to the Roadmap page", () => {
+    cy.visit("/");
+    cy.findByRole("link", { name: "View" })
+      .should("exist")
+      .and("have.class", "roadmap-view__link")
+      .and("have.attr", "href", "/roadmap");
+  });
+
+  it("should list the Roadmap categories statistics", () => {
+    const roadmapStats = [
+      { category: "In Progress", count: 3 },
+      { category: "Planned", count: 2 },
+      { category: "Live", count: 1 },
+    ];
+
+    cy.visit("/");
+    roadmapStats.forEach((stat, index) => {
+      cy.findByText(stat.category).should("exist");
+      cy.get(
+        `:nth-child(${++index}) > .roadmap-summary__category > .roadmap-summary__category-count`
+      ).should("have.text", stat.count);
+    });
+  });
+
+  it("should have a button to add new Feedback", () => {
+    cy.visit("/");
+    cy.findByRole("link", { name: "Add Feedback" })
+      .should("exist")
+      .and("have.attr", "href", "/feedback/new");
   });
 });
 
