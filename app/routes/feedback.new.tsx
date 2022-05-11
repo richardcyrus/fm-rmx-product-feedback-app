@@ -37,10 +37,11 @@ const FormDataValidator = z.object({
 });
 
 type FormDataErrors = z.inferFlattenedErrors<typeof FormDataValidator>;
+type FormData = z.TypeOf<typeof FormDataValidator>;
 
 type ActionData = {
   errors: FormDataErrors;
-  formData: Record<string, string>;
+  formData: FormData;
 };
 
 export const links: LinksFunction = () => {
@@ -51,25 +52,22 @@ export const links: LinksFunction = () => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = Object.fromEntries(await request.formData()) as Record<
-    string,
-    string
-  >;
+  const formData = Object.fromEntries(await request.formData()) as FormData;
 
-  const result = FormDataValidator.safeParse(formData);
-  if (!result.success) {
-    const errors: FormDataErrors = result.error.flatten();
-
-    return json<ActionData>({ errors, formData }, { status: 400 });
-  }
-
-  const actionType = result.data._action;
+  const actionType = formData._action;
 
   switch (actionType) {
     case "cancel": {
       return redirect("/");
     }
     case "save": {
+      const result = FormDataValidator.safeParse(formData);
+      if (!result.success) {
+        const errors: FormDataErrors = result.error.flatten();
+
+        return json<ActionData>({ errors, formData }, { status: 400 });
+      }
+
       const record = await createProductRequest(
         result.data.title,
         result.data.category,

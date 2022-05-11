@@ -73,6 +73,14 @@ describe("Filter suggestions by category", () => {
   });
 });
 
+describe("Create a product feedback request", () => {
+  it("should allow to cancel create with no new inputs", () => {
+    cy.visit("/feedback/new");
+    cy.findByText(/Cancel/i).click();
+    cy.url().should("include", "/feedback/all");
+  });
+});
+
 /**
  * Considerations:
  * - Move to separate spec where all "pages" are tested for a11y in all viewports.
