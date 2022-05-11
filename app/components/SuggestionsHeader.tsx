@@ -47,13 +47,15 @@ function SuggestionsHeader(props: ListHeaderProps) {
           </span>
           <ListboxInput
             name="sort"
-            aria-labelledby="filter-label"
             defaultValue={props.sortCriteria}
             value={props.sortCriteria}
             onChange={props.onSortOptionsChange}
             required={true}
           >
-            <ListboxButton arrow={<ListboxArrowIcon />}>
+            <ListboxButton
+              aria-labelledby="filter-label"
+              arrow={<ListboxArrowIcon />}
+            >
               {options[props.sortCriteria]}
             </ListboxButton>
             <ListboxPopover>
