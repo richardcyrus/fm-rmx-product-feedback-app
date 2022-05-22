@@ -29,13 +29,15 @@ function FeedbackFormListbox(props: ListboxProps) {
     <>
       <ListboxInput
         name={props.name}
-        aria-labelledby={props.labelledby}
-        aria-describedby={props.describedby}
         defaultValue={props.value}
         required={props.required || false}
         onChange={props.onOptionChange}
       >
-        <ListboxButton arrow={<ListboxArrowIcon />}>
+        <ListboxButton
+          arrow={<ListboxArrowIcon />}
+          aria-labelledby={props.labelledby}
+          aria-describedby={props.describedby}
+        >
           {props.options[props.value]}
         </ListboxButton>
         <ListboxPopover className="feedback-form-popover">

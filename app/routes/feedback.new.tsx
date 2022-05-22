@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Alert from "@reach/alert";
 import type { ActionFunction, LinksFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
@@ -154,9 +155,13 @@ function FeedbackNew() {
               }
             />
             {actionData?.errors?.fieldErrors?.title ? (
-              <div id="title-error" className="invalid-input">
+              <Alert
+                aria-live="polite"
+                id="title-error"
+                className="invalid-input"
+              >
                 {actionData.errors.fieldErrors.title[0]}
-              </div>
+              </Alert>
             ) : null}
           </div>
           <div className="form-control">
@@ -175,7 +180,7 @@ function FeedbackNew() {
               onOptionChange={onCategoryOptionChange}
             />
             {actionData?.errors?.fieldErrors?.category ? (
-              <div className="invalid-input">
+              <div aria-live="polite" className="invalid-input">
                 {actionData.errors.fieldErrors.category[0]}
               </div>
             ) : null}
@@ -209,9 +214,13 @@ function FeedbackNew() {
               }
             />
             {actionData?.errors?.fieldErrors?.description ? (
-              <div id="description-error" className="invalid-input">
+              <Alert
+                aria-live="polite"
+                id="description-error"
+                className="invalid-input"
+              >
                 {actionData.errors.fieldErrors.description[0]}
-              </div>
+              </Alert>
             ) : null}
           </div>
           <div className="form-control-group">
