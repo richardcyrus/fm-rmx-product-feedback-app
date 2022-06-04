@@ -67,7 +67,7 @@ function FilteredCategory() {
 
   return (
     <>
-      <Form id="sortForm" method="post">
+      <Form id="sortForm" method="get">
         <SuggestionsHeader
           count={suggestionsData.length}
           sortCriteria={sort}
