@@ -1,18 +1,15 @@
 import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 
+import Alert from "@reach/alert";
 import type {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
+  MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useTransition,
-} from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
@@ -33,6 +30,10 @@ export const links: LinksFunction = () => {
     { rel: "stylesheet", href: feedbackViewStylesUrl },
   ];
 };
+
+export const meta: MetaFunction = () => ({
+  title: "Feedback Detail | Product Feedback App",
+});
 
 type LoaderData = {
   comments: Array<CommentReplyProps>;
@@ -69,20 +70,24 @@ type CommentReplyFormDataErrors = z.inferFlattenedErrors<
   typeof CommentReplyFormValidator
 >;
 
+type FormData =
+  | z.TypeOf<typeof NewCommentFormValidator>
+  | z.TypeOf<typeof CommentReplyFormValidator>;
+
 type ActionData = {
   errors: CommentReplyFormDataErrors | NewCommentFormDataErrors;
-  formData: Record<string, string>;
+  formData: FormData;
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = Object.fromEntries(await request.formData()) as Record<
-    string,
-    string
-  >;
+  const form = await request.formData();
+  const formData = Object.fromEntries(form) as FormData;
 
-  const actionType = formData._action;
+  console.dir(formData);
 
-  switch (actionType) {
+  // const actionType = formData._action;
+
+  switch (formData._action) {
     case "new_comment": {
       // Handle a new comment
       const result = NewCommentFormValidator.safeParse(formData);
@@ -155,15 +160,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 function FeedbackDetail() {
-  const actionData = useActionData() as ActionData;
   const data = useLoaderData<LoaderData>();
-  const transition = useTransition();
+  const addComment = useFetcher();
   const isNewComment =
-    transition.state === "submitting" &&
-    transition.submission.formData.get("_action") === "new_comment";
-  const isCommentReply =
-    transition.state === "submitting" &&
-    transition.submission.formData.get("_action") === "comment_reply";
+    addComment.state === "submitting" &&
+    addComment.submission.formData.get("_action") === "new_comment";
 
   const [remainingCharacters, setRemainingCharacters] = useState(250);
 
@@ -180,8 +181,8 @@ function FeedbackDetail() {
   };
 
   const addCommentFormRef = useRef<HTMLFormElement>(null);
-  const commentReplyFormRef = useRef<HTMLFormElement>(null);
 
+  // Clear the add comment form on successful save.
   useEffect(
     function handleAddCommentUpdates() {
       if (!isNewComment) {
@@ -190,15 +191,6 @@ function FeedbackDetail() {
       }
     },
     [isNewComment]
-  );
-
-  useEffect(
-    function handleCommentReplyUpdates() {
-      if (!isCommentReply) {
-        commentReplyFormRef.current?.reset();
-      }
-    },
-    [isCommentReply]
   );
 
   return (
@@ -218,12 +210,14 @@ function FeedbackDetail() {
           comments={data.suggestion.comments}
         />
         <div className="feedback-detail-comments">
-          <h3 className="h3 feedback-detail-comment-title">
+          <h3
+            id="comments-section-title"
+            className="h3 feedback-detail-comment-title"
+          >
             {data.suggestion.comments} Comments
           </h3>
           {data.comments.map((comment) => (
             <FeedbackComment
-              ref={commentReplyFormRef}
               key={comment.id}
               id={comment.id}
               content={comment.content}
@@ -238,17 +232,25 @@ function FeedbackDetail() {
           ))}
         </div>
         <div className="feedback-detail-add-comment">
-          <h3 className="h3 feedback-detail-add-comment-title">Add Comment</h3>
-          <Form
+          <h3
+            id={`add-comment-title-${data.suggestion.id}`}
+            className="h3 feedback-detail-add-comment-title"
+          >
+            Add Comment
+          </h3>
+          <addComment.Form
             className="feedback-detail-add-comment-form"
             autoComplete="off"
             method="post"
             ref={addCommentFormRef}
+            id={`add-comment-form-${data.suggestion.id}`}
           >
-            <input type="hidden" name="productId" value={data.suggestion.id} />
-            <label htmlFor="add-comment" className="sr-only">
-              Add comment
-            </label>
+            <input
+              type="hidden"
+              name="productId"
+              data-testid="productId-input"
+              value={data.suggestion.id}
+            />
             <textarea
               name="content"
               id="add-comment"
@@ -257,44 +259,68 @@ function FeedbackDetail() {
               maxLength={250}
               placeholder="Type your comment here"
               defaultValue={
-                actionData?.formData?._action === "new_comment"
-                  ? actionData?.formData?.description
+                addComment.type === "done"
+                  ? addComment.data?.errors
+                    ? addComment.data.formData?._action === "new_comment"
+                      ? addComment.data.formData?.description
+                      : ""
+                    : ""
                   : ""
               }
-              aria-describedby="add-comment-help-block"
+              aria-labelledby={`add-comment-title-${data.suggestion.id}`}
               className={`input ${
-                actionData?.formData?._action === "new_comment"
-                  ? actionData?.errors?.fieldErrors?.content
-                    ? "is-invalid"
+                addComment.type === "done"
+                  ? addComment.data?.errors
+                    ? addComment.data.formData?._action === "new_comment"
+                      ? addComment.data.errors?.fieldErrors?.content
+                        ? "is-invalid"
+                        : ""
+                      : ""
                     : ""
                   : ""
               }`}
               onChange={(e) => onTextareaChange(e)}
               aria-invalid={
-                actionData?.formData?._action === "new_comment"
-                  ? actionData?.errors?.fieldErrors?.content
-                    ? true
+                addComment.type === "done"
+                  ? addComment.data?.errors
+                    ? addComment.data.formData?._action === "new_comment"
+                      ? addComment.data.errors?.fieldErrors?.content
+                        ? true
+                        : undefined
+                      : undefined
                     : undefined
                   : undefined
               }
               aria-errormessage={
-                actionData?.formData?._action === "new_comment"
-                  ? actionData?.errors?.fieldErrors?.content
-                    ? "description-error"
+                addComment.type === "done"
+                  ? addComment.data?.errors
+                    ? addComment.data.formData?._action === "new_comment"
+                      ? addComment.data.errors?.fieldErrors?.content
+                        ? `description-error-${data.suggestion.id}`
+                        : undefined
+                      : undefined
                     : undefined
                   : undefined
               }
             />
-            {actionData?.formData?._action === "new_comment" ? (
-              actionData?.errors?.fieldErrors?.content &&
-              actionData.errors.fieldErrors.content.length > 0 ? (
-                <div id="description-error" className="invalid-input">
-                  {actionData.errors.fieldErrors.content}
-                </div>
+            {addComment.type === "done" ? (
+              addComment.data?.errors ? (
+                addComment.data.formData?._action === "new_comment" ? (
+                  addComment.data.errors?.fieldErrors?.content &&
+                  addComment.data.errors.fieldErrors.content.length > 0 ? (
+                    <Alert
+                      aria-live="polite"
+                      id={`description-error-${data.suggestion.id}`}
+                      className="invalid-input"
+                    >
+                      {addComment.data.errors.fieldErrors.content}
+                    </Alert>
+                  ) : null
+                ) : null
               ) : null
             ) : null}
             <div className="form-control-group">
-              <div className="form-text" id="add-comment-help-block">
+              <div className="form-text" id="remaining-characters">
                 {remainingCharacters} Characters left
               </div>
               <button
@@ -307,7 +333,7 @@ function FeedbackDetail() {
                 {isNewComment ? "Saving..." : "Post Comment"}
               </button>
             </div>
-          </Form>
+          </addComment.Form>
         </div>
       </main>
     </>

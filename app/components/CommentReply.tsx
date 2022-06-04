@@ -1,7 +1,6 @@
-import type { ForwardedRef } from "react";
-import { forwardRef } from "react";
+import { useState } from "react";
 
-import CommentReplyEntry from "~/components/CommentReplyEntry";
+import CommentReplyForm from "~/components/CommentReplyForm";
 
 export interface CommentReplyProps {
   id: number;
@@ -20,66 +19,70 @@ export interface CommentReplyProps {
   replies: Array<CommentReplyProps>;
 }
 
-function CommentReply(
-  props: CommentReplyProps,
-  ref: ForwardedRef<HTMLFormElement>
-) {
+function CommentReply(props: CommentReplyProps) {
+  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
+
+  const onReplyButtonClick = () => {
+    setReplyFormOpen((currentState) => !currentState);
+  };
+
   return (
     <>
       <div className="feedback-detail-comment-reply">
-        <CommentReplyEntry
-          id={props.id}
-          content={props.content}
-          isReply={props.isReply}
-          replyingTo={props.replyingTo}
-          parentId={props.parentId}
-          userId={props.userId}
-          productRequestId={props.productRequestId}
-          user={props.user}
-          ref={ref}
-          key={props.id}
-        />
-        {(props.replies || []).map((reply) => (
-          <div
-            key={reply.id}
-            className="feedback-detail-comment-reply nested-comment-reply nested-level-one"
-          >
-            <CommentReplyEntry
-              id={reply.id}
-              content={reply.content}
-              isReply={reply.isReply}
-              replyingTo={reply.replyingTo}
-              parentId={reply.parentId}
-              userId={reply.userId}
-              productRequestId={reply.productRequestId}
-              user={reply.user}
-              ref={ref}
-              key={reply.id}
-            />
-            {(reply.replies || []).map((entry) => (
-              <div
-                key={entry.id}
-                className="feedback-detail-comment-reply nested-comment-reply nested-level-two"
-              >
-                <CommentReplyEntry
-                  id={entry.id}
-                  content={entry.content}
-                  isReply={entry.isReply}
-                  replyingTo={entry.replyingTo}
-                  parentId={entry.parentId}
-                  userId={entry.userId}
-                  productRequestId={entry.productRequestId}
-                  user={entry.user}
-                  ref={ref}
-                  key={entry.id}
-                />
-              </div>
-            ))}
+        <div className="feedback-detail-comment-heading">
+          <div className="commenter-image">
+            <img src={props.user.image} alt="" />
           </div>
+          <div className="commenter-names">
+            <h5
+              className="h4 commenter-name"
+              aria-label={`Reply from ${props.user.name}`}
+            >
+              {props.user.name}
+            </h5>
+            <p className="commenter-username">@{props.user.username}</p>
+          </div>
+          <button
+            type="button"
+            className="button button-reply"
+            onClick={onReplyButtonClick}
+            key={props.id}
+          >
+            Reply
+          </button>
+        </div>
+        <p className="comment-text">
+          <span className="replying-to">@{props.replyingTo}</span>
+          &nbsp;&nbsp;{props.content}
+        </p>
+        <div
+          className={`${
+            !isReplyFormOpen ? "hidden" : "comment-reply-form-display"
+          }`}
+        >
+          <CommentReplyForm
+            replyToCommentId={props.id}
+            replyingToUsername={props.user.username}
+            productRequestId={props.productRequestId}
+          />
+        </div>
+        {(props.replies || []).map((reply) => (
+          <CommentReply
+            id={reply.id}
+            content={reply.content}
+            isReply={reply.isReply}
+            replyingTo={reply.replyingTo}
+            parentId={reply.parentId}
+            userId={reply.userId}
+            productRequestId={reply.productRequestId}
+            user={reply.user}
+            replies={reply.replies}
+            key={reply.id}
+          />
         ))}
       </div>
     </>
   );
 }
 
-export default forwardRef(CommentReply);
+export default CommentReply;

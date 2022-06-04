@@ -1,15 +1,10 @@
-import type { ForwardedRef } from "react";
-import * as React from "react";
 import { useState } from "react";
 
 import type { CommentReplyProps } from "~/components/CommentReply";
 import CommentReply from "~/components/CommentReply";
 import CommentReplyForm from "~/components/CommentReplyForm";
 
-function FeedbackComment(
-  props: CommentReplyProps,
-  ref: ForwardedRef<HTMLFormElement>
-) {
+function FeedbackComment(props: CommentReplyProps) {
   const [isReplyFormOpen, setReplyFormOpen] = useState(false);
 
   const onReplyButtonClick = () => {
@@ -43,14 +38,17 @@ function FeedbackComment(
           </button>
         </div>
         <p className="comment-text">{props.content}</p>
-        {isReplyFormOpen ? (
+        <div
+          className={`${
+            !isReplyFormOpen ? "hidden" : "comment-reply-form-display"
+          }`}
+        >
           <CommentReplyForm
-            ref={ref}
             replyToCommentId={props.id}
             replyingToUsername={user.username}
             productRequestId={props.productRequestId}
           />
-        ) : null}
+        </div>
         {(props.replies || []).map((reply) => (
           <CommentReply
             id={reply.id}
@@ -62,7 +60,6 @@ function FeedbackComment(
             productRequestId={reply.productRequestId}
             user={reply.user}
             replies={reply.replies}
-            ref={ref}
             key={reply.id}
           />
         ))}
@@ -71,4 +68,4 @@ function FeedbackComment(
   );
 }
 
-export default React.forwardRef(FeedbackComment);
+export default FeedbackComment;

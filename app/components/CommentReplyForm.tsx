@@ -1,7 +1,7 @@
-import type { ForwardedRef } from "react";
-import * as React from "react";
+import { useEffect, useRef } from "react";
 
-import { Form } from "@remix-run/react";
+import Alert from "@reach/alert";
+import { useFetcher } from "@remix-run/react";
 
 interface CommentReplyFormProps {
   replyToCommentId: number;
@@ -9,14 +9,32 @@ interface CommentReplyFormProps {
   productRequestId: number | undefined;
 }
 
-function CommentReplyForm(
-  props: CommentReplyFormProps,
-  ref: ForwardedRef<HTMLFormElement>
-) {
+function CommentReplyForm(props: CommentReplyFormProps) {
+  const replyForm = useFetcher();
+
+  const isCommentReply =
+    replyForm.state === "submitting" &&
+    replyForm.submission.formData.get("_action") === "comment_reply";
+
+  const commentReplyFormRef = useRef<HTMLFormElement>(null);
+
+  // Clear the form on successful save.
+  useEffect(
+    function handleCommentReplyUpdates() {
+      if (!isCommentReply) {
+        commentReplyFormRef.current?.reset();
+      }
+    },
+    [isCommentReply]
+  );
+
+  // TODO: Must use client side validation! Don't allow submission if invalid!
+  // Because this submits to the parent page, the useFetcher on this component
+  // does not get the server side validation errors.
   return (
     <>
-      <Form
-        ref={ref}
+      <replyForm.Form
+        ref={commentReplyFormRef}
         className="comment-reply-form"
         autoComplete="off"
         method="post"
@@ -32,18 +50,78 @@ function CommentReplyForm(
           value={props.replyingToUsername}
         />
         <input type="hidden" name="productId" value={props.productRequestId} />
-        <label htmlFor="add-comment-reply" className="sr-only">
+        <label
+          htmlFor={`add-comment-reply-${props.replyToCommentId}`}
+          className="sr-only"
+        >
           Add comment reply
         </label>
         <textarea
           name="content"
-          id="add-comment-reply"
+          id={`add-comment-reply-${props.replyToCommentId}`}
           cols={30}
           rows={3}
           maxLength={250}
-          className="input"
           placeholder="Type your reply here"
+          defaultValue={
+            replyForm.type === "done"
+              ? replyForm.data?.errors
+                ? replyForm.data.formData?._action === "new_comment"
+                  ? replyForm.data.formData?.description
+                  : ""
+                : ""
+              : ""
+          }
+          className={`input ${
+            replyForm.type === "done"
+              ? replyForm.data?.errors
+                ? replyForm.data.formData?._action === "new_comment"
+                  ? replyForm.data.errors?.fieldErrors?.content
+                    ? "is-invalid"
+                    : ""
+                  : ""
+                : ""
+              : ""
+          }`}
+          aria-invalid={
+            replyForm.type === "done"
+              ? replyForm.data?.errors
+                ? replyForm.data.formData?._action === "new_comment"
+                  ? replyForm.data.errors?.fieldErrors?.content
+                    ? true
+                    : undefined
+                  : undefined
+                : undefined
+              : undefined
+          }
+          aria-errormessage={
+            replyForm.type === "done"
+              ? replyForm.data?.errors
+                ? replyForm.data.formData?._action === "new_comment"
+                  ? replyForm.data.errors?.fieldErrors?.content
+                    ? `description-error-${props.replyToCommentId}`
+                    : undefined
+                  : undefined
+                : undefined
+              : undefined
+          }
         />
+        {replyForm.type === "done" ? (
+          replyForm.data?.errors ? (
+            replyForm.data.formData?._action === "new_comment" ? (
+              replyForm.data.errors?.fieldErrors?.content &&
+              replyForm.data.errors.fieldErrors.content.length > 0 ? (
+                <Alert
+                  aria-live="polite"
+                  id={`description-error-${props.replyToCommentId}`}
+                  className="invalid-input"
+                >
+                  {replyForm.data.errors.fieldErrors.content}
+                </Alert>
+              ) : null
+            ) : null
+          ) : null
+        ) : null}
         <div className="form-control-group">
           <button
             type="submit"
@@ -54,9 +132,9 @@ function CommentReplyForm(
             Post Reply
           </button>
         </div>
-      </Form>
+      </replyForm.Form>
     </>
   );
 }
 
-export default React.forwardRef(CommentReplyForm);
+export default CommentReplyForm;
