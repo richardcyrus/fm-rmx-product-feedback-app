@@ -13,9 +13,7 @@ import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import NewFeedbackIcon from "~/assets/shared/IconNewFeedback";
-import FeedbackFormListbox, {
-  links as FeedbackFormListboxLinks,
-} from "~/components/FeedbackFormListbox";
+import FeedbackFormListbox from "~/components/FeedbackFormListbox";
 import { createProductRequest } from "~/models/productRequest.server";
 import newFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
@@ -46,10 +44,7 @@ type ActionData = {
 };
 
 export const links: LinksFunction = () => {
-  return [
-    ...FeedbackFormListboxLinks(),
-    { rel: "stylesheet", href: newFeedbackFormStylesUrl },
-  ];
+  return [{ rel: "stylesheet", href: newFeedbackFormStylesUrl }];
 };
 
 export const action: ActionFunction = async ({ request }) => {

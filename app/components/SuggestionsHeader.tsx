@@ -5,7 +5,6 @@ import {
   ListboxList,
   ListboxOption,
 } from "@reach/listbox";
-import listboxStyles from "@reach/listbox/styles.css";
 import type { LinksFunction } from "@remix-run/node";
 
 import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
@@ -14,10 +13,7 @@ import AddFeedbackButton from "~/components/AddFeedbackButton";
 import componentCustomStyles from "~/styles/suggestions-header.css";
 
 export const links: LinksFunction = () => {
-  return [
-    { rel: "stylesheet", href: listboxStyles },
-    { rel: "stylesheet", href: componentCustomStyles },
-  ];
+  return [{ rel: "stylesheet", href: componentCustomStyles }];
 };
 
 const options: Record<string, string> = {

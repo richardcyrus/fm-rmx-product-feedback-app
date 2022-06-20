@@ -9,6 +9,8 @@ import {
 } from "@remix-run/react";
 
 import globalStylesUrl from "~/styles/global-styles.css";
+import resetStyles from "~/styles/reset.css";
+import vendorStyles from "~/styles/vendor.css";
 
 export const meta: MetaFunction = () => {
   return {
@@ -28,6 +30,18 @@ export const links: LinksFunction = () => {
       sizes: "32x32",
       href: "/favicon-32x32.png",
     },
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    {
+      rel: "preconnect",
+      href: "https://fonts.gstatic.com",
+      crossOrigin: "anonymous",
+    },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap",
+    },
+    { rel: "stylesheet", href: resetStyles },
+    { rel: "stylesheet", href: vendorStyles },
     { rel: "stylesheet", href: globalStylesUrl },
   ];
 };

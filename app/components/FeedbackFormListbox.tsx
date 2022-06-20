@@ -5,14 +5,8 @@ import {
   ListboxList,
   ListboxOption,
 } from "@reach/listbox";
-import listboxStyles from "@reach/listbox/styles.css";
-import type { LinksFunction } from "@remix-run/node";
 
 import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: listboxStyles }];
-};
 
 type ListboxProps = {
   name: string;

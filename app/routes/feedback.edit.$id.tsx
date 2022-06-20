@@ -17,9 +17,7 @@ import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import EditFeedbackIcon from "~/assets/shared/IconEditFeedback";
-import FeedbackFormListbox, {
-  links as FeedbackFormListboxLinks,
-} from "~/components/FeedbackFormListbox";
+import FeedbackFormListbox from "~/components/FeedbackFormListbox";
 import {
   deleteProductRequest,
   getProductRequestById,
@@ -32,10 +30,7 @@ import type {
 import editFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
 export const links: LinksFunction = () => {
-  return [
-    ...FeedbackFormListboxLinks(),
-    { rel: "stylesheet", href: editFeedbackFormStylesUrl },
-  ];
+  return [{ rel: "stylesheet", href: editFeedbackFormStylesUrl }];
 };
 
 const categoryOptions: Record<string, string> = {

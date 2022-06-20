@@ -4,18 +4,13 @@ import { useLoaderData } from "@remix-run/react";
 
 import type { RoadmapContentProps as LoaderData } from "~/components/RoadmapContent";
 import RoadmapContent from "~/components/RoadmapContent";
-import RoadmapContentMobile, {
-  links as RoadmapContentMobileLinks,
-} from "~/components/RoadmapContentMobile";
+import RoadmapContentMobile from "~/components/RoadmapContentMobile";
 import useWindowSize from "~/hooks/use-window-size";
 import { getRoadmapData } from "~/models/productRequest.server";
 import roadmapStylesUrl from "~/styles/roadmap.css";
 
 export const links: LinksFunction = () => {
-  return [
-    ...RoadmapContentMobileLinks(),
-    { rel: "stylesheet", href: roadmapStylesUrl },
-  ];
+  return [{ rel: "stylesheet", href: roadmapStylesUrl }];
 };
 
 type RoadmapData = Awaited<ReturnType<typeof getRoadmapData>>;
