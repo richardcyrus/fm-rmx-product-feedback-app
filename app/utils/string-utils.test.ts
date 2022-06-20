@@ -1,3 +1,5 @@
+import { expect } from "vitest";
+
 import { toTitleCase } from "~/utils/string-utils";
 
 describe("Converts a string to `Title Case`", () => {

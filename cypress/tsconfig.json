@@ -24,8 +24,7 @@
     "../node_modules/@testing-library/jest-dom"
   ],
   "include": [
-    "integration/**/*",
-    "plugins/**/*",
+    "e2e/**/*",
     "support/**/*",
     "../node_modules/cypress",
     "../node_modules/@testing-library/cypress"
