@@ -6,7 +6,7 @@ module.exports = {
   env: {
     "jest/globals": false,
   },
-  extends: ["plugin:chai-friendly/recommended", "plugin:cypress/recommended"],
+  extends: ["plugin:cypress/recommended"],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: "./tsconfig.json",
