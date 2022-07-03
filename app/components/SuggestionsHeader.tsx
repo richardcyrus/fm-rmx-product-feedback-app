@@ -54,7 +54,7 @@ function SuggestionsHeader(props: ListHeaderProps) {
             >
               {options[props.sortCriteria]}
             </ListboxButton>
-            <ListboxPopover>
+            <ListboxPopover portal={false}>
               <ListboxList>
                 {Object.keys(options).map((option) => (
                   <ListboxOption

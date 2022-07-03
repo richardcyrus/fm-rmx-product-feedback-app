@@ -34,7 +34,7 @@ function FeedbackFormListbox(props: ListboxProps) {
         >
           {props.options[props.value]}
         </ListboxButton>
-        <ListboxPopover className="feedback-form-popover">
+        <ListboxPopover portal={false} className="feedback-form-popover">
           <ListboxList>
             {Object.keys(props.options).map((option) => (
               <ListboxOption
