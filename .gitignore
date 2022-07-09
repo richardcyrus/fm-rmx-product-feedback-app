@@ -222,3 +222,4 @@ cypress/downloads/
 /api/index.js
 app/styles
 .stylelintcache
+/postgres-data

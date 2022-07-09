@@ -19,6 +19,6 @@
     "target": "ES2019",
     "types": ["vitest/globals"]
   },
-  "exclude": ["./cypress"],
+  "exclude": ["./cypress", "cypress.config.ts"],
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
 }

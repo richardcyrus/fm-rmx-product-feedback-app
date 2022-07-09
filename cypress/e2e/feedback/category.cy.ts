@@ -23,7 +23,6 @@ describe("Filter suggestions by category", () => {
         "active"
       );
 
-      // eslint-disable-next-line chai-friendly/no-unused-expressions
       item.count === 0
         ? cy.findByText(/there is no feedback yet/i).should("exist")
         : cy.get(".suggestion-category").should("have.length", item.count);

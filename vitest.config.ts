@@ -11,5 +11,11 @@ export default defineConfig({
     environment: "happy-dom",
     setupFiles: ["./test/setup-test-env.ts"],
     exclude: ["./cypress", "./node_modules"],
+    watchExclude: [
+      ".*\\/api\\/.*",
+      ".*\\/build\\/.*",
+      ".*\\/node_modules\\/.*",
+      ".*\\/postgres-data\\/.*",
+    ],
   },
 });
