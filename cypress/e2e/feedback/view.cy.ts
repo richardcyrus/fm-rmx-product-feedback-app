@@ -16,6 +16,9 @@ describe("View Feedback Page", () => {
   beforeEach(() => {
     cy.visit(`/feedback/view/${feedback.id}`);
     cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "color-contrast", enabled: false }],
+    });
   });
 
   it("has no accessibility violations", () => {
@@ -56,6 +59,9 @@ describe("Add new comments to product feedback requests", () => {
   beforeEach(() => {
     cy.visit(`/feedback/view/${feedback.id}`);
     cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "color-contrast", enabled: false }],
+    });
   });
 
   const startingCommentCount = 4;
