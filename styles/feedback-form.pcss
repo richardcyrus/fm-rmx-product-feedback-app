@@ -118,7 +118,12 @@
   border-radius: 0.625rem;
   box-shadow: 0 10px 40px -7px rgb(55 63 104 / 35%);
   margin-block-start: 1rem;
-  min-width: 15.9375rem;
+  min-width: 17.4375rem;
+  z-index: 1;
+
+  @media screen and (min-width: 48em) {
+    min-width: 28.5rem;
+  }
 
   &:focus,
   &:focus-within {
