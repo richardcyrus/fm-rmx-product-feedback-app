@@ -12,13 +12,13 @@ model Comment {
   content          String         @db.VarChar(250)
   isReply          Boolean        @default(false)
   replyingTo       String?
-  replies          Comment[]      @relation("ReplyToComment")
-  reply            Comment?       @relation("ReplyToComment", fields: [parentId], references: [id])
   parentId         Int?
-  user             User           @relation(fields: [userId], references: [id])
   userId           Int
-  productRequest   ProductRequest @relation(fields: [productRequestId], references: [id])
   productRequestId Int
+  reply            Comment?       @relation("ReplyToComment", fields: [parentId], references: [id])
+  replies          Comment[]      @relation("ReplyToComment")
+  productRequest   ProductRequest @relation(fields: [productRequestId], references: [id])
+  user             User           @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([productRequestId])
