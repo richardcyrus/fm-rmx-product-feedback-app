@@ -47,7 +47,6 @@
   "homepage": "https://github.com/richardcyrus/fm-rmx-product-feedback-app#readme",
   "dependencies": {
     "@prisma/client": "^4.10.1",
-    "@reach/alert": "^0.17.0",
     "@reach/listbox": "^0.16.2",
     "@reach/tabs": "^0.16.4",
     "@remix-run/node": "^1.6.3",

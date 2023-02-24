@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useRef, useState, useEffect } from "react";
 
-import Alert from "@reach/alert";
 import type {
   ActionFunction,
   LinksFunction,
@@ -308,13 +307,14 @@ function FeedbackDetail() {
                 addComment.data.formData?._action === "new_comment" ? (
                   addComment.data.errors?.fieldErrors?.content &&
                   addComment.data.errors.fieldErrors.content.length > 0 ? (
-                    <Alert
+                    <div
+                      role="alert"
                       aria-live="polite"
                       id={`description-error-${data.suggestion.id}`}
                       className="invalid-input"
                     >
                       {addComment.data.errors.fieldErrors.content}
-                    </Alert>
+                    </div>
                   ) : null
                 ) : null
               ) : null
