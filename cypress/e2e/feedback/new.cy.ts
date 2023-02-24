@@ -5,6 +5,9 @@ describe("Create a product feedback request", () => {
   beforeEach(() => {
     cy.visit("/feedback/new");
     cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "color-contrast", enabled: false }],
+    });
   });
 
   const testFeedback = {

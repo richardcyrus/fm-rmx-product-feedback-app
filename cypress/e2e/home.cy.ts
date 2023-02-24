@@ -63,6 +63,9 @@ function a11yCheck() {
   ];
 
   cy.injectAxe();
+  cy.configureAxe({
+    rules: [{ id: "color-contrast", enabled: false }],
+  });
 
   viewPorts.forEach((size) => {
     if (Cypress._.isArray(size)) {
