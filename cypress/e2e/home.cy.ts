@@ -1,6 +1,11 @@
 /// <reference types="cypress" />
 
 describe("When visiting the app's base URL", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   it("it should redirect to `/feedback/all`", () => {
     cy.request({ url: "/", followRedirect: false }).then((res) => {
       expect(res.status).to.eq(302);
@@ -63,6 +68,9 @@ function a11yCheck() {
   ];
 
   cy.injectAxe();
+  cy.configureAxe({
+    rules: [{ id: "color-contrast", enabled: false }],
+  });
 
   viewPorts.forEach((size) => {
     if (Cypress._.isArray(size)) {

@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 
-import Alert from "@reach/alert";
 import { useFetcher } from "@remix-run/react";
 
 interface CommentReplyFormProps {
@@ -111,13 +110,14 @@ function CommentReplyForm(props: CommentReplyFormProps) {
             replyForm.data.formData?._action === "new_comment" ? (
               replyForm.data.errors?.fieldErrors?.content &&
               replyForm.data.errors.fieldErrors.content.length > 0 ? (
-                <Alert
+                <div
+                  role="alert"
                   aria-live="polite"
                   id={`description-error-${props.replyToCommentId}`}
                   className="invalid-input"
                 >
                   {replyForm.data.errors.fieldErrors.content}
-                </Alert>
+                </div>
               ) : null
             ) : null
           ) : null

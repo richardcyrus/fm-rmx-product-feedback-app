@@ -1,15 +1,12 @@
-import {
-  ListboxInput,
-  ListboxButton,
-  ListboxPopover,
-  ListboxList,
-  ListboxOption,
-} from "@reach/listbox";
+import { Label as RadixLabel } from "@radix-ui/react-label";
+import * as RadixSelect from "@radix-ui/react-select";
 import type { LinksFunction } from "@remix-run/node";
 
-import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
+import IconArrowDown from "~/assets/shared/IconArrowDown";
+import IconCheck from "~/assets/shared/IconCheck";
 import SuggestionsIcon from "~/assets/suggestions/IconSuggestions";
 import AddFeedbackButton from "~/components/AddFeedbackButton";
+
 import componentCustomStyles from "~/styles/suggestions-header.css";
 
 export const links: LinksFunction = () => {
@@ -38,36 +35,46 @@ function SuggestionsHeader(props: ListHeaderProps) {
           <h2 className="h3">{props.count} Suggestions</h2>
         </div>
         <div className="filter-control">
-          <span id="filter-label" className="filter-label">
+          <RadixLabel htmlFor="sort" id="filter-label" className="filter-label">
             Sort by :
-          </span>
-          <ListboxInput
+          </RadixLabel>
+          <RadixSelect.Root
             name="sort"
             defaultValue={props.sortCriteria}
             value={props.sortCriteria}
-            onChange={props.onSortOptionsChange}
+            onValueChange={props.onSortOptionsChange}
             required={true}
           >
-            <ListboxButton
+            <RadixSelect.Trigger
               aria-labelledby="filter-label"
-              arrow={<ListboxArrowIcon />}
+              className="select-trigger"
             >
-              {options[props.sortCriteria]}
-            </ListboxButton>
-            <ListboxPopover portal={false}>
-              <ListboxList>
+              <RadixSelect.Value>
+                {options[props.sortCriteria]}
+              </RadixSelect.Value>
+              <RadixSelect.Icon className="select-arrow">
+                <IconArrowDown />
+              </RadixSelect.Icon>
+            </RadixSelect.Trigger>
+            <RadixSelect.Content className="select-content" position="popper">
+              <RadixSelect.Viewport className="select-viewport">
                 {Object.keys(options).map((option) => (
-                  <ListboxOption
+                  <RadixSelect.Item
+                    className="select-option"
                     key={option}
                     value={option}
-                    label={options[option]}
                   >
-                    {options[option]}
-                  </ListboxOption>
+                    <RadixSelect.ItemText>
+                      {options[option]}
+                    </RadixSelect.ItemText>
+                    <RadixSelect.ItemIndicator className="select-selected">
+                      <IconCheck />
+                    </RadixSelect.ItemIndicator>
+                  </RadixSelect.Item>
                 ))}
-              </ListboxList>
-            </ListboxPopover>
-          </ListboxInput>
+              </RadixSelect.Viewport>
+            </RadixSelect.Content>
+          </RadixSelect.Root>
         </div>
         <AddFeedbackButton />
       </div>

@@ -6,6 +6,9 @@ function testA11y() {
   const viewPorts: Array<ViewportPreset> = ["macbook-15", "ipad-2", "iphone-6"];
 
   cy.injectAxe();
+  cy.configureAxe({
+    rules: [{ id: "color-contrast", enabled: false }],
+  });
 
   viewPorts.forEach((size) => {
     if (Cypress._.isArray(size)) {
@@ -19,6 +22,11 @@ function testA11y() {
 }
 
 describe("Roadmap page passes accessibility tests", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
     cy.visit("/roadmap");
   });

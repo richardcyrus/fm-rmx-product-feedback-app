@@ -10,7 +10,6 @@ import {
 
 import globalStylesUrl from "~/styles/global-styles.css";
 import resetStyles from "~/styles/reset.css";
-import vendorStyles from "~/styles/vendor.css";
 
 export const meta: MetaFunction = () => {
   return {
@@ -41,7 +40,6 @@ export const links: LinksFunction = () => {
       href: "https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap",
     },
     { rel: "stylesheet", href: resetStyles },
-    { rel: "stylesheet", href: vendorStyles },
     { rel: "stylesheet", href: globalStylesUrl },
   ];
 };

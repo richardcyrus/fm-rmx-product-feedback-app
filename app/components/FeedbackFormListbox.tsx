@@ -1,12 +1,7 @@
-import {
-  ListboxInput,
-  ListboxButton,
-  ListboxPopover,
-  ListboxList,
-  ListboxOption,
-} from "@reach/listbox";
+import * as RadixSelect from "@radix-ui/react-select";
 
-import ListboxArrowIcon from "~/assets/shared/IconArrowDown";
+import IconArrowDown from "~/assets/shared/IconArrowDown";
+import IconCheck from "~/assets/shared/IconCheck";
 
 type ListboxProps = {
   name: string;
@@ -21,33 +16,44 @@ type ListboxProps = {
 function FeedbackFormListbox(props: ListboxProps) {
   return (
     <>
-      <ListboxInput
+      <RadixSelect.Root
         name={props.name}
         defaultValue={props.value}
         required={props.required || false}
-        onChange={props.onOptionChange}
+        onValueChange={props.onOptionChange}
       >
-        <ListboxButton
-          arrow={<ListboxArrowIcon />}
+        <RadixSelect.Trigger
           aria-labelledby={props.labelledby}
           aria-describedby={props.describedby}
+          className="select-trigger"
         >
-          {props.options[props.value]}
-        </ListboxButton>
-        <ListboxPopover portal={false} className="feedback-form-popover">
-          <ListboxList>
+          <RadixSelect.Value>{props.options[props.value]}</RadixSelect.Value>
+          <RadixSelect.Icon className="select-arrow">
+            <IconArrowDown />
+          </RadixSelect.Icon>
+        </RadixSelect.Trigger>
+        <RadixSelect.Content
+          position="popper"
+          className="feedback-form-popover"
+        >
+          <RadixSelect.Viewport>
             {Object.keys(props.options).map((option) => (
-              <ListboxOption
+              <RadixSelect.Item
+                className="select-option"
                 key={option}
                 value={option}
-                label={props.options[option]}
               >
-                {props.options[option]}
-              </ListboxOption>
+                <RadixSelect.ItemText>
+                  {props.options[option]}
+                </RadixSelect.ItemText>
+                <RadixSelect.ItemIndicator className="select-selected">
+                  <IconCheck />
+                </RadixSelect.ItemIndicator>
+              </RadixSelect.Item>
             ))}
-          </ListboxList>
-        </ListboxPopover>
-      </ListboxInput>
+          </RadixSelect.Viewport>
+        </RadixSelect.Content>
+      </RadixSelect.Root>
     </>
   );
 }

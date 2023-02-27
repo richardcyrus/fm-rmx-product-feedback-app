@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import faker from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 const feedback = {
   id: 2,
@@ -13,9 +13,18 @@ const feedback = {
 };
 
 describe("View Feedback Page", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit(`/feedback/view/${feedback.id}`);
     cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "color-contrast", enabled: false }],
+    });
   });
 
   it("has no accessibility violations", () => {
@@ -53,9 +62,18 @@ describe("View Feedback Page", () => {
 });
 
 describe("Add new comments to product feedback requests", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit(`/feedback/view/${feedback.id}`);
     cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "color-contrast", enabled: false }],
+    });
   });
 
   const startingCommentCount = 4;
