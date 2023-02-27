@@ -39,47 +39,6 @@
   }
 }
 
-[data-reach-tab-list] {
-  background: #f7f8fd;
-  display: flex;
-  height: 3.6875em;
-  justify-content: space-around;
-}
-
-[data-reach-tab] {
-  &[data-selected] {
-    border-bottom-width: 0.25rem;
-  }
-
-  &:not([data-selected]) {
-    opacity: 0.4;
-  }
-}
-
-.tab__planned[data-selected] {
-  color: #f49f85;
-}
-
-.tab__in-progress[data-selected] {
-  color: #ad1fea;
-}
-
-.tab__live[data-selected] {
-  color: #62bcfa;
-}
-
-[data-reach-tab-panels] {
-  position: relative;
-
-  &::before {
-    background: rgb(140 146 179 / 25%);
-    content: "";
-    height: 1px;
-    inset: 0;
-    position: absolute;
-  }
-}
-
 .container {
   @media screen and (min-width: 48em) {
     column-gap: 0.625rem;
@@ -262,8 +221,47 @@
   }
 }
 
-[data-reach-tab-panel] {
+.tabs-list {
+  background: #f7f8fd;
+  display: flex;
+  height: 3.6875em;
+  justify-content: space-around;
+}
+
+.tab {
+  &[data-state="active"] {
+    border-bottom-style: solid;
+    border-bottom-width: 0.25rem;
+  }
+
+  &:not([data-state="active"]) {
+    opacity: 0.4;
+  }
+}
+
+.tab__planned[data-state="active"] {
+  color: #f49f85;
+}
+
+.tab__in-progress[data-state="active"] {
+  color: #ad1fea;
+}
+
+.tab__live[data-state="active"] {
+  color: #62bcfa;
+}
+
+.tab-panel {
   padding-inline: 1.5em;
+  position: relative;
+
+  &::before {
+    background: rgb(140 146 179 / 25%);
+    content: "";
+    height: 1px;
+    inset: 0;
+    position: absolute;
+  }
 
   .column {
     padding-block-end: 6.125rem;
