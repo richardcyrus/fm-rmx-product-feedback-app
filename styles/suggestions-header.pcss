@@ -1,13 +1,15 @@
-[data-reach-listbox-arrow] {
+.select-arrow {
   align-self: center;
   font-size: inherit;
+  padding-left: 0.25rem;
   transform: rotate(0deg);
 }
 
-[data-reach-listbox-button] {
+.select-trigger {
   align-items: center;
   border-color: transparent;
   color: #f2f4fe;
+  display: inline-flex;
   font-size: 0.8125rem;
   font-weight: var(--font-weight-bold);
   line-height: 1.1875rem;
@@ -23,30 +25,22 @@
     outline-style: dotted;
   }
 
-  &[aria-expanded] {
+  &[data-state="open"] {
     color: rgb(242 244 254 / 75%);
 
-    [data-reach-listbox-arrow] {
+    .select-arrow {
+      padding-right: 0.25rem;
       transform: rotate(180deg);
     }
   }
 }
 
-[data-reach-listbox-popover] {
+.select-content {
   background-color: #fff;
   border: none;
   border-radius: 0.625em;
   box-shadow: 0 10px 40px -7px rgb(55 63 104 / 35%);
   min-width: 15.9375em;
-  top: 8.4375rem !important;
-
-  @media screen and (min-width: 48em) {
-    top: 22.203125rem !important;
-  }
-
-  @media screen and (min-width: 75em) {
-    top: 10.828125rem !important;
-  }
 
   &:focus,
   &:focus-within {
@@ -56,7 +50,15 @@
   }
 }
 
-[data-reach-listbox-option] {
+[data-radix-popper-content-wrapper] {
+  top: 1.625rem !important;
+
+  @media screen and (min-width: 48em) {
+    top: 2.625rem !important;
+  }
+}
+
+.select-option {
   color: #647196;
   cursor: pointer;
   display: flex;
@@ -69,23 +71,27 @@
     line-height: 1.4375rem;
   }
 
-  &[data-current-nav] {
+  & .select-selected {
+    align-self: center;
     background: none;
+    color: #ad1fea;
+    font-weight: var(--font-weight-regular);
+    margin-inline-start: auto;
+  }
+
+  &:focus,
+  &:focus-within {
+    outline-color: transparent;
+    outline-style: solid;
+  }
+
+  &:hover {
     color: #ad1fea;
   }
 
-  &[data-current-selected] {
-    font-weight: var(--font-weight-regular);
-
-    &::after {
-      content: url("/assets/shared/icon-check.svg");
-      margin-inline-start: auto;
-    }
+  &:not(:last-of-type) {
+    border-bottom: 1px solid rgb(58 67 116 / 15%);
   }
-}
-
-[data-reach-listbox-option]:not(:last-of-type) {
-  border-bottom: 1px solid rgb(58 67 116 / 15%);
 }
 
 .suggestion-list__header {

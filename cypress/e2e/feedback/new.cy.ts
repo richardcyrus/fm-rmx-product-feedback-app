@@ -3,6 +3,7 @@ import faker from "@faker-js/faker";
 
 describe("Create a product feedback request", () => {
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit("/feedback/new");
     cy.injectAxe();
     cy.configureAxe({
@@ -29,7 +30,7 @@ describe("Create a product feedback request", () => {
 
   it("should fail validation on empty title", () => {
     cy.findByLabelText(/category/i).click();
-    cy.findByText(testFeedback.category).click();
+    cy.findByRole("option", { name: testFeedback.category }).click();
     cy.findByLabelText(/feedback detail/i).type(testFeedback.description);
     cy.findByRole("button", { name: /add feedback/i }).click();
     cy.checkA11y();
@@ -39,7 +40,7 @@ describe("Create a product feedback request", () => {
   it("should fail validation on empty description", () => {
     cy.findByLabelText(/feedback title/i).type(testFeedback.title);
     cy.findByLabelText(/category/i).click();
-    cy.findByText(testFeedback.category).click();
+    cy.findByRole("option", { name: testFeedback.category }).click();
     cy.findByRole("button", { name: /add feedback/i }).click();
     cy.checkA11y();
     cy.get("#description-error").should("contain", "Can't be empty");
@@ -55,7 +56,7 @@ describe("Create a product feedback request", () => {
   it("should allow to new create feedback", () => {
     cy.findByLabelText(/feedback title/i).type(testFeedback.title);
     cy.findByLabelText(/category/i).click();
-    cy.findByText(testFeedback.category).click();
+    cy.findByRole("option", { name: testFeedback.category }).click();
     cy.findByLabelText(/feedback detail/i).type(testFeedback.description);
     cy.findByRole("button", { name: /add feedback/i }).click();
     cy.url().should("not.include", "/feedback/new");

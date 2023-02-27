@@ -2,6 +2,7 @@
 
 describe("Filter suggestions by category", () => {
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit("/");
   });
 
@@ -30,7 +31,7 @@ describe("Filter suggestions by category", () => {
   });
 });
 
-describe("Sort suggestions", () => {
+describe.only("Sort suggestions", () => {
   const sortVotes = [
     {
       sortType: "Least Upvotes",
@@ -51,6 +52,10 @@ describe("Sort suggestions", () => {
       last: 4,
     },
   ];
+
+  beforeEach(() => {
+    cy.viewport("macbook-16");
+  });
 
   /**
    * When visiting the home page, the default sort is "Most Upvotes". Attempting
@@ -78,7 +83,7 @@ describe("Sort suggestions", () => {
     it(`by ${item.sortType}`, () => {
       cy.visit("/");
       cy.findByLabelText(/sort by/i).click();
-      cy.findByText(item.sortType).click();
+      cy.findByRole("option", { name: item.sortType }).click();
       cy.findByLabelText(/sort by/i).should("have.text", item.sortType);
       cy.get(
         ":nth-child(2) > .suggestion-card > .vote-container > .button"
@@ -93,7 +98,7 @@ describe("Sort suggestions", () => {
     it(`by ${item.sortType}`, () => {
       cy.visit("/");
       cy.findByLabelText(/sort by/i).click();
-      cy.findByText(item.sortType).click();
+      cy.findByRole("option", { name: item.sortType }).click();
       cy.findByLabelText(/sort by/i).should("have.text", item.sortType);
       cy.get(
         ":nth-child(2) > .suggestion-card > .comment-info > .comment-count"
