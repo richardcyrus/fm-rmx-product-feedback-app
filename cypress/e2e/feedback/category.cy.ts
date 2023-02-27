@@ -2,6 +2,7 @@
 
 describe("Filter suggestions by category", () => {
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit("/");
   });
 
@@ -52,6 +53,10 @@ describe("Sort suggestions", () => {
     },
   ];
 
+  beforeEach(() => {
+    cy.viewport("macbook-16");
+  });
+
   /**
    * When visiting the home page, the default sort is "Most Upvotes". Attempting
    * to change the listbox to the same value does not trigger its onChange event.
@@ -78,7 +83,7 @@ describe("Sort suggestions", () => {
     it(`by ${item.sortType}`, () => {
       cy.visit("/");
       cy.findByLabelText(/sort by/i).click();
-      cy.findByText(item.sortType).click();
+      cy.findByRole("option", { name: item.sortType }).click();
       cy.findByLabelText(/sort by/i).should("have.text", item.sortType);
       cy.get(
         ":nth-child(2) > .suggestion-card > .vote-container > .button"
@@ -93,7 +98,7 @@ describe("Sort suggestions", () => {
     it(`by ${item.sortType}`, () => {
       cy.visit("/");
       cy.findByLabelText(/sort by/i).click();
-      cy.findByText(item.sortType).click();
+      cy.findByRole("option", { name: item.sortType }).click();
       cy.findByLabelText(/sort by/i).should("have.text", item.sortType);
       cy.get(
         ":nth-child(2) > .suggestion-card > .comment-info > .comment-count"

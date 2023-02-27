@@ -2,6 +2,8 @@ import { defineConfig } from "cypress";
 
 import { truncateDb } from "@/test/helpers/truncate-db";
 
+import { seed } from "./prisma/seed-test";
+
 export default defineConfig({
   e2e: {
     // We've imported your old cypress plugins here.
@@ -24,6 +26,10 @@ export default defineConfig({
         },
         async resetDb() {
           await truncateDb();
+          return null;
+        },
+        async seedDatabase() {
+          await seed();
           return null;
         },
       });

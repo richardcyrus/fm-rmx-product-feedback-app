@@ -13,7 +13,13 @@ const feedback = {
 };
 
 describe("View Feedback Page", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit(`/feedback/view/${feedback.id}`);
     cy.injectAxe();
     cy.configureAxe({
@@ -56,7 +62,13 @@ describe("View Feedback Page", () => {
 });
 
 describe("Add new comments to product feedback requests", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
+    cy.viewport("macbook-16");
     cy.visit(`/feedback/view/${feedback.id}`);
     cy.injectAxe();
     cy.configureAxe({

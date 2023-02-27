@@ -70,19 +70,21 @@
     width: 28.5rem;
   }
 
-  [data-reach-listbox-arrow] {
+  .select-arrow {
     align-self: center;
     color: #4661e6;
     font-size: inherit;
+    margin-inline-start: auto;
     transform: rotate(0deg);
   }
 
-  [data-reach-listbox-button] {
+  .select-trigger {
     align-items: center;
     background: #f7f8fd;
     border-color: transparent;
     border-radius: 0.3125rem;
     color: #3a4374;
+    display: inline-flex;
     font-size: 0.8125rem;
     font-weight: var(--font-weight-regular);
     height: 3rem;
@@ -104,15 +106,15 @@
       outline-style: solid;
     }
 
-    &[aria-expanded] {
-      [data-reach-listbox-arrow] {
+    &[data-state="open"] {
+      .select-arrow {
         transform: rotate(180deg);
       }
     }
   }
 }
 
-.feedback-form-popover[data-reach-listbox-popover] {
+.feedback-form-popover {
   background-color: #fff;
   border: none;
   border-radius: 0.625rem;
@@ -132,7 +134,7 @@
     outline-style: solid;
   }
 
-  [data-reach-listbox-option] {
+  .select-option {
     color: #647196;
     cursor: pointer;
     display: flex;
@@ -145,23 +147,27 @@
       line-height: 1.4375rem;
     }
 
-    &[data-current-nav] {
-      background: none;
+    &:focus,
+    &:focus-within {
+      outline-color: transparent;
+      outline-style: solid;
+    }
+
+    &:hover {
       color: #ad1fea;
     }
 
-    &[data-current-selected] {
+    & .select-selected {
+      align-self: center;
+      background: none;
+      color: #ad1fea;
       font-weight: var(--font-weight-regular);
-
-      &::after {
-        content: url("/assets/shared/icon-check.svg");
-        margin-inline-start: auto;
-      }
+      margin-inline-start: auto;
     }
-  }
 
-  [data-reach-listbox-option]:not(:last-of-type) {
-    border-bottom: 1px solid rgb(58 67 116 / 15%);
+    &:not(:last-of-type) {
+      border-bottom: 1px solid rgb(58 67 116 / 15%);
+    }
   }
 }
 
