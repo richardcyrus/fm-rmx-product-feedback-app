@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import faker from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 const feedback = {
   id: 2,

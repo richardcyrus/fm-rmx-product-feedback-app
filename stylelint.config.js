@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["stylelint-config-standard", "stylelint-config-prettier"],
+  extends: ["stylelint-config-standard"],
   plugins: ["stylelint-order"],
   rules: {
     "declaration-block-no-redundant-longhand-properties": [
