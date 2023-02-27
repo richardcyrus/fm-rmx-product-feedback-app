@@ -31,7 +31,7 @@ describe("Filter suggestions by category", () => {
   });
 });
 
-describe.only("Sort suggestions", () => {
+describe("Sort suggestions", () => {
   const sortVotes = [
     {
       sortType: "Least Upvotes",

@@ -22,6 +22,11 @@ function testA11y() {
 }
 
 describe("Roadmap page passes accessibility tests", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
     cy.visit("/roadmap");
   });

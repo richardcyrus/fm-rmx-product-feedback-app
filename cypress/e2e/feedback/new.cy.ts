@@ -2,6 +2,11 @@
 import faker from "@faker-js/faker";
 
 describe("Create a product feedback request", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
   beforeEach(() => {
     cy.viewport("macbook-16");
     cy.visit("/feedback/new");
