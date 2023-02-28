@@ -2,7 +2,6 @@ import type { LinksFunction } from "@remix-run/node";
 
 import NoSuggestionIcon from "~/assets/suggestions/IllustrationEmpty";
 import AddFeedbackButton from "~/components/AddFeedbackButton";
-
 import noSuggestionsStylesUrl from "~/styles/no-suggestions-card.css";
 
 export const links: LinksFunction = () => {

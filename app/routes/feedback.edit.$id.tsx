@@ -27,7 +27,6 @@ import type {
   CategoryOptions,
   StatusOptions,
 } from "~/models/productRequest.server";
-
 import editFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
 export const links: LinksFunction = () => {
