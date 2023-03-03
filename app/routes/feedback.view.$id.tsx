@@ -8,7 +8,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
@@ -81,10 +81,6 @@ type ActionData = {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const formData = Object.fromEntries(form) as FormData;
-
-  console.dir(formData);
-
-  // const actionType = formData._action;
 
   switch (formData._action) {
     case "new_comment": {
@@ -160,10 +156,14 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 function FeedbackDetail() {
   const data = useLoaderData<LoaderData>();
+  const navigation = useTransition();
   const addComment = useFetcher();
   const isNewComment =
     addComment.state === "submitting" &&
     addComment.submission.formData.get("_action") === "new_comment";
+  const isCommentReply =
+    navigation.state === "submitting" &&
+    navigation.submission.formData.get("_action") === "comment_reply";
 
   const [remainingCharacters, setRemainingCharacters] = useState(250);
   const [isReplyFormOpen, setReplyFormOpen] = useState(0);
@@ -204,6 +204,16 @@ function FeedbackDetail() {
       }
     },
     [isNewComment]
+  );
+
+  useEffect(
+    function handleCommentReplyUpdates() {
+      if (isCommentReply) {
+        setReplyFormOpen(0);
+        setOpenReplyFormIndex(0);
+      }
+    },
+    [isCommentReply]
   );
 
   return (
