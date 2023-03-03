@@ -1,16 +1,8 @@
-import { useState } from "react";
-
-import type { CommentReplyProps } from "~/components/CommentReply";
+import type { CommentReplyActionProps } from "~/components/CommentReply";
 import CommentReply from "~/components/CommentReply";
 import CommentReplyForm from "~/components/CommentReplyForm";
 
-function FeedbackComment(props: CommentReplyProps) {
-  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
-
-  const onReplyButtonClick = () => {
-    setReplyFormOpen((currentState) => !currentState);
-  };
-
+function FeedbackComment(props: CommentReplyActionProps) {
   const { user } = props;
 
   return (
@@ -32,7 +24,7 @@ function FeedbackComment(props: CommentReplyProps) {
           <button
             type="button"
             className="button button-reply"
-            onClick={onReplyButtonClick}
+            onClick={props.onReplyButtonClick}
           >
             Reply
           </button>
@@ -40,7 +32,7 @@ function FeedbackComment(props: CommentReplyProps) {
         <p className="comment-text">{props.content}</p>
         <div
           className={`${
-            !isReplyFormOpen ? "hidden" : "comment-reply-form-display"
+            !props.isReplyFormOpen ? "hidden" : "comment-reply-form-display"
           }`}
         >
           <CommentReplyForm
@@ -61,6 +53,10 @@ function FeedbackComment(props: CommentReplyProps) {
             user={reply.user}
             replies={reply.replies}
             key={reply.id}
+            isReplyFormOpen={props.openReplyFormIndex === reply.id}
+            onReplyButtonClick={() => props.onReplyFormButtonClick(reply.id)}
+            openReplyFormIndex={props.openReplyFormIndex}
+            onReplyFormButtonClick={props.onReplyFormButtonClick}
           />
         ))}
       </div>

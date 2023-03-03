@@ -166,6 +166,20 @@ function FeedbackDetail() {
     addComment.submission.formData.get("_action") === "new_comment";
 
   const [remainingCharacters, setRemainingCharacters] = useState(250);
+  const [isReplyFormOpen, setReplyFormOpen] = useState(0);
+  const [openReplyFormIndex, setOpenReplyFormIndex] = useState(0);
+
+  const onReplyButtonClick = (key: number) => {
+    setReplyFormOpen((currentState) => {
+      return currentState === 0 ? key : 0;
+    });
+  };
+
+  const onReplyFormButtonClick = (key: number) => {
+    setOpenReplyFormIndex((currentState) => {
+      return currentState === 0 ? key : 0;
+    });
+  };
 
   const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // This check is done, so that the `ts-ignore` rule is safer to use.
@@ -226,6 +240,10 @@ function FeedbackDetail() {
               userId={comment.userId}
               productRequestId={comment.productRequestId}
               user={comment.user}
+              isReplyFormOpen={isReplyFormOpen === comment.id}
+              onReplyButtonClick={() => onReplyButtonClick(comment.id)}
+              openReplyFormIndex={openReplyFormIndex}
+              onReplyFormButtonClick={onReplyFormButtonClick}
               replies={comment.replies}
             />
           ))}

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import CommentReplyForm from "~/components/CommentReplyForm";
 
 export interface CommentReplyProps {
@@ -19,13 +17,14 @@ export interface CommentReplyProps {
   replies: Array<CommentReplyProps>;
 }
 
-function CommentReply(props: CommentReplyProps) {
-  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
+export interface CommentReplyActionProps extends CommentReplyProps {
+  isReplyFormOpen: boolean;
+  onReplyButtonClick: () => void;
+  onReplyFormButtonClick: (index: number) => void;
+  openReplyFormIndex: number;
+}
 
-  const onReplyButtonClick = () => {
-    setReplyFormOpen((currentState) => !currentState);
-  };
-
+function CommentReply(props: CommentReplyActionProps) {
   return (
     <>
       <div className="feedback-detail-comment-reply">
@@ -45,7 +44,7 @@ function CommentReply(props: CommentReplyProps) {
           <button
             type="button"
             className="button button-reply"
-            onClick={onReplyButtonClick}
+            onClick={props.onReplyButtonClick}
             key={props.id}
           >
             Reply
@@ -57,7 +56,7 @@ function CommentReply(props: CommentReplyProps) {
         </p>
         <div
           className={`${
-            !isReplyFormOpen ? "hidden" : "comment-reply-form-display"
+            !props.isReplyFormOpen ? "hidden" : "comment-reply-form-display"
           }`}
         >
           <CommentReplyForm
@@ -78,6 +77,10 @@ function CommentReply(props: CommentReplyProps) {
             user={reply.user}
             replies={reply.replies}
             key={reply.id}
+            isReplyFormOpen={props.openReplyFormIndex === reply.id}
+            onReplyButtonClick={() => props.onReplyFormButtonClick(reply.id)}
+            openReplyFormIndex={props.openReplyFormIndex}
+            onReplyFormButtonClick={props.onReplyFormButtonClick}
           />
         ))}
       </div>
