@@ -46,6 +46,7 @@ function CommentReply(props: CommentReplyActionProps) {
             className="button button-reply"
             onClick={props.onReplyButtonClick}
             key={props.id}
+            id={`reply-button-for-comment-${props.id}`}
           >
             Reply
           </button>
@@ -54,17 +55,15 @@ function CommentReply(props: CommentReplyActionProps) {
           <span className="replying-to">@{props.replyingTo}</span>
           &nbsp;&nbsp;{props.content}
         </p>
-        <div
-          className={`${
-            !props.isReplyFormOpen ? "hidden" : "comment-reply-form-display"
-          }`}
-        >
-          <CommentReplyForm
-            replyToCommentId={props.id}
-            replyingToUsername={props.user.username}
-            productRequestId={props.productRequestId}
-          />
-        </div>
+        {props.isReplyFormOpen ? (
+          <div className="comment-reply-form-display">
+            <CommentReplyForm
+              replyToCommentId={props.id}
+              replyingToUsername={props.user.username}
+              productRequestId={props.productRequestId}
+            />
+          </div>
+        ) : null}
         {(props.replies || []).map((reply) => (
           <CommentReply
             id={reply.id}

@@ -109,4 +109,44 @@ describe("Add new comments to product feedback requests", () => {
   });
 });
 
-describe("Add comment replies to product feedback requests", () => {});
+describe.only("Add comment replies to product feedback requests", () => {
+  before(() => {
+    cy.resetDb();
+    cy.seedDb();
+  });
+
+  beforeEach(() => {
+    cy.viewport("macbook-16");
+    cy.visit(`/feedback/view/${feedback.id}`);
+    cy.injectAxe();
+    cy.configureAxe({
+      rules: [{ id: "color-contrast", enabled: false }],
+    });
+  });
+
+  const startingCommentCount = 4;
+  const shortComment = `${faker.lorem.sentences(5)}`.slice(0, 150);
+  const replyToCommentId = 6;
+
+  it("clicking the 'Reply' button should toggle the comment reply form", () => {
+    cy.get(`#reply-button-for-comment-${replyToCommentId}`).click();
+    cy.get(".comment-reply-form-display").should("exist");
+
+    cy.get(`#reply-button-for-comment-${replyToCommentId}`).click();
+    cy.get(".comment-reply-form-display").should("not.exist");
+  });
+
+  it("should save a new comment reply", () => {
+    cy.get("#comments-section-title").should(
+      "have.text",
+      `${startingCommentCount} Comments`
+    );
+    cy.get(`#reply-button-for-comment-${replyToCommentId}`).click();
+    cy.get(`#add-comment-reply-${replyToCommentId}`).type(shortComment);
+    cy.get(`#post-reply-${replyToCommentId}`).click();
+    cy.get("#comments-section-title").should(
+      "have.text",
+      `${startingCommentCount + 1} Comments`
+    );
+  });
+});

@@ -47,6 +47,7 @@ function CommentReplyForm(props: CommentReplyFormProps) {
             className="button button-primary"
             name="_action"
             value="comment_reply"
+            id={`post-reply-${props.replyToCommentId}`}
           >
             Post Reply
           </button>

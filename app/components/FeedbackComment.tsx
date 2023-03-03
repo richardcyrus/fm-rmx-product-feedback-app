@@ -25,22 +25,21 @@ function FeedbackComment(props: CommentReplyActionProps) {
             type="button"
             className="button button-reply"
             onClick={props.onReplyButtonClick}
+            id={`reply-button-for-comment-${props.id}`}
           >
             Reply
           </button>
         </div>
         <p className="comment-text">{props.content}</p>
-        <div
-          className={`${
-            !props.isReplyFormOpen ? "hidden" : "comment-reply-form-display"
-          }`}
-        >
-          <CommentReplyForm
-            replyToCommentId={props.id}
-            replyingToUsername={user.username}
-            productRequestId={props.productRequestId}
-          />
-        </div>
+        {props.isReplyFormOpen ? (
+          <div className="comment-reply-form-display">
+            <CommentReplyForm
+              replyToCommentId={props.id}
+              replyingToUsername={user.username}
+              productRequestId={props.productRequestId}
+            />
+          </div>
+        ) : null}
         {(props.replies || []).map((reply) => (
           <CommentReply
             id={reply.id}
