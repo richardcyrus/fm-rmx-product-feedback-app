@@ -109,7 +109,10 @@ function FeedbackLayout() {
                       <span className="body1">
                         {toTitleCase(summary.status)}
                       </span>
-                      <span className="roadmap-summary__category-count">
+                      <span
+                        className="roadmap-summary__category-count"
+                        data-cy={`${summary.status.toLocaleLowerCase()}`}
+                      >
                         {summary.count}
                       </span>
                     </p>
