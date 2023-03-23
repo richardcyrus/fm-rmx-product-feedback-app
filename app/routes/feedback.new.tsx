@@ -14,7 +14,6 @@ import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import NewFeedbackIcon from "~/assets/shared/IconNewFeedback";
 import FeedbackFormListbox from "~/components/FeedbackFormListbox";
 import { createProductRequest } from "~/models/productRequest.server";
-
 import newFeedbackFormStylesUrl from "~/styles/feedback-form.css";
 
 const options: Record<string, string> = {

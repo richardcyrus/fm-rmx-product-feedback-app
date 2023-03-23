@@ -32,17 +32,15 @@ describe("When visiting the app's base URL", () => {
 
   it("should list the Roadmap categories statistics", () => {
     const roadmapStats = [
-      { category: "In Progress", count: 3 },
-      { category: "Planned", count: 2 },
-      { category: "Live", count: 1 },
+      { category: "In Progress", slug: "in-progress", count: 3 },
+      { category: "Planned", slug: "planned", count: 2 },
+      { category: "Live", slug: "live", count: 1 },
     ];
 
     cy.visit("/");
     roadmapStats.forEach((stat, index) => {
       cy.findByText(stat.category).should("exist");
-      cy.get(
-        `:nth-child(${++index}) > .roadmap-summary__category > .roadmap-summary__category-count`
-      ).should("have.text", stat.count);
+      cy.get(`[data-cy="${stat.slug}"]`).should("have.text", stat.count);
     });
   });
 
@@ -53,8 +51,6 @@ describe("When visiting the app's base URL", () => {
       .and("have.attr", "href", "/feedback/new");
   });
 });
-
-// describe("View the optimal layout for the app based on screen size", () => {});
 
 /**
  * Considerations:

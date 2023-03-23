@@ -8,7 +8,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
@@ -21,7 +21,6 @@ import SuggestionCard, {
 } from "~/components/SuggestionCard";
 import { createComment, createCommentReply } from "~/models/comment.server";
 import { getProductRequestWithCommentsById } from "~/models/productRequest.server";
-
 import feedbackViewStylesUrl from "~/styles/feedback-view.css";
 
 export const links: LinksFunction = () => {
@@ -82,10 +81,6 @@ type ActionData = {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const formData = Object.fromEntries(form) as FormData;
-
-  console.dir(formData);
-
-  // const actionType = formData._action;
 
   switch (formData._action) {
     case "new_comment": {
@@ -161,12 +156,30 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 function FeedbackDetail() {
   const data = useLoaderData<LoaderData>();
+  const navigation = useTransition();
   const addComment = useFetcher();
   const isNewComment =
     addComment.state === "submitting" &&
     addComment.submission.formData.get("_action") === "new_comment";
+  const isCommentReply =
+    navigation.state === "submitting" &&
+    navigation.submission.formData.get("_action") === "comment_reply";
 
   const [remainingCharacters, setRemainingCharacters] = useState(250);
+  const [isReplyFormOpen, setReplyFormOpen] = useState(0);
+  const [openReplyFormIndex, setOpenReplyFormIndex] = useState(0);
+
+  const onReplyButtonClick = (key: number) => {
+    setReplyFormOpen((currentState) => {
+      return currentState === 0 ? key : 0;
+    });
+  };
+
+  const onReplyFormButtonClick = (key: number) => {
+    setOpenReplyFormIndex((currentState) => {
+      return currentState === 0 ? key : 0;
+    });
+  };
 
   const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // This check is done, so that the `ts-ignore` rule is safer to use.
@@ -191,6 +204,16 @@ function FeedbackDetail() {
       }
     },
     [isNewComment]
+  );
+
+  useEffect(
+    function handleCommentReplyUpdates() {
+      if (isCommentReply) {
+        setReplyFormOpen(0);
+        setOpenReplyFormIndex(0);
+      }
+    },
+    [isCommentReply]
   );
 
   return (
@@ -227,6 +250,10 @@ function FeedbackDetail() {
               userId={comment.userId}
               productRequestId={comment.productRequestId}
               user={comment.user}
+              isReplyFormOpen={isReplyFormOpen === comment.id}
+              onReplyButtonClick={() => onReplyButtonClick(comment.id)}
+              openReplyFormIndex={openReplyFormIndex}
+              onReplyFormButtonClick={onReplyFormButtonClick}
               replies={comment.replies}
             />
           ))}

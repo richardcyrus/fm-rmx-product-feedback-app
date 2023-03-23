@@ -5,9 +5,8 @@ import { json } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { getRoadmapSummary } from "~/models/productRequest.server";
-import { toTitleCase } from "~/utils/string-utils";
-
 import layoutStylesUrl from "~/styles/feedback-layout.css";
+import { toTitleCase } from "~/utils/string-utils";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: layoutStylesUrl }];
@@ -110,7 +109,10 @@ function FeedbackLayout() {
                       <span className="body1">
                         {toTitleCase(summary.status)}
                       </span>
-                      <span className="roadmap-summary__category-count">
+                      <span
+                        className="roadmap-summary__category-count"
+                        data-cy={`${summary.status.toLocaleLowerCase()}`}
+                      >
                         {summary.count}
                       </span>
                     </p>
