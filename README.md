@@ -58,6 +58,7 @@ Users should be able to:
 
 - [Repository](https://github.com/richardcyrus/fm-rmx-product-feedback-app)
 - [Live Site](https://fm-rmx-product-feedback-app.vercel.app/)
+- [Solution URL](https://www.frontendmentor.io/solutions/product-feedback-app-remix-typescript-postcss-9P5iC5R1ms)
 
 ## My process
 
@@ -87,6 +88,8 @@ Users should be able to:
 I initially started this project with a Next.js implementation. I will likely revisit that implementation and make changes based on what I've done here.
 
 I decided to re-implement in Remix, to go back to my roots in web development. Other than learning basic TypeScript as part of this (and the initial Next.js implementation), I managed to simplify the app significantly.
+
+Finish building end-to-end testing for this project.
 
 ### Useful resources
 
