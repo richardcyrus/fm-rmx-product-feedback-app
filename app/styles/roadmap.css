@@ -6,7 +6,7 @@
   padding-block: 1.625em;
   padding-inline: 1.5em;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     border-radius: 0.625em;
     margin-block-start: 3.5em;
     margin-inline: auto;
@@ -15,7 +15,7 @@
     width: 43.0625em;
   }
 
-  @media screen and (min-width: 75em) {
+  @media screen and (width >= 75em) {
     margin-block-start: 4.875em;
     width: 69.375em;
   }
@@ -24,7 +24,7 @@
     min-height: 1.1875rem;
     padding-inline-start: 0;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       justify-content: flex-start;
       min-height: 1.25rem;
     }
@@ -40,7 +40,7 @@
 }
 
 .container {
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     column-gap: 0.625rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -66,7 +66,7 @@
     }
   }
 
-  @media screen and (min-width: 75em) {
+  @media screen and (width >= 75em) {
     column-gap: 1.875rem;
     padding-block-end: 11.1875rem;
     width: 69.375rem;
@@ -99,13 +99,12 @@
     flex-direction: row;
     flex-wrap: wrap;
     margin-block-start: 1rem;
-    padding-block-end: 1.5rem;
-    padding-block-start: 1rem;
+    padding-block: 1rem 1.5rem;
     padding-inline: 1.5rem;
     position: relative;
     width: 20.4375rem;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       padding-block-start: 1.25rem;
       padding-inline: 1.25rem;
       width: 13.9375rem;
@@ -116,10 +115,9 @@
       }
     }
 
-    @media screen and (min-width: 75em) {
+    @media screen and (width >= 75em) {
       margin-block-start: 1.5rem;
-      padding-block-end: 2rem;
-      padding-block-start: 1.5625rem;
+      padding-block: 1.5625rem 2rem;
       padding-inline: 2rem;
       width: 21.875rem;
 
@@ -157,11 +155,11 @@
     }
 
     .vote-button {
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         min-height: 2rem;
       }
 
-      @media screen and (min-width: 75em) {
+      @media screen and (width >= 75em) {
         min-height: 2.5rem;
       }
     }
@@ -264,8 +262,7 @@
   }
 
   .column {
-    padding-block-end: 6.125rem;
-    padding-block-start: 1.5rem;
+    padding-block: 1.5rem 6.125rem;
 
     &-heading {
       font-size: 1.125rem;

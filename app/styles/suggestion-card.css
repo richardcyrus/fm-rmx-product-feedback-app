@@ -11,7 +11,7 @@
     padding: 1.5rem;
     width: 20.4375rem;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       column-gap: 2.5em;
       display: grid;
       grid-template-areas: "vote suggestion comment";
@@ -22,7 +22,7 @@
       width: 43.0625rem;
     }
 
-    @media screen and (min-width: 75em) {
+    @media screen and (width >= 75em) {
       width: 51.5625rem;
     }
 
@@ -31,7 +31,7 @@
       flex-basis: 50%;
       margin-block-start: 1rem;
 
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         margin-block-start: 0;
       }
     }
@@ -43,7 +43,7 @@
       justify-content: flex-end;
       margin-inline-start: auto;
 
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         grid-area: comment;
       }
     }
@@ -58,14 +58,14 @@
     }
 
     .vote-container {
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         align-self: start;
         grid-area: vote;
       }
     }
 
     .vote-button {
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         flex-direction: column;
         min-height: 3.3125em;
         min-width: 2.5em;
@@ -83,7 +83,7 @@
   &-summary {
     flex: 1 0 100%;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       grid-area: suggestion;
     }
   }
@@ -106,7 +106,7 @@
     min-width: 3rem;
     padding-inline: 1rem;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       margin-block-start: 0.75em;
     }
   }
