@@ -8,7 +8,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData, useTransition } from "@remix-run/react";
+import { useFetcher, useLoaderData, useNavigation } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
@@ -30,9 +30,11 @@ export const links: LinksFunction = () => {
   ];
 };
 
-export const meta: MetaFunction = () => ({
-  title: "Feedback Detail | Product Feedback App",
-});
+export const meta: MetaFunction = () => [
+  {
+    title: "Feedback Detail | Product Feedback App",
+  },
+];
 
 type LoaderData = {
   comments: Array<CommentReplyProps>;
@@ -156,14 +158,15 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 function FeedbackDetail() {
   const data = useLoaderData<LoaderData>();
-  const navigation = useTransition();
-  const addComment = useFetcher();
+  const navigation = useNavigation();
+  const addComment = useFetcher<ActionData>();
   const isNewComment =
     addComment.state === "submitting" &&
-    addComment.submission.formData.get("_action") === "new_comment";
+    addComment.formData?.get("_action") === "new_comment";
+  const isAddCommentDone = addComment.state === "idle" && addComment.data != null
   const isCommentReply =
     navigation.state === "submitting" &&
-    navigation.submission.formData.get("_action") === "comment_reply";
+    navigation.formData?.get("_action") === "comment_reply";
 
   const [remainingCharacters, setRemainingCharacters] = useState(250);
   const [isReplyFormOpen, setReplyFormOpen] = useState(0);
@@ -184,11 +187,10 @@ function FeedbackDetail() {
   const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // This check is done, so that the `ts-ignore` rule is safer to use.
     if (event.target.hasAttribute("maxlength")) {
-      let currentLength = event.target.value.length;
-      // @ts-ignore
-      let maxLength: string = event.target.getAttribute("maxlength");
-      let maxCharCount = parseInt(maxLength, 10);
-      let charLeft = maxCharCount - currentLength;
+      const currentLength = event.target.value.length;
+      const maxLength = event.target.getAttribute("maxlength") as string;
+      const maxCharCount = parseInt(maxLength, 10);
+      const charLeft = maxCharCount - currentLength;
       setRemainingCharacters(charLeft);
     }
   };
@@ -286,17 +288,17 @@ function FeedbackDetail() {
               maxLength={250}
               placeholder="Type your comment here"
               defaultValue={
-                addComment.type === "done"
+                isAddCommentDone
                   ? addComment.data?.errors
                     ? addComment.data.formData?._action === "new_comment"
-                      ? addComment.data.formData?.description
+                      ? addComment.data.formData?.content
                       : ""
                     : ""
                   : ""
               }
               aria-labelledby={`add-comment-title-${data.suggestion.id}`}
               className={`input ${
-                addComment.type === "done"
+                isAddCommentDone
                   ? addComment.data?.errors
                     ? addComment.data.formData?._action === "new_comment"
                       ? addComment.data.errors?.fieldErrors?.content
@@ -308,7 +310,7 @@ function FeedbackDetail() {
               }`}
               onChange={(e) => onTextareaChange(e)}
               aria-invalid={
-                addComment.type === "done"
+                isAddCommentDone
                   ? addComment.data?.errors
                     ? addComment.data.formData?._action === "new_comment"
                       ? addComment.data.errors?.fieldErrors?.content
@@ -319,7 +321,7 @@ function FeedbackDetail() {
                   : undefined
               }
               aria-errormessage={
-                addComment.type === "done"
+                isAddCommentDone
                   ? addComment.data?.errors
                     ? addComment.data.formData?._action === "new_comment"
                       ? addComment.data.errors?.fieldErrors?.content
@@ -330,7 +332,7 @@ function FeedbackDetail() {
                   : undefined
               }
             />
-            {addComment.type === "done" ? (
+            {isAddCommentDone ? (
               addComment.data?.errors ? (
                 addComment.data.formData?._action === "new_comment" ? (
                   addComment.data.errors?.fieldErrors?.content &&
