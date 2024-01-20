@@ -43,7 +43,7 @@
   --text-color: #647196;
 }
 
-@media screen and (min-width: 48em) {
+@media screen and (width >= 48em) {
   :root {
     --body1-font-size: 1rem;
     --body1-font-weight: var(--font-weight-regular);
@@ -177,11 +177,11 @@ a.button {
   margin: 0 auto;
   max-width: 23.4375em;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     max-width: 48em;
   }
 
-  @media screen and (min-width: 75em) {
+  @media screen and (width >= 75em) {
     max-width: 69.375em;
   }
 }
@@ -220,7 +220,7 @@ a.button {
   margin-block-start: 1em;
   padding-inline: 1rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.9375rem;
     padding-inline: 1.5rem;
   }
@@ -235,7 +235,7 @@ a.button {
   font-size: 0.8125rem;
   margin-block-start: 0.25rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.875rem;
   }
 }
@@ -260,7 +260,7 @@ textarea.input {
   text-align: center;
   transition: 220ms all ease-in-out;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.875rem;
     min-height: 2.75rem;
     min-width: 9.875rem;
@@ -354,7 +354,7 @@ textarea.input {
   padding-inline: 1em 0.8125em;
   text-align: center;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     min-height: 3.3125rem;
     min-width: 2.5rem;
   }
@@ -388,7 +388,7 @@ textarea.input {
   font-size: 0.8125rem;
   font-weight: var(--font-weight-bold);
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.875rem;
   }
 

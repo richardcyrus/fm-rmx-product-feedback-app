@@ -1,3 +1,4 @@
+import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
   Links,
@@ -12,13 +13,7 @@ import globalStylesUrl from "~/styles/global-styles.css";
 import resetStyles from "~/styles/reset.css";
 
 export const meta: MetaFunction = () => {
-  return {
-    charset: "utf-8",
-    viewport: "width=device-width,initial-scale=1",
-    title: "Product Feedback App | Frontend Mentor",
-    description:
-      "This is a solution to the Product feedback app challenge on Frontend Mentor.",
-  };
+  return [{ title: "Product Feedback App | Frontend Mentor" }];
 };
 
 export const links: LinksFunction = () => {
@@ -41,6 +36,7 @@ export const links: LinksFunction = () => {
     },
     { rel: "stylesheet", href: resetStyles },
     { rel: "stylesheet", href: globalStylesUrl },
+    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   ];
 };
 
@@ -48,6 +44,12 @@ export default function App() {
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="This is a solution to the Product feedback app challenge on Frontend Mentor."
+        />
         <Meta />
         <Links />
       </head>

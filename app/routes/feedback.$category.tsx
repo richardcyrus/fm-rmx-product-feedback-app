@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
@@ -30,7 +28,7 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  let url = new URL(request.url);
+  const url = new URL(request.url);
   let sort = url.searchParams.get("sort");
 
   if (!sort) {
@@ -76,9 +74,11 @@ function FilteredCategory() {
       </Form>
       {suggestionsData.length > 0 ? (
         suggestionsData.map((suggestion) => (
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
           <div
             className="suggestion-card-wrapper"
             key={suggestion.id}
+            /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
             tabIndex={0}
             onClick={() => onSuggestionCardClick(suggestion.id)}
           >
