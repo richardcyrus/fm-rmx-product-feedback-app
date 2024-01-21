@@ -24,6 +24,7 @@
     "lint:code": "eslint --cache --cache-location ./node_modules/.cache/eslint --ignore-path .gitignore \"**/*.[tj]s?(x)\"",
     "lint:css": "stylelint \"**/*.css\" --cache --cache-location ./node_modules/.cache/stylelint",
     "prepare": "husky install",
+    "postinstall": "prisma generate",
     "start": "remix-serve ./build/index.js",
     "test": "npm run db:setup:test && npm run db:seed:test && npm run test:unit",
     "test:unit": "vitest run",
