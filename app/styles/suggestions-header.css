@@ -15,7 +15,7 @@
   line-height: 1.1875rem;
   padding-left: 0.25em;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.875rem;
     line-height: 0.125rem;
   }
@@ -53,7 +53,7 @@
 [data-radix-popper-content-wrapper] {
   top: 1.625rem !important;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     top: 2.625rem !important;
   }
 }
@@ -66,7 +66,7 @@
   line-height: 1.1875rem;
   padding: 0.75rem 1.5rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 1rem;
     line-height: 1.4375rem;
   }
@@ -101,13 +101,13 @@
   height: 3.5em;
   padding-inline: 1.5em;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     border-radius: 0.625em;
     height: 4.5em;
     margin-block-start: 2.5em;
   }
 
-  @media screen and (min-width: 75em) {
+  @media screen and (width >= 75em) {
     margin-block-start: 0;
   }
 
@@ -120,7 +120,7 @@
 .suggestions-count {
   display: none;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     align-items: center;
     color: #fff;
     display: flex;
@@ -145,7 +145,7 @@
   font-weight: var(--font-weight-regular);
   line-height: 1.1875rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.875rem;
     line-height: 1.25rem;
   }

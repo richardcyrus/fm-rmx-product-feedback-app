@@ -1,4 +1,4 @@
-import { Label as RadixLabel } from "@radix-ui/react-label";
+import * as Label from "@radix-ui/react-label";
 import * as RadixSelect from "@radix-ui/react-select";
 import type { LinksFunction } from "@remix-run/node";
 
@@ -34,9 +34,9 @@ function SuggestionsHeader(props: ListHeaderProps) {
           <h2 className="h3">{props.count} Suggestions</h2>
         </div>
         <div className="filter-control">
-          <RadixLabel htmlFor="sort" id="filter-label" className="filter-label">
+          <Label.Root htmlFor="sort" id="filter-label" className="filter-label">
             Sort by :
-          </RadixLabel>
+          </Label.Root>
           <RadixSelect.Root
             name="sort"
             defaultValue={props.sortCriteria}

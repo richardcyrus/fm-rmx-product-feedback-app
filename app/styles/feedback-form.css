@@ -2,7 +2,7 @@
   margin-block-start: 2.125rem;
   margin-inline: 1.5rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     margin-block-start: 3.5rem;
     margin-inline: auto;
     width: 33.75rem;
@@ -23,16 +23,14 @@
 .feedback-form-container {
   background: #fff;
   border-radius: 0.625rem;
-  margin-block-end: 4.8125rem;
-  margin-block-start: 3.5rem;
+  margin-block: 3.5rem 4.8125rem;
   margin-inline: auto;
-  padding-block-end: 1.5rem;
-  padding-block-start: 2.75rem;
+  padding-block: 2.75rem 1.5rem;
   padding-inline: 1.5rem;
   position: relative;
   width: 20.4375rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     margin-block-start: 4.25rem;
     padding-block-start: 3.25rem;
     padding-inline: 2.625rem;
@@ -44,7 +42,7 @@
   height: 40px;
   width: 40px;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     height: 56px;
     width: 56px;
   }
@@ -55,7 +53,7 @@
   position: absolute;
   top: -1.25rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     left: 2.625rem;
     top: -1.75rem;
   }
@@ -64,7 +62,7 @@
 .feedback-form {
   margin-block-start: 1.5rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     margin-block-start: 2.5rem;
     margin-inline: auto;
     width: 28.5rem;
@@ -93,7 +91,7 @@
     padding-inline: 1rem;
     width: 17.4375rem;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       font-size: 0.875rem;
       line-height: 0.125rem;
       padding-inline: 1.5rem;
@@ -123,7 +121,7 @@
   min-width: 17.4375rem;
   z-index: 1;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     min-width: 28.5rem;
   }
 
@@ -142,7 +140,7 @@
     line-height: 1.1875rem;
     padding: 0.75rem 1.5rem;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       font-size: 1rem;
       line-height: 1.4375rem;
     }
@@ -188,7 +186,7 @@
   font-size: 0.8125rem;
   font-weight: var(--font-weight-regular);
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     font-size: 0.875rem;
   }
 }
@@ -199,7 +197,7 @@
   margin-block-start: 2.5rem;
   row-gap: 1rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     column-gap: 1rem;
     flex-direction: row;
     justify-content: flex-end;
@@ -216,7 +214,7 @@ input[type="text"] {
     outline-style: solid;
   }
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     width: 28.5rem;
   }
 }
@@ -226,7 +224,7 @@ textarea {
   resize: none;
   width: 17.4375rem;
 
-  @media screen and (min-width: 48em) {
+  @media screen and (width >= 48em) {
     padding-block: 1rem;
     width: 28.5rem;
   }
@@ -242,12 +240,12 @@ textarea {
   .button {
     align-self: stretch;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       align-self: start;
     }
 
     &-primary {
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         min-height: 2.75rem;
         min-width: 9rem;
         order: 2;
@@ -255,7 +253,7 @@ textarea {
     }
 
     &-secondary {
-      @media screen and (min-width: 48em) {
+      @media screen and (width >= 48em) {
         min-height: 2.75rem;
         min-width: 5.8125rem;
         order: 1;
@@ -266,7 +264,7 @@ textarea {
 
 .edit-feedback-form {
   .form-control-group {
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       justify-content: normal;
     }
   }
@@ -274,7 +272,7 @@ textarea {
   .button {
     align-self: stretch;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       align-self: start;
     }
   }
@@ -282,7 +280,7 @@ textarea {
   .button-primary {
     order: 1;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       min-height: 2.75rem;
       min-width: 9rem;
       order: 3;
@@ -292,7 +290,7 @@ textarea {
   .button-secondary {
     order: 2;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       margin-inline-start: auto;
       min-height: 2.75rem;
       min-width: 5.8125rem;
@@ -302,7 +300,7 @@ textarea {
   .button-danger {
     order: 3;
 
-    @media screen and (min-width: 48em) {
+    @media screen and (width >= 48em) {
       min-height: 2.75rem;
       min-width: 5.8125rem;
       order: 1;

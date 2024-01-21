@@ -6,7 +6,7 @@ import {
   Form,
   useActionData,
   useNavigate,
-  useTransition,
+  useNavigation,
 } from "@remix-run/react";
 import { z } from "zod";
 
@@ -86,7 +86,7 @@ export const action: ActionFunction = async ({ request }) => {
 function FeedbackNew() {
   const navigate = useNavigate();
   const actionData = useActionData() as ActionData;
-  const transition = useTransition();
+  const navigation = useNavigation();
   let category = "feature";
 
   if (actionData && "formData" in actionData) {
@@ -100,8 +100,8 @@ function FeedbackNew() {
   };
 
   const isNewFeedback =
-    transition.state === "submitting" &&
-    transition.submission.formData.get("_action") === "save";
+    navigation.state === "submitting" &&
+    navigation.formData?.get("_action") === "save";
 
   return (
     <>
