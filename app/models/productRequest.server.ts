@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/prisma/generated/prisma/client";
 import { data } from "react-router";
 
-import { db } from "~/utils/db.server";
+import prisma from "~/utils/db.server";
 
 export type SortByOptions =
   | "mostUpvotes"
@@ -19,12 +19,8 @@ export type StatusOptions = "suggestion" | "planned" | "in-progress" | "live";
  * @param {number} id - The id of the product request to find.
  */
 async function getProductRequestById(id: number) {
-  const whereCriteria = Prisma.validator<Prisma.ProductRequestWhereInput>()({
-    id,
-  });
-
-  const productRequest = await db.productRequest.findUnique({
-    where: whereCriteria,
+  const productRequest = await prisma.productRequest.findUnique({
+    where: { id },
   });
 
   if (!productRequest) {
@@ -40,44 +36,35 @@ async function getProductRequestById(id: number) {
  * @param {number} id - The id of the product request to find.
  */
 async function getProductRequestWithCommentsById(id: number) {
-  const productRequestWhere =
-    Prisma.validator<Prisma.ProductRequestWhereInput>()({
-      id,
-    });
-
-  const withCommentReplyUser = Prisma.validator<Prisma.CommentInclude>()({
-    user: true,
-  });
-
-  const withNestedCommentReplies = Prisma.validator<Prisma.CommentInclude>()({
-    user: true,
-    replies: { include: withCommentReplyUser },
-  });
 
   /**
    *  Limitation with Prisma, recursive queries not supported.
    *  This query fragment will only return two levels of replies for the comments.
    *  The count of comments, however, will be the correct total.
    */
-  const productRequestInclude =
-    Prisma.validator<Prisma.ProductRequestInclude>()({
+  const productRequest = await prisma.productRequest.findUnique({
+    where: { id},
+    include: {
       comments: {
         where: { isReply: false },
         include: {
           user: true,
           replies: {
-            include: withNestedCommentReplies,
+            include: {
+              user: true,
+              replies: {
+                include: {
+                  user: true,
+                },
+              },
+            },
           },
         },
       },
       _count: {
         select: { comments: true },
       },
-    });
-
-  const productRequest = await db.productRequest.findUnique({
-    where: productRequestWhere,
-    include: productRequestInclude,
+    },
   });
 
   if (!productRequest) {
@@ -94,19 +81,10 @@ async function getProductRequestWithCommentsById(id: number) {
  * status of `suggestion`.
  */
 async function getRoadmapSummary() {
-  const whereCriteria = Prisma.validator<Prisma.ProductRequestWhereInput>()({
-    status: { not: "suggestion" },
-  });
-
-  const countAggregate =
-    Prisma.validator<Prisma.ProductRequestCountAggregateInputType>()({
-      status: true,
-    });
-
-  const roadmapSummary = await db.productRequest.groupBy({
+  const roadmapSummary = await prisma.productRequest.groupBy({
     by: ["status"],
-    where: whereCriteria,
-    _count: countAggregate,
+    where: {status: { not: "suggestion" }},
+    _count: {status: true},
   });
 
   if (!roadmapSummary) {
@@ -129,12 +107,6 @@ async function getSortedProductRequestByCategory(
 ) {
   let sortCriteria: Prisma.ProductRequestOrderByWithRelationInput;
   let filter: Prisma.ProductRequestWhereInput;
-
-  const includeCommentCount = Prisma.validator<Prisma.ProductRequestInclude>()({
-    _count: {
-      select: { comments: true },
-    },
-  });
 
   switch (sortBy) {
     case "mostUpvotes": {
@@ -167,10 +139,14 @@ async function getSortedProductRequestByCategory(
     filter = { status: { equals: "suggestion" } };
   }
 
-  return db.productRequest.findMany({
+  return prisma.productRequest.findMany({
     where: filter,
     orderBy: sortCriteria,
-    include: includeCommentCount,
+    include: {
+      _count: {
+        select: { comments: true },
+      },
+    },
   });
 }
 
@@ -186,15 +162,13 @@ async function createProductRequest(
   category: string,
   description: string
 ) {
-  const productRequest = Prisma.validator<Prisma.ProductRequestCreateInput>()({
+  return prisma.productRequest.create({ data: {
     title: title,
     category: category,
     upvotes: 0,
     status: "suggestion",
     description: description,
-  });
-
-  return db.productRequest.create({ data: productRequest });
+  }});
 }
 
 /**
@@ -221,7 +195,7 @@ async function updateProductRequest(
     description,
   };
 
-  return db.productRequest.update({
+  return prisma.productRequest.update({
     where,
     data,
   });
@@ -233,7 +207,7 @@ async function updateProductRequest(
  * @param {number} id - The id of the record to delete.
  */
 async function deleteProductRequest(id: number) {
-  return db.productRequest.delete({
+  return prisma.productRequest.delete({
     where: { id },
   });
 }
@@ -244,7 +218,7 @@ async function deleteProductRequest(id: number) {
  * @param {string} filter - The status to filter by.
  */
 async function getRoadmapData(filter: string) {
-  const productRequest = Prisma.validator<Prisma.ProductRequestFindManyArgs>()({
+  return prisma.productRequest.findMany({
     where: { status: filter },
     orderBy: { upvotes: "desc" },
     include: {
@@ -253,8 +227,6 @@ async function getRoadmapData(filter: string) {
       },
     },
   });
-
-  return db.productRequest.findMany(productRequest);
 }
 
 export {
@@ -265,5 +237,5 @@ export {
   getRoadmapData,
   getRoadmapSummary,
   getSortedProductRequestByCategory,
-  updateProductRequest,
+  updateProductRequest
 };

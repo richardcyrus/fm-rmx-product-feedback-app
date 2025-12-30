@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/prisma/generated/prisma/client";
 
-import { db } from "~/utils/db.server";
+import prisma from "~/utils/db.server";
 
 /**
  * For this project, the `current user` is hard-coded to a specific value.
@@ -27,13 +27,11 @@ async function createComment(content: string, id: number) {
       connect: { id },
     };
 
-  const comment = Prisma.validator<Prisma.CommentCreateInput>()({
+  return prisma.comment.create({ data: {
     content: content,
     user: { ...user },
     productRequest: { ...productRequest },
-  });
-
-  return db.comment.create({ data: comment });
+  }});
 }
 
 /**
@@ -57,16 +55,14 @@ async function createCommentReply(
       connect: { id },
     };
 
-  const comment = Prisma.validator<Prisma.CommentCreateInput>()({
+  return prisma.comment.create({ data: {
     content: content,
     isReply: true,
     replyingTo: replyingToUsername,
     productRequest: { ...productRequest },
     user: { ...user },
     reply: { connect: { id: parentId } },
-  });
-
-  return db.comment.create({ data: comment });
+  } });
 }
 
 export { createComment, createCommentReply };

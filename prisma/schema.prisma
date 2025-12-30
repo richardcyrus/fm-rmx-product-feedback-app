@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Comment {
@@ -17,7 +17,7 @@ model Comment {
   productRequestId Int
   reply            Comment?       @relation("ReplyToComment", fields: [parentId], references: [id])
   replies          Comment[]      @relation("ReplyToComment")
-  productRequest   ProductRequest @relation(fields: [productRequestId], references: [id])
+  productRequest   ProductRequest @relation(fields: [productRequestId], references: [id], onDelete: Cascade)
   user             User           @relation(fields: [userId], references: [id])
 
   @@index([userId])

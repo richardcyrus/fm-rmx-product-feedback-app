@@ -229,3 +229,4 @@ cypress/downloads/
 /playwright/.cache/
 
 .react-router/
+prisma/generated/
