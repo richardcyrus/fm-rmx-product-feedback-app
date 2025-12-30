@@ -4,30 +4,31 @@ import type {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
-} from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+} from "react-router";
 import {
+  data,
   Form,
+  redirect,
   useActionData,
   useLoaderData,
   useNavigate,
-} from "@remix-run/react";
+} from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import EditFeedbackIcon from "~/assets/shared/IconEditFeedback";
 import FeedbackFormListbox from "~/components/FeedbackFormListbox";
+import type {
+  CategoryOptions,
+  StatusOptions,
+} from "~/models/productRequest.server";
 import {
   deleteProductRequest,
   getProductRequestById,
   updateProductRequest,
 } from "~/models/productRequest.server";
-import type {
-  CategoryOptions,
-  StatusOptions,
-} from "~/models/productRequest.server";
-import editFeedbackFormStylesUrl from "~/styles/feedback-form.css";
+import editFeedbackFormStylesUrl from "~/styles/feedback-form.css?url";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: editFeedbackFormStylesUrl }];
@@ -81,7 +82,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!result.success) {
     const errors: FormDataErrors = result.error.flatten();
 
-    return json<ActionData>({ errors }, { status: 400 });
+    return data({ errors }, { status: 400 });
   }
 
   const actionType = result.data._action;
@@ -122,7 +123,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   const feedbackId = parseInt(params.id, 10);
 
   const feedback = await getProductRequestById(feedbackId);
-  return json<LoaderData>(feedback);
+  return feedback;
 };
 
 function FeedbackEdit() {

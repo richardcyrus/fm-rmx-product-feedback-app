@@ -1,9 +1,9 @@
 import type { Prisma } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 
-let db = new PrismaClient();
+const db = new PrismaClient();
 
-let productRequestData: Prisma.ProductRequestCreateInput[] = [
+const productRequestData: Prisma.ProductRequestCreateInput[] = [
   {
     title: "Add tags for solutions",
     category: "enhancement",
@@ -429,8 +429,8 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
 async function seed() {
   console.log("Start seeding...");
 
-  for (let pr of productRequestData) {
-    let productRequest = await db.productRequest.create({
+  for (const pr of productRequestData) {
+    const productRequest = await db.productRequest.create({
       data: pr,
     });
 

@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import type { LinksFunction, LoaderFunction } from "react-router";
+import { Link, NavLink, Outlet, useLoaderData } from "react-router";
 
 import { getRoadmapSummary } from "~/models/productRequest.server";
-import layoutStylesUrl from "~/styles/feedback-layout.css";
+import layoutStylesUrl from "~/styles/feedback-layout.css?url";
 import { toTitleCase } from "~/utils/string-utils";
 
 export const links: LinksFunction = () => {
@@ -34,7 +33,7 @@ export const loader: LoaderFunction = async () => {
     { key: "feature", label: "Feature" },
   ];
 
-  return json<LoaderData>({ categories, roadmapSummary });
+  return { categories, roadmapSummary };
 };
 
 function FeedbackLayout() {

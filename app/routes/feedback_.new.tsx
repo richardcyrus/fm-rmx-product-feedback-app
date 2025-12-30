@@ -1,20 +1,21 @@
 import { useState } from "react";
 
-import type { ActionFunction, LinksFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import type { ActionFunction, LinksFunction } from "react-router";
 import {
+  data,
   Form,
+  redirect,
   useActionData,
   useNavigate,
   useNavigation,
-} from "@remix-run/react";
+} from "react-router";
 import { z } from "zod";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import NewFeedbackIcon from "~/assets/shared/IconNewFeedback";
 import FeedbackFormListbox from "~/components/FeedbackFormListbox";
 import { createProductRequest } from "~/models/productRequest.server";
-import newFeedbackFormStylesUrl from "~/styles/feedback-form.css";
+import newFeedbackFormStylesUrl from "~/styles/feedback-form.css?url";
 
 const options: Record<string, string> = {
   feature: "Feature",
@@ -60,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
       if (!result.success) {
         const errors: FormDataErrors = result.error.flatten();
 
-        return json<ActionData>({ errors, formData }, { status: 400 });
+        return data({ errors, formData }, { status: 400 });
       }
 
       const record = await createProductRequest(

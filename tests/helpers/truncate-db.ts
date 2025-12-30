@@ -34,5 +34,5 @@ export async function truncateDb() {
     }
   }
 
-  console.log('Reset database');
+  console.log("Reset database");
 }

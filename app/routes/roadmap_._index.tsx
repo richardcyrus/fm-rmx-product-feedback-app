@@ -1,13 +1,12 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LinksFunction, LoaderFunction } from "react-router";
+import { useLoaderData } from "react-router";
 
 import type { RoadmapContentProps as LoaderData } from "~/components/RoadmapContent";
 import RoadmapContent from "~/components/RoadmapContent";
 import RoadmapContentMobile from "~/components/RoadmapContentMobile";
 import useWindowSize from "~/hooks/use-window-size";
 import { getRoadmapData } from "~/models/productRequest.server";
-import roadmapStylesUrl from "~/styles/roadmap.css";
+import roadmapStylesUrl from "~/styles/roadmap.css?url";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: roadmapStylesUrl }];
@@ -27,11 +26,11 @@ export const loader: LoaderFunction = async () => {
   const plannedStatus = await getRoadmapData("planned");
   const inProgressStatus = await getRoadmapData("in-progress");
 
-  return json<LoaderData>({
+  return {
     liveStatusData: transformRoadmapData(liveStatus),
     plannedStatusData: transformRoadmapData(plannedStatus),
     inProgressStatusData: transformRoadmapData(inProgressStatus),
-  });
+  };
 };
 
 function RoadmapIndex() {

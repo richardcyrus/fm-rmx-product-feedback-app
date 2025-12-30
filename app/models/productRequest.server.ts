@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { json } from "@remix-run/node";
+import { data } from "react-router";
 
 import { db } from "~/utils/db.server";
 
@@ -28,7 +28,7 @@ async function getProductRequestById(id: number) {
   });
 
   if (!productRequest) {
-    throw json(`ProductRequest with id=${id} was not found.`, { status: 404 });
+    throw data(`ProductRequest with id=${id} was not found.`, { status: 404 });
   }
 
   return productRequest;
@@ -81,7 +81,7 @@ async function getProductRequestWithCommentsById(id: number) {
   });
 
   if (!productRequest) {
-    throw json(`ProductRequest with id=${id} was not found`, {
+    throw data(`ProductRequest with id=${id} was not found`, {
       status: 404,
     });
   }
@@ -110,7 +110,7 @@ async function getRoadmapSummary() {
   });
 
   if (!roadmapSummary) {
-    throw json("Roadmap summary information not found!", { status: 404 });
+    throw data("Roadmap summary information not found!", { status: 404 });
   }
 
   return roadmapSummary;
@@ -258,12 +258,12 @@ async function getRoadmapData(filter: string) {
 }
 
 export {
+  createProductRequest,
+  deleteProductRequest,
   getProductRequestById,
   getProductRequestWithCommentsById,
+  getRoadmapData,
   getRoadmapSummary,
   getSortedProductRequestByCategory,
-  createProductRequest,
   updateProductRequest,
-  deleteProductRequest,
-  getRoadmapData,
 };

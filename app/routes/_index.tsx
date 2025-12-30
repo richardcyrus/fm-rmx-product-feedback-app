@@ -1,5 +1,5 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import type { LoaderFunction } from "react-router";
+import { redirect } from "react-router";
 
 /**
  * Redirect to the "/feedback/all" categories route as the default.

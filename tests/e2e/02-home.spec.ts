@@ -1,5 +1,5 @@
-import AxeBuilder from "@axe-core/playwright";
-import { test, expect } from "@playwright/test";
+import { AxeBuilder } from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
 
 import { seed } from "@/prisma/seed-test";
 import { truncateDb } from "@/tests/helpers/truncate-db";
