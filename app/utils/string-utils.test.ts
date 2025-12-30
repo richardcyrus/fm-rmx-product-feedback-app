@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { toTitleCase } from "~/utils/string-utils";
+import { toTitleCase } from "./string-utils";
 
 describe("Converts a string to `Title Case`", () => {
   it("should convert a `snake_case` string", () => {

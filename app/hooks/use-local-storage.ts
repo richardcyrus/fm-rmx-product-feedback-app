@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getStorageValue(key: string, defaultValue: any) {
   if (typeof window !== "undefined") {
     const saved = localStorage.getItem(key);
@@ -7,6 +8,7 @@ function getStorageValue(key: string, defaultValue: any) {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useLocalStorage = (key: string, defaultValue: any) => {
   const [value, setValue] = useState(() => {
     return getStorageValue(key, defaultValue);

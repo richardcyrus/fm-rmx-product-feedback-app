@@ -64,7 +64,7 @@
     background: #fff;
     border-radius: 0.625rem;
     margin-block-start: 1.5rem;
-    padding-block: 1.5rem 1.5rem;
+    padding-block: 1.5rem;
     padding-inline: 1.5rem;
 
     @media screen and (width >= 48em) {
@@ -104,7 +104,7 @@
     position: relative;
 
     @media screen and (width >= 48em) {
-      margin-block: 2rem 2rem;
+      margin-block: 2rem;
       padding-block-start: 2rem;
     }
   }

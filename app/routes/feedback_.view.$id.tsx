@@ -1,14 +1,19 @@
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
-} from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData, useNavigation } from "@remix-run/react";
+} from "react-router";
+import {
+  data,
+  redirect,
+  useFetcher,
+  useLoaderData,
+  useNavigation,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 
@@ -21,7 +26,7 @@ import SuggestionCard, {
 } from "~/components/SuggestionCard";
 import { createComment, createCommentReply } from "~/models/comment.server";
 import { getProductRequestWithCommentsById } from "~/models/productRequest.server";
-import feedbackViewStylesUrl from "~/styles/feedback-view.css";
+import feedbackViewStylesUrl from "~/styles/feedback-view.css?url";
 
 export const links: LinksFunction = () => {
   return [
@@ -91,7 +96,7 @@ export const action: ActionFunction = async ({ request }) => {
       if (!result.success) {
         const errors: NewCommentFormDataErrors = result.error.flatten();
 
-        return json<ActionData>({ errors, formData }, { status: 400 });
+        return data({ errors, formData }, { status: 400 });
       }
 
       const content = result.data.content;
@@ -109,7 +114,7 @@ export const action: ActionFunction = async ({ request }) => {
       if (!result.success) {
         const errors: NewCommentFormDataErrors = result.error.flatten();
 
-        return json<ActionData>({ errors, formData }, { status: 400 });
+        return data({ errors, formData }, { status: 400 });
       }
 
       const content = result.data.content;
@@ -142,7 +147,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   const productRequest = await getProductRequestWithCommentsById(feedbackId);
 
-  return json<LoaderData>({
+  return {
     comments: productRequest.comments,
     suggestion: {
       id: productRequest.id,
@@ -153,7 +158,7 @@ export const loader: LoaderFunction = async ({ params }) => {
       description: productRequest.description,
       comments: productRequest._count.comments,
     },
-  });
+  };
 };
 
 function FeedbackDetail() {
@@ -163,7 +168,8 @@ function FeedbackDetail() {
   const isNewComment =
     addComment.state === "submitting" &&
     addComment.formData?.get("_action") === "new_comment";
-  const isAddCommentDone = addComment.state === "idle" && addComment.data != null
+  const isAddCommentDone =
+    addComment.state === "idle" && addComment.data != null;
   const isCommentReply =
     navigation.state === "submitting" &&
     navigation.formData?.get("_action") === "comment_reply";
@@ -202,6 +208,7 @@ function FeedbackDetail() {
     function handleAddCommentUpdates() {
       if (!isNewComment) {
         addCommentFormRef.current?.reset();
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setRemainingCharacters(250);
       }
     },
@@ -211,6 +218,7 @@ function FeedbackDetail() {
   useEffect(
     function handleCommentReplyUpdates() {
       if (isCommentReply) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setReplyFormOpen(0);
         setOpenReplyFormIndex(0);
       }

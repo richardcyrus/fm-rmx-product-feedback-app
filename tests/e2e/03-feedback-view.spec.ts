@@ -1,6 +1,6 @@
-import AxeBuilder from "@axe-core/playwright";
+import { AxeBuilder } from "@axe-core/playwright";
 import { faker } from "@faker-js/faker";
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 import { seed } from "@/prisma/seed-test";
 import { truncateDb } from "@/tests/helpers/truncate-db";

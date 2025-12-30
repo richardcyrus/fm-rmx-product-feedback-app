@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 
 import LeftArrowIcon from "~/assets/shared/IconArrowLeft";
 import AddFeedbackButton from "~/components/AddFeedbackButton";

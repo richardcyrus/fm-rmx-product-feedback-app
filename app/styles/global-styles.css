@@ -160,17 +160,18 @@ a.button {
 
 .sr-only {
   border: 0;
+  /* stylelint-disable-next-line property-no-deprecated */
   clip: rect(0 0 0 0);
   height: 1px;
   margin: -1px;
   overflow: hidden;
+  overflow-wrap: normal;
   padding: 0;
   position: absolute;
 
   /* https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe */
   white-space: nowrap;
   width: 1px;
-  word-wrap: normal;
 }
 
 .page {

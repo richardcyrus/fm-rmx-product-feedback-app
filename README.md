@@ -1,11 +1,12 @@
-# Frontend Mentor - Product feedback app solution
+# Frontend Mentor - Product feedback app solution <!-- omit in toc -->
 
 This is a solution to the [Product feedback app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/product-feedback-app-wbvUYqjR6). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-## Table of contents
+## Table of contents <!-- omit in toc -->
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
+    - [Expected Behaviour](#expected-behaviour)
   - [Screenshot](#screenshot)
   - [Links](#links)
 - [My process](#my-process)
@@ -69,27 +70,25 @@ Users should be able to:
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [Remix](https://remix.run/) - a full stack web framework.
+- [React Router](https://reactrouter.com/home).
 - [React](https://reactjs.org/) - JS library.
-- [Reach UI](https://reach.tech/) - React-based design system.
 - [Prisma](https://www.prisma.io/) - Next-generation Node.js and TypeScript ORM.
-- [Cypress](https://www.cypress.io) - JavaScript end-to-end testing framework.
+- [Playwright](https://playwright.dev/) - Fast and reliable end-to-end testing for modern web apps.
 - [Vitest](https://vitest.dev) - A blazing fast unit-test framework powered by Vite.
 - [Testing Library](https://testing-library.com) - Simple and complete testing utilities that encourage good testing practices.
 
 ### What I learned
 
-- The testing configuration, using `vitest` is based on the `Indie Stack` from the Remix stacks starter project. I also used the "Testing JavaScript" course by Kent C. Dodds to help me on my journey in testing this Frontend Mentor challenge.
 - [Creating a recursive component](https://medium.com/@singhajendra1998/recursive-components-in-react-ac1be1110db1): This was used in the display of comments in the feedback detail view. Currently, in the interest of time and limitations in Prisma's query structure, only three levels of nesting are displayed.
 - [React Pre-rendering and Potential Hydration Issue](https://blog.jannikwempe.com/react-pre-rendering-and-potential-hydration-issue): This was used to resolve a React browser warning when updating the upvotes from local storage, but the upvote count in the database was different.
 
 ### Continued development
 
-I initially started this project with a Next.js implementation. I will likely revisit that implementation and make changes based on what I've done here.
+~~I initially started this project with a Next.js implementation. I will likely revisit that implementation and make changes based on what I've done here.~~
 
 I decided to re-implement in Remix, to go back to my roots in web development. Other than learning basic TypeScript as part of this (and the initial Next.js implementation), I managed to simplify the app significantly.
 
-Finish building end-to-end testing for this project.
+[√] Finish building end-to-end testing for this project.
 
 ### Useful resources
 
@@ -104,16 +103,11 @@ Finish building end-to-end testing for this project.
 - [Forwarding React Refs with TypeScript](https://www.carlrippon.com/react-forwardref-typescript/)
 - [Hiding Content for Accessibility](https://snook.ca/archives/html_and_css/hiding-content-for-accessibility)
 - [How-to: Hide content](https://www.a11yproject.com/posts/how-to-hide-content/)
-- [Visually Hidden](https://reach.tech/visually-hidden)
 - [Remix: Sharing Your Index Layout with Sub-Routes](https://dev.to/pckilgore/remix-sharing-your-index-layout-with-sub-routes-2856)
 - [Remix | Styling](https://remix.run/docs/en/v1/guides/styling#postcss)
 - [How to Use PostCSS as a Configurable Alternative to Sass](https://www.sitepoint.com/postcss-sass-configurable-alternative/)
-- [Styling Remix using Tailwind and PostCSS](https://codegino.com/blog/remix-styling-tailwind-postcss)
 - [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
 - [toTitleCase | 30 Seconds of TypeScript](https://decipher.dev/30-seconds-of-typescript/docs/toTitleCase/)
-- [How to Test HTTP Responses and Redirects with Cypress](https://www.riccardogiorato.com/blog/a/cypress-http-response)
-- [Setting up Cypress with axe for accessibility](https://timdeschryver.dev/blog/setting-up-cypress-with-axe-for-accessibility#different-color-schemes)
-- [Using multiple .env files](https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files)
 - [Isolated Integration Testing with Remix, Vitest, and Prisma](https://www.simplethread.com/isolated-integration-testing-with-remix-vitest-and-prisma/)
 
 ## Developer Setup

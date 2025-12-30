@@ -1,16 +1,8 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
+import type { LinksFunction, MetaFunction } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 
-import globalStylesUrl from "~/styles/global-styles.css";
-import resetStyles from "~/styles/reset.css";
+import globalStylesUrl from "~/styles/global-styles.css?url";
+import resetStyles from "~/styles/reset.css?url";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Product Feedback App | Frontend Mentor" }];
@@ -36,7 +28,6 @@ export const links: LinksFunction = () => {
     },
     { rel: "stylesheet", href: resetStyles },
     { rel: "stylesheet", href: globalStylesUrl },
-    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   ];
 };
 
@@ -59,7 +50,6 @@ export default function App() {
         </div>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

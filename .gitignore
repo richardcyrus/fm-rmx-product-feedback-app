@@ -227,3 +227,6 @@ cypress/downloads/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+.react-router/
+prisma/generated/

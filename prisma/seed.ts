@@ -1,9 +1,14 @@
-import type { Prisma } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import type { Prisma } from "./generated/prisma/client";
+import { PrismaClient } from "./generated/prisma/client";
 
-let db = new PrismaClient();
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
 
-let productRequestData: Prisma.ProductRequestCreateInput[] = [
+const db = new PrismaClient({ adapter, });
+
+const productRequestData: Prisma.ProductRequestCreateInput[] = [
   {
     title: "Add tags for solutions",
     category: "enhancement",
@@ -429,8 +434,8 @@ let productRequestData: Prisma.ProductRequestCreateInput[] = [
 async function seed() {
   console.log("Start seeding...");
 
-  for (let pr of productRequestData) {
-    let productRequest = await db.productRequest.create({
+  for (const pr of productRequestData) {
+    const productRequest = await db.productRequest.create({
       data: pr,
     });
 

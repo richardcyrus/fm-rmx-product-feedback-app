@@ -1,8 +1,8 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction } from "react-router";
 
 import NoSuggestionIcon from "~/assets/suggestions/IllustrationEmpty";
 import AddFeedbackButton from "~/components/AddFeedbackButton";
-import noSuggestionsStylesUrl from "~/styles/no-suggestions-card.css";
+import noSuggestionsStylesUrl from "~/styles/no-suggestions-card.css?url";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: noSuggestionsStylesUrl }];

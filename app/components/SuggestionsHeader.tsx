@@ -1,12 +1,12 @@
 import * as Label from "@radix-ui/react-label";
 import * as RadixSelect from "@radix-ui/react-select";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction } from "react-router";
 
 import IconArrowDown from "~/assets/shared/IconArrowDown";
 import IconCheck from "~/assets/shared/IconCheck";
 import SuggestionsIcon from "~/assets/suggestions/IconSuggestions";
 import AddFeedbackButton from "~/components/AddFeedbackButton";
-import componentCustomStyles from "~/styles/suggestions-header.css";
+import componentCustomStyles from "~/styles/suggestions-header.css?url";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: componentCustomStyles }];
