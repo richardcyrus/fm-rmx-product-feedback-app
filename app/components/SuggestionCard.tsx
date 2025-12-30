@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import type { LinksFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import type { LinksFunction } from "react-router";
+import { Link } from "react-router";
 
 import UpVoteIcon from "~/assets/shared/IconArrowUp";
 import CommentIcon from "~/assets/shared/IconComments";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import { useMounted } from "~/hooks/use-mounted";
-import suggestionCardStylesUrl from "~/styles/suggestion-card.css";
+import suggestionCardStylesUrl from "~/styles/suggestion-card.css?url";
 import { toTitleCase } from "~/utils/string-utils";
 
 export const links: LinksFunction = () => {

@@ -1,6 +1,5 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Form, useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
+import type { LinksFunction, LoaderFunction } from "react-router";
+import { Form, useLoaderData, useNavigate, useSubmit } from "react-router";
 import invariant from "tiny-invariant";
 
 import NoSuggestionsCard, {
@@ -47,7 +46,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     ...productRequest,
   }));
 
-  return json<LoaderData>({ sort, suggestionsData });
+  return { sort, suggestionsData };
 };
 
 function FilteredCategory() {
